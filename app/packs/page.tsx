@@ -131,8 +131,8 @@ export default function PacksPage() {
         <div className="container">
           <h2 className="text-3xl font-bold text-center mb-12">Options supplémentaires</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-100">
-              <div className="p-8">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-100 h-full">
+              <div className="p-8 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <Database className="h-6 w-6" />
@@ -147,7 +147,7 @@ export default function PacksPage() {
                   Transformez votre site en une véritable application web avec des fonctionnalités dynamiques et interactives.
                 </p>
 
-                <div className="space-y-4 mb-6">
+                <div className="space-y-4 mb-6 flex-grow">
                   <div>
                     <h4 className="font-medium mb-2">Fonctionnalités incluses:</h4>
                     <ul className="space-y-2">
@@ -187,14 +187,14 @@ export default function PacksPage() {
                   </div>
                 </div>
 
-                <Button asChild size="lg" className="w-full">
+                <Button asChild size="lg" className="w-full mt-auto">
                   <Link href="/contact">Demander cette option</Link>
                 </Button>
               </div>
             </div>
 
-            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-200">
-              <div className="p-8">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-200 h-full">
+              <div className="p-8 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <Smartphone className="h-6 w-6" />
@@ -210,13 +210,15 @@ export default function PacksPage() {
                   performance mobile améliorée, expérience utilisateur fluide sur smartphones et tablettes.
                 </p>
 
-                <div className="space-y-4 mb-6">
+                <div className="space-y-4 mb-6 flex-grow">
                   <ul className="space-y-2">
                     {[
                       "Design responsive personnalisé",
                       "Optimisation des performances",
                       "Navigation adaptée au mobile",
-                      "Tests sur différents appareils"
+                      "Tests sur différents appareils",
+                      "Adaptation des images et médias",
+                      "Optimisation du temps de chargement"
                     ].map((feature) => (
                       <li key={feature} className="flex items-start">
                         <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
@@ -226,14 +228,14 @@ export default function PacksPage() {
                   </ul>
                 </div>
 
-                <Button asChild size="lg" className="w-full">
+                <Button asChild size="lg" className="w-full mt-auto">
                   <Link href="/contact">Demander cette option</Link>
                 </Button>
               </div>
             </div>
 
-            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-300">
-              <div className="p-8">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-300 h-full">
+              <div className="p-8 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <HardDrive className="h-6 w-6" />
@@ -248,13 +250,15 @@ export default function PacksPage() {
                   Prolongez votre hébergement d'une année supplémentaire avec notre service premium tout inclus.
                 </p>
 
-                <div className="space-y-4 mb-6">
+                <div className="space-y-4 mb-6 flex-grow">
                   <ul className="space-y-2">
                     {[
                       "Hébergement haute performance",
                       "Certificat SSL inclus",
                       "Sauvegardes quotidiennes",
-                      "Support technique prioritaire"
+                      "Support technique prioritaire",
+                      "Surveillance 24/7",
+                      "Protection DDoS avancée"
                     ].map((feature) => (
                       <li key={feature} className="flex items-start">
                         <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
@@ -264,7 +268,7 @@ export default function PacksPage() {
                   </ul>
                 </div>
 
-                <Button asChild size="lg" className="w-full">
+                <Button asChild size="lg" className="w-full mt-auto">
                   <Link href="/contact">Prolonger l'hébergement</Link>
                 </Button>
               </div>
