@@ -3,13 +3,27 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
+import dynamic from 'next/dynamic'
+
+const Spline = dynamic(() => import('@splinetool/react-spline'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 animate-pulse" />
+  ),
+})
 
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28">
-        <div className="container">
+      <section className="relative min-h-screen flex items-center">
+        {/* Spline Background */}
+        <div className="absolute inset-0 z-0">
+          <Spline scene="https://my.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
+        </div>
+
+        <div className="container relative z-10 pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
               Des sites web qui font briller <span className="text-primary">votre entreprise</span>
