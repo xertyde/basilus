@@ -15,8 +15,9 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
   ),
 })
 
+// Using exponential backoff for retries
 const MAX_RETRIES = 3
-const RETRY_DELAY = 3000 // Increased to 3 seconds for better network recovery
+const getRetryDelay = (retryCount) => Math.min(1000 * Math.pow(2, retryCount), 10000)
 
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
@@ -26,11 +27,12 @@ export default function Home() {
 
   useEffect(() => {
     if (splineError && retryCount < MAX_RETRIES) {
+      const delay = getRetryDelay(retryCount)
       const timer = setTimeout(() => {
         setSplineError(false)
         setRetryCount(prev => prev + 1)
         setSplineKey(prev => prev + 1)
-      }, RETRY_DELAY)
+      }, delay)
       
       return () => clearTimeout(timer)
     } else if (splineError && retryCount >= MAX_RETRIES) {
@@ -39,6 +41,7 @@ export default function Home() {
   }, [splineError, retryCount])
 
   const handleSplineError = () => {
+    console.error('Spline loading error occurred')
     setSplineError(true)
   }
 
@@ -53,7 +56,7 @@ export default function Home() {
               {!splineError ? (
                 <Spline 
                   key={splineKey}
-                  scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/scene.splinecode"
+                  scene="https://prod.spline.design/6PYyvZGZZhBgHpfy/scene.splinecode"
                   onError={handleSplineError}
                 />
               ) : (
