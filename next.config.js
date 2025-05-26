@@ -6,12 +6,7 @@ const nextConfig = {
   },
   images: { 
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.pexels.com',
-      },
-    ],
+    domains: ['images.pexels.com'],
   },
   webpack: (config, { isServer }) => {
     config.cache = false;
