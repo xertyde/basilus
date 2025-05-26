@@ -11,12 +11,14 @@ import Spline from '@splinetool/react-spline'
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
   const MAX_RETRIES = 3
 
   useEffect(() => {
     if (splineError && retryCount < MAX_RETRIES) {
       const timer = setTimeout(() => {
         setSplineError(false)
+        setIsLoading(true)
         setRetryCount(prev => prev + 1)
       }, 2000) // Retry after 2 seconds
 
@@ -26,6 +28,38 @@ export default function Home() {
 
   const handleSplineError = () => {
     setSplineError(true)
+    setIsLoading(false)
+  }
+
+  const handleSplineLoad = () => {
+    setIsLoading(false)
+    setSplineError(false)
+  }
+
+  const renderBackground = () => {
+    if (isLoading && !splineError) {
+      return (
+        <div className="w-full h-full bg-gradient-to-b from-primary/20 to-background/50 animate-pulse" />
+      )
+    }
+
+    if (!splineError || retryCount < MAX_RETRIES) {
+      return (
+        <Spline 
+          scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" 
+          onError={handleSplineError}
+          onLoad={handleSplineLoad}
+        />
+      )
+    }
+
+    return (
+      <div className="w-full h-full bg-gradient-to-b from-primary/20 to-background/50">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-white/70 text-sm">Impossible de charger l'animation 3D</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -33,14 +67,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          {!splineError || retryCount < MAX_RETRIES ? (
-            <Spline 
-              scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" 
-              onError={handleSplineError}
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-b from-primary/20 to-background/50" />
-          )}
+          {renderBackground()}
         </div>
         <div className="container relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
