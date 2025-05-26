@@ -10,12 +10,7 @@ import { useState, useEffect } from 'react'
 
 // Lazy load Spline with a longer timeout
 const Spline = dynamic(() => 
-  Promise.race([
-    import('@splinetool/react-spline'),
-    new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Timeout')), 15000)
-    )
-  ]).then((result) => result.default),
+  import('@splinetool/react-spline').then(mod => mod.default),
   {
     ssr: false,
     loading: () => (
@@ -24,43 +19,17 @@ const Spline = dynamic(() =>
   }
 )
 
-// Using exponential backoff for retries with a longer initial delay
-const MAX_RETRIES = 5
-const INITIAL_RETRY_DELAY = 3000 // Start with a 3-second delay
-const MAX_RETRY_DELAY = 15000 // Cap the maximum delay at 15 seconds
-const getRetryDelay = (retryCount) => 
-  Math.min(INITIAL_RETRY_DELAY * Math.pow(2, retryCount), MAX_RETRY_DELAY)
-
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
-  const [retryCount, setRetryCount] = useState(0)
-  const [splineKey, setSplineKey] = useState(0)
-  const [showFallback, setShowFallback] = useState(false)
+  const [splineLoaded, setSplineLoaded] = useState(false)
 
-  useEffect(() => {
-    let retryTimer: NodeJS.Timeout
-
-    if (splineError && retryCount < MAX_RETRIES) {
-      const delay = getRetryDelay(retryCount)
-      console.log(`Retrying Spline load (attempt ${retryCount + 1}/${MAX_RETRIES}) after ${delay}ms`)
-      
-      retryTimer = setTimeout(() => {
-        setSplineError(false)
-        setRetryCount(prev => prev + 1)
-        setSplineKey(prev => prev + 1)
-      }, delay)
-    } else if (splineError && retryCount >= MAX_RETRIES) {
-      console.error('Max retries reached, showing fallback')
-      setShowFallback(true)
-    }
-
-    return () => {
-      if (retryTimer) clearTimeout(retryTimer)
-    }
-  }, [splineError, retryCount])
+  const handleSplineLoad = () => {
+    setSplineLoaded(true)
+    setSplineError(false)
+  }
 
   const handleSplineError = () => {
-    console.error('Spline loading error occurred')
+    console.error('Failed to load Spline scene')
     setSplineError(true)
   }
 
@@ -80,28 +49,12 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center">
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
-          {!showFallback ? (
-            <>
-              {!splineError ? (
-                <Spline 
-                  key={splineKey}
-                  scene="https://prod.spline.design/6PYyvZGZZhBgHpfy/scene.splinecode"
-                  onError={handleSplineError}
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20">
-                  {retryCount < MAX_RETRIES && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <p className="text-muted-foreground mb-2">Chargement de l'animation...</p>
-                        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-                        <p className="text-sm text-muted-foreground mt-2">Tentative {retryCount + 1}/{MAX_RETRIES}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </>
+          {!splineError ? (
+            <Spline 
+              scene="https://prod.spline.design/6PYyvZGZZhBgHpfy/scene.splinecode"
+              onLoad={handleSplineLoad}
+              onError={handleSplineError}
+            />
           ) : (
             <FallbackBackground />
           )}
