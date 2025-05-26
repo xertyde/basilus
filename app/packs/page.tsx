@@ -14,7 +14,7 @@ export default function PacksPage() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center animate-on-scroll">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Nos Packs</h1>
             <p className="text-lg text-muted-foreground mb-8">
               Choisissez l'offre qui correspond le mieux à vos besoins. Tous nos packs incluent un design sur mesure, une expérience utilisateur optimisée et un site responsive.
@@ -46,6 +46,7 @@ export default function PacksPage() {
               ]}
               ctaText="Demander un devis"
               popular={false}
+              delay={100}
             />
 
             <PricingCard
@@ -65,6 +66,7 @@ export default function PacksPage() {
               ]}
               ctaText="Demander un devis"
               popular={true}
+              delay={200}
             />
 
             <PricingCard
@@ -85,6 +87,7 @@ export default function PacksPage() {
               ]}
               ctaText="Demander un devis"
               popular={false}
+              delay={300}
             />
           </div>
         </div>
@@ -92,14 +95,14 @@ export default function PacksPage() {
 
       <section className="py-16 md:py-24 bg-muted/50">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center mb-12 animate-on-scroll">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Option Backend</h2>
             <p className="text-lg text-muted-foreground">
               Ajoutez des fonctionnalités avancées à votre site avec notre option backend. Disponible pour tous les packs.
             </p>
           </div>
 
-          <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden">
+          <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-200">
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-2">Backend personnalisé</h3>
               <p className="text-xl font-semibold mb-4">+ 899€</p>
@@ -155,7 +158,7 @@ export default function PacksPage() {
 
       <section className="py-16 md:py-24">
         <div className="container">
-          <div className="bg-primary/5 rounded-3xl p-8 md:p-12">
+          <div className="bg-primary/5 rounded-3xl p-8 md:p-12 animate-on-scroll">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Vous avez des questions ?</h2>
               <p className="text-lg text-muted-foreground mb-8">

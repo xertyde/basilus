@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Check, X } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { useEffect, useRef } from "react"
 
 interface PricingCardProps {
   name: string
@@ -12,6 +13,7 @@ interface PricingCardProps {
   excludedFeatures?: string[]
   ctaText: string
   popular?: boolean
+  delay?: number
 }
 
 export default function PricingCard({
@@ -22,14 +24,40 @@ export default function PricingCard({
   excludedFeatures,
   ctaText,
   popular = false,
+  delay = 0,
 }: PricingCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(`animate-on-scroll`, `delay-${delay}`)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current)
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current)
+      }
+    }
+  }, [delay])
+
   return (
-    <Card className={cn(
-      "flex flex-col h-full transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-background to-muted/20",
-      popular 
-        ? "border-primary shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
-        : "shadow-md hover:shadow-xl hover:border-primary/20"
-    )}>
+    <Card 
+      ref={cardRef}
+      className={cn(
+        "flex flex-col h-full transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-background to-muted/20 opacity-0",
+        popular 
+          ? "border-primary shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
+          : "shadow-md hover:shadow-xl hover:border-primary/20"
+      )}>
       {popular && (
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg">
           Recommandé

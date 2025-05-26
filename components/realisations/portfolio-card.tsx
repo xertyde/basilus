@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -21,6 +21,7 @@ interface PortfolioCardProps {
   imageUrl: string
   category: string
   technologies: string[]
+  delay?: number
 }
 
 export default function PortfolioCard({
@@ -29,12 +30,36 @@ export default function PortfolioCard({
   imageUrl,
   category,
   technologies,
+  delay = 0,
 }: PortfolioCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(`animate-on-scroll`, `delay-${delay}`)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current)
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current)
+      }
+    }
+  }, [delay])
 
   return (
     <Card 
-      className="overflow-hidden border-0 shadow-lg transition-all duration-500 hover:shadow-xl group bg-gradient-to-br from-background to-muted/20"
+      ref={cardRef}
+      className="overflow-hidden border-0 shadow-lg transition-all duration-500 hover:shadow-xl group bg-gradient-to-br from-background to-muted/20 opacity-0"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

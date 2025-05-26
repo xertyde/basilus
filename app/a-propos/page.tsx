@@ -38,7 +38,7 @@ export default function AboutPage() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center animate-on-scroll">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">À propos de Basilus</h1>
             <p className="text-lg text-muted-foreground">
               Nous créons des sites web qui font briller votre entreprise et génèrent des résultats concrets.
@@ -50,7 +50,7 @@ export default function AboutPage() {
       <section className="pb-16 md:pb-24">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
+            <div className="animate-from-left">
               <h2 className="text-3xl font-bold mb-6">Notre histoire</h2>
               <p className="text-lg text-muted-foreground mb-4">
                 Fondée en 2020, Basilus est née de la passion de trois développeurs web partageant une vision commune : rendre accessible aux PME des sites web de qualité professionnelle à des prix abordables.
@@ -67,7 +67,7 @@ export default function AboutPage() {
                 </Button>
               </div>
             </div>
-            <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl">
+            <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl animate-from-right">
               <Image
                 src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 alt="L'équipe Basilus"
@@ -81,7 +81,7 @@ export default function AboutPage() {
 
       <section className="py-16 md:py-24 bg-muted/50">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center mb-12 animate-on-scroll">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos valeurs</h2>
             <p className="text-lg text-muted-foreground">
               Ces principes guident notre travail au quotidien et définissent notre relation avec nos clients.
@@ -89,19 +89,19 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card p-8 rounded-xl shadow-sm">
+            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-100">
               <h3 className="text-xl font-bold mb-4">Excellence</h3>
               <p className="text-muted-foreground">
                 Nous ne nous contentons pas du minimum. Chaque projet est une opportunité de créer quelque chose d'exceptionnel qui dépasse les attentes de nos clients.
               </p>
             </div>
-            <div className="bg-card p-8 rounded-xl shadow-sm">
+            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-200">
               <h3 className="text-xl font-bold mb-4">Transparence</h3>
               <p className="text-muted-foreground">
                 Nous communiquons de manière claire et honnête à chaque étape du projet. Pas de surprises, pas de coûts cachés.
               </p>
             </div>
-            <div className="bg-card p-8 rounded-xl shadow-sm">
+            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-300">
               <h3 className="text-xl font-bold mb-4">Innovation</h3>
               <p className="text-muted-foreground">
                 Nous restons à la pointe des nouvelles technologies et tendances pour offrir des solutions modernes et performantes.
@@ -113,7 +113,7 @@ export default function AboutPage() {
 
       <section className="py-16 md:py-24">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center mb-12 animate-on-scroll">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos compétences</h2>
             <p className="text-lg text-muted-foreground">
               Notre équipe pluridisciplinaire maîtrise tous les aspects de la création web pour vous offrir une solution complète.
@@ -122,7 +122,7 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {skills.map((skill, index) => (
-              <Card key={index} className="border-none shadow-sm">
+              <Card key={index} className="border-none shadow-sm animate-on-scroll" style={{ animationDelay: `${index * 100}ms` }}>
                 <CardContent className="p-6">
                   <div className="flex items-start">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mr-4 text-primary">
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
       <section className="py-16 md:py-24 bg-primary/5">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center animate-on-scroll">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Prêt à travailler ensemble ?</h2>
             <p className="text-lg text-muted-foreground mb-8">
               Discutons de votre projet et voyons comment nous pouvons vous aider à atteindre vos objectifs.
