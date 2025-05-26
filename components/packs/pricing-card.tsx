@@ -111,12 +111,7 @@ export default function PricingCard({
         )}
       </CardContent>
       <CardFooter>
-        <Button asChild className={cn(
-          "w-full transition-all duration-300 button-premium",
-          popular 
-            ? "hover:shadow-lg hover:scale-105" 
-            : "bg-primary/90 hover:bg-primary hover:shadow-lg hover:scale-105"
-        )}>
+        <Button asChild className="w-full bg-primary hover:bg-primary/90 transition-colors duration-300">
           <Link href="/contact">{ctaText}</Link>
         </Button>
       </CardFooter>
