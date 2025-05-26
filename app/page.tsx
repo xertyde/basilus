@@ -13,7 +13,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <Spline scene="https://my.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" />
+          <Spline scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" />
         </div>
         <div className="container relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">

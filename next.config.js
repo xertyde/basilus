@@ -6,7 +6,7 @@ const nextConfig = {
   },
   images: { 
     unoptimized: true,
-    domains: ['images.pexels.com'],
+    domains: ['images.pexels.com', 'my.spline.design', 'prod.spline.design'],
   },
   webpack: (config, { isServer }) => {
     config.cache = false;
