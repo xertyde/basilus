@@ -51,11 +51,11 @@ export default function PricingCard({
         inView && "animate-scale",
         delay && `delay-${delay}`,
         popular 
-          ? "gradient-border shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
+          ? "gradient-border shadow-lg scale-105 relative hover:border-primary/80 hover:shadow-xl" 
           : "shadow-md hover:shadow-xl hover:border-primary/20"
       )}>
       {popular && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg animate-shimmer">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg animate-shimmer z-50">
           Recommandé
         </div>
       )}
