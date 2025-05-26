@@ -1,8 +1,14 @@
 import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
-import { Check } from 'lucide-react'
+import { Check, Clock, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import PricingCard from '@/components/packs/pricing-card'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
   title: 'Nos Packs | Basilus',
@@ -37,12 +43,15 @@ export default function PacksPage() {
                 "Formulaire de contact",
                 "Intégration des réseaux sociaux",
                 "Hébergement pour 1 an",
-                "Formation à l'utilisation"
+                "Formation à l'utilisation (1h)",
+                "Sans maintenance post-livraison (option possible)"
               ]}
-              excludedFeatures={[
-                "Système de blog",
-                "E-commerce",
-                "Espace membre"
+              options={[
+                {
+                  name: "Livraison express 72h",
+                  price: "+400€",
+                  icon: <Clock className="h-4 w-4" />
+                }
               ]}
               ctaText="Demander un devis"
               popular={false}
@@ -56,13 +65,25 @@ export default function PacksPage() {
               features={[
                 "Site jusqu'à 10 pages",
                 "Design premium responsive",
+                "Jusqu'à 2 révisions du design incluses",
                 "Optimisation SEO avancée",
                 "Système de blog intégré",
                 "Formulaires personnalisés",
                 "Statistiques de visite",
                 "Intégration Google Business",
                 "Hébergement pour 1 an",
-                "Maintenance mensuelle"
+                "Mises à jour techniques & sécurité (hors contenu)"
+              ]}
+              options={[
+                {
+                  name: "Multilingue",
+                  price: "+250€"
+                },
+                {
+                  name: "Livraison express 72h",
+                  price: "+400€",
+                  icon: <Clock className="h-4 w-4" />
+                }
               ]}
               ctaText="Demander un devis"
               popular={true}
@@ -84,6 +105,17 @@ export default function PacksPage() {
                 "Stratégie de contenu",
                 "Formation approfondie",
                 "Support prioritaire"
+              ]}
+              notice={[
+                "Tarif variable selon projet – jusqu'à 6000€",
+                "30% d'acompte à la commande, solde à la livraison"
+              ]}
+              options={[
+                {
+                  name: "Livraison express 72h",
+                  price: "+400€",
+                  icon: <Clock className="h-4 w-4" />
+                }
               ]}
               ctaText="Demander un devis"
               popular={false}
@@ -130,18 +162,20 @@ export default function PacksPage() {
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-2">Options additionnelles:</h4>
+                  <h4 className="font-medium mb-2">Options supplémentaires:</h4>
                   <ul className="space-y-2">
                     {[
-                      "Paiements en ligne",
-                      "Gestion des réservations",
-                      "Notifications en temps réel",
-                      "Intégrations tierces",
-                      "Synchronisation multiplateforme"
-                    ].map((feature) => (
-                      <li key={feature} className="flex items-start">
+                      { name: "Paiement en ligne", price: 250 },
+                      { name: "Système de réservation", price: 400 },
+                      { name: "Notifications en temps réel", price: 250 },
+                      { name: "Intégration API tierce", price: 250, note: "par API" }
+                    ].map((option) => (
+                      <li key={option.name} className="flex items-start">
                         <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
-                        <span>{feature}</span>
+                        <span>
+                          {option.name} <span className="font-medium">+{option.price}€</span>
+                          {option.note && <span className="text-sm text-muted-foreground"> ({option.note})</span>}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -158,20 +192,46 @@ export default function PacksPage() {
 
       <section className="py-16 md:py-24">
         <div className="container">
-          <div className="bg-primary/5 rounded-3xl p-8 md:p-12 animate-on-scroll">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Vous avez des questions ?</h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                N'hésitez pas à nous contacter pour discuter de votre projet ou pour obtenir plus d'informations sur nos packs.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg">
-                  <Link href="/contact">Nous contacter</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/a-propos">En savoir plus</Link>
-                </Button>
-              </div>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Questions fréquentes</h2>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="maintenance">
+                <AccordionTrigger>Le prix inclut-il la maintenance ?</AccordionTrigger>
+                <AccordionContent>
+                  La maintenance est incluse uniquement dans le Pack Pro, qui couvre les mises à jour techniques et de sécurité. Pour les autres packs, nous proposons des forfaits de maintenance en option. N'hésitez pas à nous contacter pour en savoir plus.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="modifications">
+                <AccordionTrigger>Est-il possible d'ajouter des fonctionnalités après la livraison ?</AccordionTrigger>
+                <AccordionContent>
+                  Oui, il est tout à fait possible d'ajouter des fonctionnalités après la livraison. Nous établirons un devis spécifique en fonction de vos besoins. Notre architecture modulaire permet d'intégrer facilement de nouvelles fonctionnalités.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="associations">
+                <AccordionTrigger>Proposez-vous des réductions pour les associations ?</AccordionTrigger>
+                <AccordionContent>
+                  Oui, nous proposons une réduction de 15% sur l'ensemble de nos packs pour les associations à but non lucratif. Un justificatif du statut associatif sera demandé pour en bénéficier.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 bg-primary/5">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Vous avez des questions ?</h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              N'hésitez pas à nous contacter pour discuter de votre projet ou pour obtenir plus d'informations sur nos packs.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg">
+                <Link href="/contact">Nous contacter</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/a-propos">En savoir plus</Link>
+              </Button>
             </div>
           </div>
         </div>
