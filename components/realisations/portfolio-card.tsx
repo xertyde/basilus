@@ -19,7 +19,6 @@ interface PortfolioCardProps {
   title: string
   description: string
   imageUrl: string
-  previewUrl: string
   category: string
   technologies: string[]
   delay?: number
@@ -29,7 +28,6 @@ export default function PortfolioCard({
   title,
   description,
   imageUrl,
-  previewUrl,
   category,
   technologies,
   delay = 0,
@@ -95,8 +93,8 @@ export default function PortfolioCard({
             </DialogHeader>
             <div className="relative h-[400px] w-full mt-4 overflow-hidden rounded-md">
               <Image
-                src={previewUrl}
-                alt={`Aperçu complet de ${title}`}
+                src={imageUrl}
+                alt={title}
                 fill
                 className="object-contain transition-transform duration-700 hover:scale-105"
               />
