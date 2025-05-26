@@ -15,9 +15,10 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
   ),
 })
 
-// Using exponential backoff for retries
+// Using exponential backoff for retries with a longer initial delay
 const MAX_RETRIES = 3
-const getRetryDelay = (retryCount) => Math.min(1000 * Math.pow(2, retryCount), 10000)
+const INITIAL_RETRY_DELAY = 2000 // Start with a 2-second delay
+const getRetryDelay = (retryCount) => Math.min(INITIAL_RETRY_DELAY * Math.pow(2, retryCount), 10000)
 
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
@@ -26,17 +27,21 @@ export default function Home() {
   const [showFallback, setShowFallback] = useState(false)
 
   useEffect(() => {
+    let retryTimer: NodeJS.Timeout
+
     if (splineError && retryCount < MAX_RETRIES) {
       const delay = getRetryDelay(retryCount)
-      const timer = setTimeout(() => {
+      retryTimer = setTimeout(() => {
         setSplineError(false)
         setRetryCount(prev => prev + 1)
         setSplineKey(prev => prev + 1)
       }, delay)
-      
-      return () => clearTimeout(timer)
     } else if (splineError && retryCount >= MAX_RETRIES) {
       setShowFallback(true)
+    }
+
+    return () => {
+      if (retryTimer) clearTimeout(retryTimer)
     }
   }, [splineError, retryCount])
 
@@ -44,6 +49,16 @@ export default function Home() {
     console.error('Spline loading error occurred')
     setSplineError(true)
   }
+
+  const FallbackBackground = () => (
+    <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+        <div className="absolute inset-0 opacity-20">
+          <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <>
@@ -74,7 +89,7 @@ export default function Home() {
               )}
             </>
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5" />
+            <FallbackBackground />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
         </div>
