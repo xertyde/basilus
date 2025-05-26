@@ -3,32 +3,39 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
+import dynamic from 'next/dynamic'
+
+const SplineBackground = dynamic(() => import('@/components/home/spline-background'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10" />
+})
 
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28">
-        <div className="container">
+      <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28 overflow-hidden">
+        <SplineBackground />
+        <div className="container relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 [text-wrap:balance]">
               Des sites web qui font briller <span className="text-primary">votre entreprise</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
               Basilus crée des sites web sur mesure qui attirent vos clients et boostent votre activité. Design épuré, code optimisé, résultats garantis.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <Button asChild size="lg">
+              <Button asChild size="lg" className="relative overflow-hidden bg-primary hover:bg-primary/90">
                 <Link href="/contact">
                   Demander un devis
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="backdrop-blur-sm bg-background/50">
                 <Link href="/packs">
                   Découvrir nos packs
                 </Link>
               </Button>
-              <Button asChild variant="ghost" size="lg">
+              <Button asChild variant="ghost" size="lg" className="backdrop-blur-sm bg-background/50">
                 <Link href="/realisations" className="flex items-center">
                   Voir nos réalisations
                   <ArrowRight className="ml-2 h-4 w-4" />
