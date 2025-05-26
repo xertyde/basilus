@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Zap, Award, Code } from 'lucide-react'
@@ -8,12 +9,38 @@ import TestimonialCard from '@/components/home/testimonial-card'
 import Spline from '@splinetool/react-spline'
 
 export default function Home() {
+  const [splineError, setSplineError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
+  const MAX_RETRIES = 3
+
+  useEffect(() => {
+    if (splineError && retryCount < MAX_RETRIES) {
+      const timer = setTimeout(() => {
+        setSplineError(false)
+        setRetryCount(prev => prev + 1)
+      }, 2000) // Retry after 2 seconds
+
+      return () => clearTimeout(timer)
+    }
+  }, [splineError, retryCount])
+
+  const handleSplineError = () => {
+    setSplineError(true)
+  }
+
   return (
     <>
       {/* Hero Section */}
       <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28 overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <Spline scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" />
+          {!splineError || retryCount < MAX_RETRIES ? (
+            <Spline 
+              scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" 
+              onError={handleSplineError}
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-b from-primary/20 to-background/50" />
+          )}
         </div>
         <div className="container relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
