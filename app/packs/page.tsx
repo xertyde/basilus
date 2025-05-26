@@ -186,7 +186,7 @@ export default function PacksPage() {
                 </div>
 
                 <Button asChild size="lg" className="w-full">
-                  <Link href="/contact">Demander un devis avec option backend</Link>
+                  <Link href="/contact">Demander cette option</Link>
                 </Button>
               </div>
             </div>
