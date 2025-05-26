@@ -1,94 +1,34 @@
-"use client"
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
-import Spline from '@splinetool/react-spline'
 
 export default function Home() {
-  const [splineError, setSplineError] = useState(false)
-  const [retryCount, setRetryCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const MAX_RETRIES = 3
-
-  useEffect(() => {
-    if (splineError && retryCount < MAX_RETRIES) {
-      const timer = setTimeout(() => {
-        setSplineError(false)
-        setIsLoading(true)
-        setRetryCount(prev => prev + 1)
-      }, 2000) // Retry after 2 seconds
-
-      return () => clearTimeout(timer)
-    }
-  }, [splineError, retryCount])
-
-  const handleSplineError = () => {
-    setSplineError(true)
-    setIsLoading(false)
-  }
-
-  const handleSplineLoad = () => {
-    setIsLoading(false)
-    setSplineError(false)
-  }
-
-  const renderBackground = () => {
-    if (isLoading && !splineError) {
-      return (
-        <div className="w-full h-full bg-gradient-to-b from-primary/20 to-background/50 animate-pulse" />
-      )
-    }
-
-    if (!splineError || retryCount < MAX_RETRIES) {
-      return (
-        <Spline 
-          scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" 
-          onError={handleSplineError}
-          onLoad={handleSplineLoad}
-        />
-      )
-    }
-
-    return (
-      <div className="w-full h-full bg-gradient-to-b from-primary/20 to-background/50">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/70 text-sm">Impossible de charger l'animation 3D</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
       {/* Hero Section */}
-      <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          {renderBackground()}
-        </div>
-        <div className="container relative z-10">
+      <section className="relative pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28">
+        <div className="container">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-white drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
               Des sites web qui font briller <span className="text-primary">votre entreprise</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl drop-shadow-lg">
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
               Basilus crée des sites web sur mesure qui attirent vos clients et boostent votre activité. Design épuré, code optimisé, résultats garantis.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <Button asChild size="lg" className="bg-white/90 hover:bg-white text-foreground">
+              <Button asChild size="lg">
                 <Link href="/contact">
                   Demander un devis
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="bg-white/10 hover:bg-white/20 text-white border-white/20">
+              <Button asChild variant="outline" size="lg">
                 <Link href="/packs">
                   Découvrir nos packs
                 </Link>
               </Button>
-              <Button asChild variant="ghost" size="lg" className="text-white hover:text-white hover:bg-white/10">
+              <Button asChild variant="ghost" size="lg">
                 <Link href="/realisations" className="flex items-center">
                   Voir nos réalisations
                   <ArrowRight className="ml-2 h-4 w-4" />
