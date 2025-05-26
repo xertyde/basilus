@@ -6,6 +6,7 @@ import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
 import dynamic from 'next/dynamic'
+import { useState } from 'react'
 
 const Spline = dynamic(() => import('@splinetool/react-spline'), {
   ssr: false,
@@ -15,13 +16,26 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
 })
 
 export default function Home() {
+  const [splineError, setSplineError] = useState(false)
+
+  const handleSplineError = () => {
+    setSplineError(true)
+  }
+
   return (
     <>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center">
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
-          <Spline scene="https://my.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/" />
+          {!splineError ? (
+            <Spline 
+              scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/scene.splinecode"
+              onError={handleSplineError}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
         </div>
 
