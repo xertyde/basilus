@@ -8,17 +8,28 @@ import TestimonialCard from '@/components/home/testimonial-card'
 import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
 
-const Spline = dynamic(() => import('@splinetool/react-spline'), {
-  ssr: false,
-  loading: () => (
-    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 animate-pulse" />
-  ),
-})
+// Lazy load Spline with a longer timeout
+const Spline = dynamic(() => 
+  Promise.race([
+    import('@splinetool/react-spline'),
+    new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Timeout')), 15000)
+    )
+  ]).then((result) => result.default),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 animate-pulse" />
+    ),
+  }
+)
 
 // Using exponential backoff for retries with a longer initial delay
-const MAX_RETRIES = 3
-const INITIAL_RETRY_DELAY = 2000 // Start with a 2-second delay
-const getRetryDelay = (retryCount) => Math.min(INITIAL_RETRY_DELAY * Math.pow(2, retryCount), 10000)
+const MAX_RETRIES = 5
+const INITIAL_RETRY_DELAY = 3000 // Start with a 3-second delay
+const MAX_RETRY_DELAY = 15000 // Cap the maximum delay at 15 seconds
+const getRetryDelay = (retryCount) => 
+  Math.min(INITIAL_RETRY_DELAY * Math.pow(2, retryCount), MAX_RETRY_DELAY)
 
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
@@ -31,12 +42,15 @@ export default function Home() {
 
     if (splineError && retryCount < MAX_RETRIES) {
       const delay = getRetryDelay(retryCount)
+      console.log(`Retrying Spline load (attempt ${retryCount + 1}/${MAX_RETRIES}) after ${delay}ms`)
+      
       retryTimer = setTimeout(() => {
         setSplineError(false)
         setRetryCount(prev => prev + 1)
         setSplineKey(prev => prev + 1)
       }, delay)
     } else if (splineError && retryCount >= MAX_RETRIES) {
+      console.error('Max retries reached, showing fallback')
       setShowFallback(true)
     }
 
