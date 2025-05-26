@@ -15,6 +15,7 @@ const portfolioItems = [
     title: "Ice Cream Store",
     description: "Site e-commerce premium pour une glacerie artisanale avec une interface immersive mettant en valeur les produits. Design épuré avec animations fluides et expérience d'achat optimisée.",
     imageUrl: "/site1.png",
+    previewUrl: "/site1-preview.png",
     category: "E-commerce",
     technologies: ["Next.js", "Framer Motion", "GSAP", "Stripe"]
   },
@@ -23,6 +24,7 @@ const portfolioItems = [
     title: "Nauticare",
     description: "Plateforme innovante de vente d'équipements nautiques avec un design moderne et une interface intuitive. Focus sur l'expérience utilisateur et la mise en avant des produits.",
     imageUrl: "/site2.png",
+    previewUrl: "/site2-preview.png",
     category: "E-commerce",
     technologies: ["React", "Tailwind CSS", "Node.js", "Stripe"]
   },
@@ -31,6 +33,7 @@ const portfolioItems = [
     title: "Agripulse",
     description: "Plateforme de mise en relation entre agriculteurs et travailleurs agricoles. Interface intuitive avec système de matching avancé et gestion des missions en temps réel.",
     imageUrl: "/site3.png",
+    previewUrl: "/site3-preview.png",
     category: "Application Web",
     technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"]
   }
@@ -59,6 +62,7 @@ export default function RealisationsPage() {
                 title={item.title}
                 description={item.description}
                 imageUrl={item.imageUrl}
+                previewUrl={item.previewUrl}
                 category={item.category}
                 technologies={item.technologies}
                 delay={index * 100}
