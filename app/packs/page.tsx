@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
-import { Check, Clock, AlertCircle } from 'lucide-react'
+import { Check, Clock, AlertCircle, Smartphone } from 'lucide-react'
 import Link from 'next/link'
 import PricingCard from '@/components/packs/pricing-card'
 import {
@@ -127,13 +127,6 @@ export default function PacksPage() {
 
       <section className="py-16 md:py-24 bg-muted/50">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12 animate-on-scroll">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Option Backend</h2>
-            <p className="text-lg text-muted-foreground">
-              Ajoutez des fonctionnalités avancées à votre site avec notre option backend. Disponible pour tous les packs.
-            </p>
-          </div>
-
           <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-200">
             <div className="p-8">
               <h3 className="text-2xl font-bold mb-2">Backend personnalisé</h3>
@@ -184,6 +177,33 @@ export default function PacksPage() {
 
               <Button asChild size="lg" className="w-full">
                 <Link href="/contact">Demander un devis avec option backend</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24">
+        <div className="container">
+          <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll">
+            <div className="p-8">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                  <Smartphone className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Adaptation mobile avancée</h3>
+                  <p className="text-xl font-semibold">+ 290€</p>
+                </div>
+              </div>
+              
+              <p className="text-muted-foreground mb-6">
+                Optimisation complète de l'affichage mobile : design responsive ajusté manuellement, 
+                performance mobile améliorée, expérience utilisateur fluide sur smartphones et tablettes.
+              </p>
+
+              <Button asChild size="lg" className="w-full">
+                <Link href="/contact">Demander cette option</Link>
               </Button>
             </div>
           </div>
