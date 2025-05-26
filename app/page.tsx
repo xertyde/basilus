@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Zap, Award, Code } from 'lucide-react'
+import { ArrowRight, Zap, Award, Code, RefreshCcw } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
 import dynamic from 'next/dynamic'
@@ -22,15 +22,34 @@ const Spline = dynamic(() =>
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
   const [splineLoaded, setSplineLoaded] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
+  const maxRetries = 3
+
+  useEffect(() => {
+    if (splineError && retryCount < maxRetries) {
+      const timer = setTimeout(() => {
+        setSplineError(false)
+        setRetryCount(prev => prev + 1)
+      }, 2000 * (retryCount + 1)) // Exponential backoff
+
+      return () => clearTimeout(timer)
+    }
+  }, [splineError, retryCount])
 
   const handleSplineLoad = () => {
     setSplineLoaded(true)
     setSplineError(false)
+    setRetryCount(0)
   }
 
   const handleSplineError = () => {
     console.error('Failed to load Spline scene')
     setSplineError(true)
+  }
+
+  const handleRetry = () => {
+    setSplineError(false)
+    setRetryCount(0)
   }
 
   const FallbackBackground = () => (
@@ -40,6 +59,17 @@ export default function Home() {
           <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
         </div>
       </div>
+      {retryCount >= maxRetries && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="bg-background/80 backdrop-blur-sm p-6 rounded-lg shadow-lg text-center">
+            <p className="text-muted-foreground mb-4">Une erreur est survenue lors du chargement de l'animation</p>
+            <Button onClick={handleRetry} variant="outline" size="sm">
+              <RefreshCcw className="mr-2 h-4 w-4" />
+              Réessayer
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 
