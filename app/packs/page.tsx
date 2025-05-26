@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
-import { Check, Clock, AlertCircle, Smartphone } from 'lucide-react'
+import { Check, Clock, AlertCircle, Smartphone, Database, HardDrive } from 'lucide-react'
 import Link from 'next/link'
 import PricingCard from '@/components/packs/pricing-card'
 import {
@@ -127,24 +127,94 @@ export default function PacksPage() {
 
       <section className="py-16 md:py-24 bg-muted/50">
         <div className="container">
-          <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-200">
-            <div className="p-8">
-              <h3 className="text-2xl font-bold mb-2">Backend personnalisé</h3>
-              <p className="text-xl font-semibold mb-4">+ 899€</p>
-              <p className="text-muted-foreground mb-6">
-                Transformez votre site en une véritable application web avec des fonctionnalités dynamiques et interactives.
-              </p>
+          <h2 className="text-3xl font-bold text-center mb-12">Options supplémentaires</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-100">
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <Database className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">Backend personnalisé</h3>
+                    <p className="text-xl font-semibold">+ 899€</p>
+                  </div>
+                </div>
+                
+                <p className="text-muted-foreground mb-6">
+                  Transformez votre site en une véritable application web avec des fonctionnalités dynamiques et interactives.
+                </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div>
-                  <h4 className="font-medium mb-2">Fonctionnalités incluses:</h4>
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <h4 className="font-medium mb-2">Fonctionnalités incluses:</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Base de données",
+                        "Authentification utilisateur",
+                        "Tableau de bord administrateur",
+                        "API RESTful",
+                        "Gestion de contenu dynamique"
+                      ].map((feature) => (
+                        <li key={feature} className="flex items-start">
+                          <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-2">Options supplémentaires:</h4>
+                    <ul className="space-y-2">
+                      {[
+                        { name: "Paiement en ligne", price: 250 },
+                        { name: "Système de réservation", price: 400 },
+                        { name: "Notifications en temps réel", price: 250 },
+                        { name: "Intégration API tierce", price: 250, note: "par API" }
+                      ].map((option) => (
+                        <li key={option.name} className="flex items-start">
+                          <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
+                          <span>
+                            {option.name} <span className="font-medium">+{option.price}€</span>
+                            {option.note && <span className="text-sm text-muted-foreground"> ({option.note})</span>}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <Button asChild size="lg" className="w-full">
+                  <Link href="/contact">Demander un devis avec option backend</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-200">
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <Smartphone className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">Adaptation mobile</h3>
+                    <p className="text-xl font-semibold">+ 290€</p>
+                  </div>
+                </div>
+                
+                <p className="text-muted-foreground mb-6">
+                  Optimisation complète de l'affichage mobile : design responsive ajusté manuellement, 
+                  performance mobile améliorée, expérience utilisateur fluide sur smartphones et tablettes.
+                </p>
+
+                <div className="space-y-4 mb-6">
                   <ul className="space-y-2">
                     {[
-                      "Base de données",
-                      "Authentification utilisateur",
-                      "Tableau de bord administrateur",
-                      "API RESTful",
-                      "Gestion de contenu dynamique"
+                      "Design responsive personnalisé",
+                      "Optimisation des performances",
+                      "Navigation adaptée au mobile",
+                      "Tests sur différents appareils"
                     ].map((feature) => (
                       <li key={feature} className="flex items-start">
                         <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
@@ -154,57 +224,48 @@ export default function PacksPage() {
                   </ul>
                 </div>
 
-                <div>
-                  <h4 className="font-medium mb-2">Options supplémentaires:</h4>
+                <Button asChild size="lg" className="w-full">
+                  <Link href="/contact">Demander cette option</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-300">
+              <div className="p-8">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <HardDrive className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold">Hébergement</h3>
+                    <p className="text-xl font-semibold">+ 99€ / an</p>
+                  </div>
+                </div>
+                
+                <p className="text-muted-foreground mb-6">
+                  Prolongez votre hébergement d'une année supplémentaire avec notre service premium tout inclus.
+                </p>
+
+                <div className="space-y-4 mb-6">
                   <ul className="space-y-2">
                     {[
-                      { name: "Paiement en ligne", price: 250 },
-                      { name: "Système de réservation", price: 400 },
-                      { name: "Notifications en temps réel", price: 250 },
-                      { name: "Intégration API tierce", price: 250, note: "par API" }
-                    ].map((option) => (
-                      <li key={option.name} className="flex items-start">
+                      "Hébergement haute performance",
+                      "Certificat SSL inclus",
+                      "Sauvegardes quotidiennes",
+                      "Support technique prioritaire"
+                    ].map((feature) => (
+                      <li key={feature} className="flex items-start">
                         <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
-                        <span>
-                          {option.name} <span className="font-medium">+{option.price}€</span>
-                          {option.note && <span className="text-sm text-muted-foreground"> ({option.note})</span>}
-                        </span>
+                        <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
+
+                <Button asChild size="lg" className="w-full">
+                  <Link href="/contact">Prolonger l'hébergement</Link>
+                </Button>
               </div>
-
-              <Button asChild size="lg" className="w-full">
-                <Link href="/contact">Demander un devis avec option backend</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="max-w-2xl mx-auto bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll">
-            <div className="p-8">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                  <Smartphone className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Adaptation mobile avancée</h3>
-                  <p className="text-xl font-semibold">+ 290€</p>
-                </div>
-              </div>
-              
-              <p className="text-muted-foreground mb-6">
-                Optimisation complète de l'affichage mobile : design responsive ajusté manuellement, 
-                performance mobile améliorée, expérience utilisateur fluide sur smartphones et tablettes.
-              </p>
-
-              <Button asChild size="lg" className="w-full">
-                <Link href="/contact">Demander cette option</Link>
-              </Button>
             </div>
           </div>
         </div>
