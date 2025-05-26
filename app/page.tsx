@@ -16,31 +16,30 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
 })
 
 const MAX_RETRIES = 3
-const RETRY_DELAY = 2000 // 2 seconds
+const RETRY_DELAY = 3000 // Increased to 3 seconds for better network recovery
 
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
   const [splineKey, setSplineKey] = useState(0)
+  const [showFallback, setShowFallback] = useState(false)
 
   useEffect(() => {
     if (splineError && retryCount < MAX_RETRIES) {
       const timer = setTimeout(() => {
         setSplineError(false)
         setRetryCount(prev => prev + 1)
-        setSplineKey(prev => prev + 1) // Force re-mount of Spline component
+        setSplineKey(prev => prev + 1)
       }, RETRY_DELAY)
       
       return () => clearTimeout(timer)
+    } else if (splineError && retryCount >= MAX_RETRIES) {
+      setShowFallback(true)
     }
   }, [splineError, retryCount])
 
   const handleSplineError = () => {
-    if (retryCount >= MAX_RETRIES) {
-      setSplineError(true)
-    } else {
-      setSplineError(true)
-    }
+    setSplineError(true)
   }
 
   return (
@@ -49,24 +48,30 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center">
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
-          {!splineError ? (
-            <Spline 
-              key={splineKey}
-              scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/scene.splinecode"
-              onError={handleSplineError}
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20">
-              {retryCount < MAX_RETRIES && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-muted-foreground mb-2">Chargement de l'animation...</p>
-                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="text-sm text-muted-foreground mt-2">Tentative {retryCount + 1}/{MAX_RETRIES}</p>
-                  </div>
+          {!showFallback ? (
+            <>
+              {!splineError ? (
+                <Spline 
+                  key={splineKey}
+                  scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/scene.splinecode"
+                  onError={handleSplineError}
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20">
+                  {retryCount < MAX_RETRIES && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <p className="text-muted-foreground mb-2">Chargement de l'animation...</p>
+                        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                        <p className="text-sm text-muted-foreground mt-2">Tentative {retryCount + 1}/{MAX_RETRIES}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+            </>
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5" />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
         </div>
