@@ -55,7 +55,7 @@ export default function PricingCard({
           : "shadow-md hover:shadow-xl hover:border-primary/20"
       )}>
       {popular && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg animate-shimmer z-50">
+        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg animate-shimmer z-50">
           Recommandé
         </div>
       )}
