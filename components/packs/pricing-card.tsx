@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Check, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { useEffect, useRef } from "react"
+import { useInView } from 'react-intersection-observer'
+import { useEffect } from "react"
 
 interface Option {
   name: string
@@ -38,34 +39,18 @@ export default function PricingCard({
   popular = false,
   delay = 0,
 }: PricingCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add(`animate-on-scroll`, `delay-${delay}`)
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current)
-    }
-
-    return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current)
-      }
-    }
-  }, [delay])
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  })
 
   return (
     <Card 
-      ref={cardRef}
+      ref={ref}
       className={cn(
-        "flex flex-col h-full transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-background to-muted/20 opacity-0",
+        "flex flex-col h-full transition-all duration-700 bg-gradient-to-br from-background to-muted/20 opacity-0",
+        inView && "animate-scale",
+        delay && `delay-${delay}`,
         popular 
           ? "border-primary shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
           : "shadow-md hover:shadow-xl hover:border-primary/20"
