@@ -6,7 +6,6 @@ import { Check, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useInView } from 'react-intersection-observer'
-import { useEffect } from "react"
 
 interface Option {
   name: string
@@ -48,20 +47,20 @@ export default function PricingCard({
     <Card 
       ref={ref}
       className={cn(
-        "flex flex-col h-full transition-all duration-700 bg-gradient-to-br from-background to-muted/20 opacity-0",
+        "flex flex-col h-full transition-all duration-700 premium-card opacity-0",
         inView && "animate-scale",
         delay && `delay-${delay}`,
         popular 
-          ? "border-primary shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
+          ? "gradient-border shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
           : "shadow-md hover:shadow-xl hover:border-primary/20"
       )}>
       {popular && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg animate-shimmer">
           Recommandé
         </div>
       )}
       
-      <CardHeader>
+      <CardHeader className="relative">
         <CardTitle className="group-hover:text-primary transition-colors duration-300">{name}</CardTitle>
         <div className="mt-4 flex items-baseline text-5xl font-extrabold group-hover:text-primary transition-colors duration-300">
           {price}
@@ -71,7 +70,7 @@ export default function PricingCard({
       <CardContent className="flex-grow">
         <ul className="space-y-3 mt-4">
           {features.map((feature) => (
-            <li key={feature} className="flex group">
+            <li key={feature} className="flex group hover-lift">
               <Check className="h-5 w-5 text-primary flex-shrink-0 mr-3 group-hover:scale-110 transition-transform duration-300" />
               <span className="text-sm group-hover:text-primary/90 transition-colors duration-300">{feature}</span>
             </li>
@@ -90,7 +89,7 @@ export default function PricingCard({
             <h4 className="text-sm font-medium mb-3">Options disponibles :</h4>
             <ul className="space-y-2">
               {options.map((option) => (
-                <li key={option.name} className="flex items-center text-sm">
+                <li key={option.name} className="flex items-center text-sm hover-lift">
                   {option.icon && <span className="mr-2">{option.icon}</span>}
                   <span>{option.name}</span>
                   <span className="ml-1 font-medium">{option.price}</span>
@@ -103,7 +102,7 @@ export default function PricingCard({
         {notice && notice.length > 0 && (
           <div className="mt-6 pt-6 border-t">
             {notice.map((item, index) => (
-              <p key={index} className="text-sm text-muted-foreground flex items-center mb-2">
+              <p key={index} className="text-sm text-muted-foreground flex items-center mb-2 hover-lift">
                 <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" />
                 {item}
               </p>
@@ -113,7 +112,7 @@ export default function PricingCard({
       </CardContent>
       <CardFooter>
         <Button asChild className={cn(
-          "w-full transition-all duration-300",
+          "w-full transition-all duration-300 button-premium",
           popular 
             ? "hover:shadow-lg hover:scale-105" 
             : "bg-primary/90 hover:bg-primary hover:shadow-lg hover:scale-105"
