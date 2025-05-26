@@ -6,7 +6,7 @@ import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Spline = dynamic(() => import('@splinetool/react-spline'), {
   ssr: false,
@@ -15,11 +15,32 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
   ),
 })
 
+const MAX_RETRIES = 3
+const RETRY_DELAY = 2000 // 2 seconds
+
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
+  const [splineKey, setSplineKey] = useState(0)
+
+  useEffect(() => {
+    if (splineError && retryCount < MAX_RETRIES) {
+      const timer = setTimeout(() => {
+        setSplineError(false)
+        setRetryCount(prev => prev + 1)
+        setSplineKey(prev => prev + 1) // Force re-mount of Spline component
+      }, RETRY_DELAY)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [splineError, retryCount])
 
   const handleSplineError = () => {
-    setSplineError(true)
+    if (retryCount >= MAX_RETRIES) {
+      setSplineError(true)
+    } else {
+      setSplineError(true)
+    }
   }
 
   return (
@@ -30,11 +51,22 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           {!splineError ? (
             <Spline 
+              key={splineKey}
               scene="https://prod.spline.design/ai-x8V3rX1MlA7AgSeXI3pCIt7a/scene.splinecode"
               onError={handleSplineError}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/20">
+              {retryCount < MAX_RETRIES && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-muted-foreground mb-2">Chargement de l'animation...</p>
+                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+                    <p className="text-sm text-muted-foreground mt-2">Tentative {retryCount + 1}/{MAX_RETRIES}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
         </div>
