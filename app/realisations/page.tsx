@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import PortfolioCard from '@/components/realisations/portfolio-card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -13,7 +14,7 @@ const portfolioItems = [
     id: 1,
     title: "Ice Cream Store",
     description: "Site e-commerce premium pour une glacerie artisanale avec une interface immersive mettant en valeur les produits. Design épuré avec animations fluides et expérience d'achat optimisée.",
-    imageUrl: "https://images.pexels.com/photos/1262302/pexels-photo-1262302.jpeg",
+    imageUrl: "/site1.png",
     category: "E-commerce",
     technologies: ["Next.js", "Framer Motion", "GSAP", "Stripe"]
   },
@@ -21,7 +22,7 @@ const portfolioItems = [
     id: 2,
     title: "Nauticare",
     description: "Plateforme innovante de vente d'équipements nautiques avec un design moderne et une interface intuitive. Focus sur l'expérience utilisateur et la mise en avant des produits.",
-    imageUrl: "https://images.pexels.com/photos/1007836/pexels-photo-1007836.jpeg",
+    imageUrl: "/site2.png",
     category: "E-commerce",
     technologies: ["React", "Tailwind CSS", "Node.js", "Stripe"]
   },
@@ -29,7 +30,7 @@ const portfolioItems = [
     id: 3,
     title: "Agripulse",
     description: "Plateforme de mise en relation entre agriculteurs et travailleurs agricoles. Interface intuitive avec système de matching avancé et gestion des missions en temps réel.",
-    imageUrl: "https://images.pexels.com/photos/2933243/pexels-photo-2933243.jpeg",
+    imageUrl: "/site3.png",
     category: "Application Web",
     technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"]
   }
