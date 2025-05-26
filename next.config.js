@@ -8,10 +8,6 @@ const nextConfig = {
     unoptimized: true,
     domains: ['images.pexels.com'],
   },
-  webpack: (config, { isServer }) => {
-    config.cache = false;
-    return config;
-  },
 };
 
 module.exports = nextConfig;
