@@ -39,6 +39,7 @@ export default function PacksPage() {
               features={[
                 "Site vitrine jusqu'à 5 pages",
                 "Design responsive",
+                "1 révision",
                 "Optimisation SEO de base",
                 "Formulaire de contact",
                 "Intégration des réseaux sociaux",
@@ -65,7 +66,7 @@ export default function PacksPage() {
               features={[
                 "Site jusqu'à 10 pages",
                 "Design premium responsive",
-                "Jusqu'à 2 révisions du design incluses",
+                "Jusqu'à 2 révisions incluses",
                 "Optimisation SEO avancée",
                 "Système de blog intégré",
                 "Formulaires personnalisés",
@@ -97,6 +98,7 @@ export default function PacksPage() {
               features={[
                 "Nombre de pages illimité",
                 "Design exclusif",
+                "Révisions illimitées",
                 "Fonctionnalités personnalisées",
                 "E-commerce possible",
                 "Espace membre",
