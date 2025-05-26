@@ -11,27 +11,27 @@ export const metadata: Metadata = {
 const portfolioItems = [
   {
     id: 1,
-    title: "Ice Cream Project",
-    description: "Site e-commerce moderne pour une glacerie artisanale avec une expérience utilisateur immersive et des animations fluides.",
-    imageUrl: "https://images.pexels.com/photos/1352278/pexels-photo-1352278.jpeg",
+    title: "Ice Cream Store",
+    description: "Site e-commerce premium pour une glacerie artisanale avec une interface immersive mettant en valeur les produits. Design épuré avec animations fluides et expérience d'achat optimisée.",
+    imageUrl: "https://images.pexels.com/photos/1262302/pexels-photo-1262302.jpeg",
     category: "E-commerce",
-    technologies: ["Next.js", "Framer Motion", "Stripe", "Supabase"]
+    technologies: ["Next.js", "Framer Motion", "GSAP", "Stripe"]
   },
   {
     id: 2,
     title: "Nauticare",
-    description: "Plateforme de location de bateaux avec système de réservation en ligne et interface utilisateur intuitive.",
-    imageUrl: "https://images.pexels.com/photos/163236/luxury-yacht-boat-speed-water-163236.jpeg",
-    category: "Plateforme",
-    technologies: ["React", "Node.js", "PostgreSQL", "Tailwind CSS"]
+    description: "Plateforme innovante de vente d'équipements nautiques avec un design moderne et une interface intuitive. Focus sur l'expérience utilisateur et la mise en avant des produits.",
+    imageUrl: "https://images.pexels.com/photos/1007836/pexels-photo-1007836.jpeg",
+    category: "E-commerce",
+    technologies: ["React", "Tailwind CSS", "Node.js", "Stripe"]
   },
   {
     id: 3,
     title: "Agripulse",
-    description: "Solution digitale pour le secteur agricole avec tableau de bord interactif et visualisation de données en temps réel.",
-    imageUrl: "https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg",
+    description: "Plateforme de mise en relation entre agriculteurs et travailleurs agricoles. Interface intuitive avec système de matching avancé et gestion des missions en temps réel.",
+    imageUrl: "https://images.pexels.com/photos/2933243/pexels-photo-2933243.jpeg",
     category: "Application Web",
-    technologies: ["Next.js", "TypeScript", "GraphQL", "Chart.js"]
+    technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"]
   }
 ]
 
