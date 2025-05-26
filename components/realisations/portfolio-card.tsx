@@ -34,7 +34,7 @@ export default function PortfolioCard({
 
   return (
     <Card 
-      className="overflow-hidden border-0 shadow-lg transition-all duration-300 hover:shadow-xl"
+      className="overflow-hidden border-0 shadow-lg transition-all duration-500 hover:shadow-xl group bg-gradient-to-br from-background to-muted/20"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -47,15 +47,15 @@ export default function PortfolioCard({
             isHovered ? 'scale-110' : 'scale-100'
           }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-        <Badge className="absolute top-4 left-4 bg-primary/90">{category}</Badge>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <Badge className="absolute top-4 left-4 bg-primary/90 transition-transform duration-300 group-hover:scale-110">{category}</Badge>
         
         <Dialog>
           <DialogTrigger asChild>
             <Button 
               variant="secondary" 
               size="icon" 
-              className="absolute top-4 right-4"
+              className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
               aria-label="Voir en plein écran"
             >
               <Maximize2 className="h-4 w-4" />
@@ -66,17 +66,17 @@ export default function PortfolioCard({
               <DialogTitle>{title}</DialogTitle>
               <DialogDescription>{description}</DialogDescription>
             </DialogHeader>
-            <div className="relative h-[400px] w-full mt-4">
+            <div className="relative h-[400px] w-full mt-4 overflow-hidden rounded-md">
               <Image
                 src={imageUrl}
                 alt={title}
                 fill
-                className="object-cover rounded-md"
+                className="object-cover transition-transform duration-700 hover:scale-105"
               />
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
               {technologies.map((tech) => (
-                <Badge key={tech} variant="outline">{tech}</Badge>
+                <Badge key={tech} variant="outline" className="hover:bg-primary/10 transition-colors duration-300">{tech}</Badge>
               ))}
             </div>
           </DialogContent>
@@ -84,11 +84,17 @@ export default function PortfolioCard({
       </div>
       
       <CardContent className="p-6">
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">{title}</h3>
         <p className="text-muted-foreground mb-4">{description}</p>
         <div className="flex flex-wrap gap-2">
           {technologies.map((tech) => (
-            <Badge key={tech} variant="outline">{tech}</Badge>
+            <Badge 
+              key={tech} 
+              variant="outline" 
+              className="hover:bg-primary/10 transition-colors duration-300"
+            >
+              {tech}
+            </Badge>
           ))}
         </div>
       </CardContent>

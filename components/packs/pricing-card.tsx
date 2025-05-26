@@ -25,20 +25,20 @@ export default function PricingCard({
 }: PricingCardProps) {
   return (
     <Card className={cn(
-      "flex flex-col h-full border transition-all duration-200",
+      "flex flex-col h-full transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-background to-muted/20",
       popular 
-        ? "border-primary shadow-lg scale-105 relative z-10" 
-        : "shadow-md hover:shadow-lg"
+        ? "border-primary shadow-lg scale-105 relative z-10 hover:border-primary/80 hover:shadow-xl" 
+        : "shadow-md hover:shadow-xl hover:border-primary/20"
     )}>
       {popular && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg">
           Recommandé
         </div>
       )}
       
       <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <div className="mt-4 flex items-baseline text-5xl font-extrabold">
+        <CardTitle className="group-hover:text-primary transition-colors duration-300">{name}</CardTitle>
+        <div className="mt-4 flex items-baseline text-5xl font-extrabold group-hover:text-primary transition-colors duration-300">
           {price}
         </div>
         <CardDescription className="mt-2">{description}</CardDescription>
@@ -46,9 +46,9 @@ export default function PricingCard({
       <CardContent className="flex-grow">
         <ul className="space-y-3 mt-4">
           {features.map((feature) => (
-            <li key={feature} className="flex">
-              <Check className="h-5 w-5 text-primary flex-shrink-0 mr-3" />
-              <span className="text-sm">{feature}</span>
+            <li key={feature} className="flex group">
+              <Check className="h-5 w-5 text-primary flex-shrink-0 mr-3 group-hover:scale-110 transition-transform duration-300" />
+              <span className="text-sm group-hover:text-primary/90 transition-colors duration-300">{feature}</span>
             </li>
           ))}
           
@@ -61,7 +61,12 @@ export default function PricingCard({
         </ul>
       </CardContent>
       <CardFooter>
-        <Button asChild className={cn("w-full", popular ? "" : "bg-primary/90 hover:bg-primary")}>
+        <Button asChild className={cn(
+          "w-full transition-all duration-300",
+          popular 
+            ? "hover:shadow-lg hover:scale-105" 
+            : "bg-primary/90 hover:bg-primary hover:shadow-lg hover:scale-105"
+        )}>
           <Link href="/contact">{ctaText}</Link>
         </Button>
       </CardFooter>
