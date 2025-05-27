@@ -1,57 +1,45 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'npm:@supabase/supabase-js@2.39.8'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Max-Age': '86400',
-  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-  'Pragma': 'no-cache',
-  'Expires': '0',
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Verify authorization header
-    const authHeader = req.headers.get('Authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new Error('Invalid or missing authorization header')
-    }
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
 
-    // Simple health check response
+    // Try to access Supabase
+    const { data, error } = await supabaseClient.auth.getUser()
+
+    if (error) throw error
+
     return new Response(
-      JSON.stringify({ 
-        status: 'connected', 
-        message: 'Edge function is working correctly',
-        timestamp: new Date().toISOString()
-      }),
+      JSON.stringify({ status: 'connected', message: 'Successfully connected to Supabase' }),
       { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json',
-        },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
       }
     )
+
   } catch (error) {
-    console.error('Edge function error:', error)
     return new Response(
       JSON.stringify({ 
         status: 'error', 
-        message: error.message || 'Internal server error',
-        timestamp: new Date().toISOString()
+        message: 'Failed to connect to Supabase',
+        error: error.message 
       }),
       { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json',
-        },
-        status: error.message?.includes('authorization') ? 401 : 500
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500
       }
     )
   }

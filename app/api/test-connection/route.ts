@@ -2,37 +2,32 @@ import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.json({ 
+      status: 'error',
+      message: 'Supabase environment variables are not set'
+    }, { status: 500 })
+  }
+
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  )
+
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    if (!supabaseUrl || !supabaseKey) {
-      return NextResponse.json({ 
-        status: 'error',
-        message: 'Missing Supabase configuration'
-      }, { status: 500 })
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseKey)
-
-    // First check if we can connect to Supabase
-    const { error: authError } = await supabase.auth.getSession()
-    if (authError) {
-      return NextResponse.json({ 
-        status: 'error',
-        message: 'Failed to connect to Supabase authentication'
-      }, { status: 500 })
-    }
+    const { data, error } = await supabase.from('_test_connection').select('*').limit(1)
+    
+    if (error) throw error
 
     return NextResponse.json({ 
       status: 'connected',
       message: 'Successfully connected to Supabase'
     })
   } catch (error) {
-    console.error('Supabase connection error:', error)
     return NextResponse.json({ 
       status: 'error',
-      message: error.message || 'Failed to connect to Supabase'
+      message: 'Failed to connect to Supabase',
+      error: error.message
     }, { status: 500 })
   }
 }
