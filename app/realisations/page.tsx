@@ -44,7 +44,7 @@ const portfolioItems = [
   },
   {
     id: 5,
-    title: "Cabinet Médical Saint-Pierre",
+    title: "MedInCaen",
     description: "Plateforme moderne pour un cabinet médical à Caen permettant la prise de rendez-vous en ligne et l'accès aux informations pratiques pour les patients.",
     imageUrl: "/site5.png",
     category: "Site Professionnel",
@@ -52,7 +52,7 @@ const portfolioItems = [
   },
   {
     id: 6,
-    title: "Hoops Factory",
+    title: "éclat basketball",
     description: "E-commerce spécialisé dans la vente de ballons de basketball haut de gamme. Interface immersive avec visualisation 3D des produits et système de personnalisation.",
     imageUrl: "/site4.png",
     category: "E-commerce",
