@@ -73,31 +73,31 @@ export default function ContactForm() {
     },
   })
 
-async function onSubmit(values: z.infer<typeof formSchema>) {
-  setIsSubmitting(true);
-  
-  try {
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values)
-    });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values)
+      });
 
-    if (!response.ok) throw new Error("Erreur réseau");
+      if (!response.ok) throw new Error("Erreur réseau");
 
-    setIsSubmitted(true);
-    toast({ title: "Message envoyé !" });
+      setIsSubmitted(true);
+      toast({ title: "Message envoyé !" });
 
-  } catch (error) {
-    toast({
-      title: "Erreur",
-      description: "Échec de l'envoi",
-      variant: "destructive"
-    });
-  } finally {
-    setIsSubmitting(false);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Échec de l'envoi",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
-}
 
   if (isSubmitted) {
     return (
