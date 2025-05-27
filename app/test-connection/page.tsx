@@ -14,7 +14,10 @@ export default function TestConnectionPage() {
     setApiStatus('loading')
     setErrorMessage('')
     try {
-      const response = await fetch('/api/test-connection')
+      const response = await fetch('/api/test-connection', {
+        cache: 'no-store'
+      })
+      
       const data = await response.json()
       
       if (!response.ok) {
