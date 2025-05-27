@@ -41,7 +41,7 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">À propos de Basilus</h1>
             <p className="text-lg text-muted-foreground">
-              Nous créons des sites web qui font briller votre entreprise et génèrent des résultats concrets.
+              Chez Basilus, nous sommes deux développeurs passionnés par la création web. Notre objectif : offrir aux petites entreprises des sites modernes, efficaces et élégants, sans compromis entre qualité et accessibilité.
             </p>
           </div>
         </div>
@@ -52,11 +52,8 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="animate-from-left">
               <h2 className="text-3xl font-bold mb-6">Notre histoire</h2>
-              <p className="text-lg text-muted-foreground mb-4">
-                Fondée en 2020, Basilus est née de la passion de trois développeurs web partageant une vision commune : rendre accessible aux PME des sites web de qualité professionnelle à des prix abordables.
-              </p>
               <p className="text-lg text-muted-foreground mb-6">
-                Aujourd'hui, notre équipe s'est agrandie mais notre mission reste la même : créer des sites web qui non seulement sont beaux, mais qui répondent également aux objectifs commerciaux de nos clients.
+                Plutôt qu'un long discours, nous mettons notre énergie dans des solutions concrètes, pensées pour vos besoins réels et vos ambitions digitales.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild>
