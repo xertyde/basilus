@@ -72,7 +72,7 @@ Plutôt qu’un long discours, nous mettons notre énergie dans des solutions co
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl animate-from-right">
               <Image
-                src="/apropos.jpeg"
+                src="/apropos.jpg"
                 alt="L'équipe Basilus"
                 fill
                 className="object-cover"
