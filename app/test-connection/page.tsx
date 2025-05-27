@@ -45,6 +45,7 @@ export default function TestConnectionPage() {
       }
 
       const response = await fetch(`${supabaseUrl}/functions/v1/test-connection`, {
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
@@ -126,4 +127,3 @@ export default function TestConnectionPage() {
       </div>
     </div>
   )
-}
