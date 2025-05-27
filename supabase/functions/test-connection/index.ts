@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 }
 
 serve(async (req) => {
@@ -13,6 +13,12 @@ serve(async (req) => {
   }
 
   try {
+    // Verify authorization header
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) {
+      throw new Error('Missing authorization header')
+    }
+
     // Simple health check response
     return new Response(
       JSON.stringify({ 
@@ -25,7 +31,6 @@ serve(async (req) => {
           ...corsHeaders, 
           'Content-Type': 'application/json',
           'Cache-Control': 'no-store, no-cache, must-revalidate',
-          'Pragma': 'no-cache'
         },
         status: 200 
       }
@@ -43,7 +48,6 @@ serve(async (req) => {
           ...corsHeaders, 
           'Content-Type': 'application/json',
           'Cache-Control': 'no-store, no-cache, must-revalidate',
-          'Pragma': 'no-cache'
         },
         status: 500
       }
