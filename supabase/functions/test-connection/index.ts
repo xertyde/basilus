@@ -10,13 +10,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')
-    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')
-
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing environment variables')
-    }
-
     // Simple response to verify the function is working
     return new Response(
       JSON.stringify({ 
@@ -32,7 +25,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         status: 'error', 
-        message: error.message,
+        message: 'Edge function error',
         error: error.toString()
       }),
       { 

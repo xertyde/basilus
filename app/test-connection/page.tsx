@@ -15,10 +15,11 @@ export default function TestConnectionPage() {
     setErrorMessage('')
     try {
       const response = await fetch('/api/test-connection')
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
       const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.message || `HTTP error! status: ${response.status}`)
+      }
       
       if (data.status === 'connected') {
         setApiStatus('success')
@@ -49,11 +50,11 @@ export default function TestConnectionPage() {
         },
       })
       
-      if (!response.ok) {
-        throw new Error(`Edge function error! Status: ${response.status}`)
-      }
-      
       const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.message || `Edge function error! Status: ${response.status}`)
+      }
       
       if (data.status === 'connected') {
         setEdgeStatus('success')
