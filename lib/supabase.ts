@@ -1,6 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  throw new Error('Missing environment variable NEXT_PUBLIC_SUPABASE_URL')
+}
+
+if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  throw new Error('Missing environment variable NEXT_PUBLIC_SUPABASE_ANON_KEY')
+}
+
 export const supabase = createClient(
-  'https://scompnbumndmuohgqefp.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjb21wbmJ1bW5kbXVvaGdxZWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzMzM5MzYsImV4cCI6MjA2MzkwOTkzNn0.Dyx-d-yEI0yX4BhZlkBaAIiHykzguz6YMfbnV5-iewI'
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )

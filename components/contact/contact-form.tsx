@@ -75,6 +75,11 @@ export default function ContactForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      setError("Configuration Supabase manquante. Veuillez réessayer plus tard.")
+      return
+    }
+
     setIsSubmitting(true)
     setError(null)
     
@@ -92,13 +97,12 @@ export default function ContactForm() {
         }])
         .select()
 
-      console.log('Supabase response:', { error: supabaseError, data })
-
       if (supabaseError) {
         throw new Error(supabaseError.message)
       }
 
       setIsSubmitted(true)
+      form.reset()
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
