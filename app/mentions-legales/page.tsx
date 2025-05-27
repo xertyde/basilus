@@ -17,9 +17,9 @@ export default function MentionsLegalesPage() {
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <h2>1. Informations légales</h2>
             <p>
-              Le site Basilus est édité par la société Basilus, SAS au capital de 10 000 euros, 
-              immatriculée au Registre du Commerce et des Sociétés de Paris sous le numéro 123 456 789, 
-              dont le siège social est situé au 123 Rue de Paris, 75001 Paris.
+              Le site Basilus est édité par la société Basilus, SAS au capital de 100 euros, 
+              immatriculée au Registre du Commerce et des Sociétés de Lyon sous le numéro 123 456 789, 
+              dont le siège social est situé au 2 rue des Marguerites, 69680 Chassieu.
             </p>
             <p>
               Numéro de TVA intracommunautaire : FR 12 123 456 789<br />
