@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -59,6 +60,7 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const { toast } = useToast()
+  const supabase = createClientComponentClient()
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,18 +73,42 @@ export default function ContactForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Envoi des données à Supabase
+      const { data, error } = await supabase
+        .from('contacts') // Remplacez par le nom de votre table
+        .insert([
+          {
+            name: values.name,
+            email: values.email,
+            pack: values.pack,
+            addons: values.addons,
+            message: values.message,
+            created_at: new Date().toISOString()
+          }
+        ])
+        .select()
+
+      if (error) throw error
+
       setIsSubmitting(false)
       setIsSubmitted(true)
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
-    }, 1500)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setIsSubmitting(false)
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        variant: "destructive"
+      })
+    }
   }
 
   if (isSubmitted) {
