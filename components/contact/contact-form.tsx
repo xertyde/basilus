@@ -75,7 +75,27 @@ export default function ContactForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     
-    // Simulate API call
+    const selectedPack = packs.find(p => p.value === values.pack)?.label || values.pack
+    const selectedAddons = values.addons
+      ?.map(addonId => addons.find(a => a.id === addonId)?.label)
+      .filter(Boolean)
+      .join('\n- ')
+
+    const emailBody = `
+Nouveau message de contact:
+
+Nom: ${values.name}
+Email: ${values.email}
+Pack sélectionné: ${selectedPack}
+${selectedAddons ? `\nOptions supplémentaires:\n- ${selectedAddons}` : ''}
+
+Message:
+${values.message}
+    `.trim()
+
+    const mailtoLink = `mailto:thomasfonferrier@gmail.com?subject=Nouveau contact - ${values.name}&body=${encodeURIComponent(emailBody)}`
+    window.location.href = mailtoLink
+
     setTimeout(() => {
       setIsSubmitting(false)
       setIsSubmitted(true)
