@@ -84,16 +84,20 @@ export default function ContactForm() {
         body: JSON.stringify(values),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        throw new Error(data.error || 'Failed to send message');
       }
 
       setIsSubmitted(true)
+      form.reset();
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
