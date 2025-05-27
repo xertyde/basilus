@@ -15,7 +15,11 @@ export default function TestConnectionPage() {
     setErrorMessage('')
     try {
       const response = await fetch('/api/test-connection', {
-        cache: 'no-store'
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
       })
       
       const data = await response.json()
@@ -52,6 +56,8 @@ export default function TestConnectionPage() {
         headers: {
           'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         },
         cache: 'no-store'
       })
