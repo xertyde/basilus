@@ -12,27 +12,27 @@ export const metadata: Metadata = {
 const portfolioItems = [
   {
     id: 1,
-    title: "Ice Cream Store",
-    description: "Site e-commerce premium pour une glacerie artisanale avec une interface immersive mettant en valeur les produits. Design épuré avec animations fluides et expérience d'achat optimisée.",
+    title: "Winstub d'Alsace",
+    description: "Site vitrine moderne pour un restaurant alsacien authentique à Mulhouse. Interface élégante mettant en valeur la cuisine traditionnelle avec système de réservation en ligne intégré.",
     imageUrl: "/site1.png",
-    category: "E-commerce",
-    technologies: ["Next.js", "Framer Motion", "GSAP", "Stripe"]
+    category: "Site Vitrine",
+    technologies: ["Next.js", "Framer Motion", "Supabase", "Tailwind CSS"]
   },
   {
     id: 2,
-    title: "Nauticare",
-    description: "Plateforme innovante de vente d'équipements nautiques avec un design moderne et une interface intuitive. Focus sur l'expérience utilisateur et la mise en avant des produits.",
+    title: "MedInCaen",
+    description: "Plateforme médicale pour un cabinet à Caen avec système de prise de rendez-vous en ligne. Interface intuitive et sécurisée pour les patients et les praticiens.",
     imageUrl: "/site2.png",
-    category: "E-commerce",
-    technologies: ["React", "Tailwind CSS", "Node.js", "Stripe"]
+    category: "Application Web",
+    technologies: ["React", "TypeScript", "Node.js", "PostgreSQL"]
   },
   {
     id: 3,
-    title: "Agripulse",
-    description: "Plateforme de mise en relation entre agriculteurs et travailleurs agricoles. Interface intuitive avec système de matching avancé et gestion des missions en temps réel.",
+    title: "Éclat Basketball",
+    description: "E-commerce premium pour une marque de ballons de basket haut de gamme. Design épuré avec expérience d'achat immersive et gestion avancée des stocks.",
     imageUrl: "/site3.png",
-    category: "Application Web",
-    technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"]
+    category: "E-commerce",
+    technologies: ["Next.js", "Stripe", "Tailwind CSS", "Supabase"]
   }
 ]
 
