@@ -75,15 +75,35 @@ export default function ContactForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     
-    // Simulate API call
+    const selectedPack = packs.find(p => p.value === values.pack)?.label || values.pack
+    const selectedAddons = values.addons
+      ?.map(addonId => addons.find(a => a.id === addonId)?.label)
+      .filter(Boolean)
+      .join('\n- ')
+
+    const emailBody = `
+Nouveau message de contact:
+
+Nom: ${values.name}
+Email: ${values.email}
+Pack sélectionné: ${selectedPack}
+${selectedAddons ? `\nOptions supplémentaires:\n- ${selectedAddons}` : ''}
+
+Message:
+${values.message}
+    `.trim()
+
+    const mailtoLink = `mailto:thomasfonferrier@gmail.com?subject=Nouveau contact - ${values.name}&body=${encodeURIComponent(emailBody)}`
+    window.location.href = mailtoLink
+
     setTimeout(() => {
       setIsSubmitting(false)
       setIsSubmitted(true)
       toast({
-        title: "Message envoyé !",
-        description: "Nous vous répondrons dans les plus brefs délais.",
+        title: "Message préparé !",
+        description: "Votre client mail s'est ouvert avec le message pré-rempli.",
       })
-    }, 1500)
+    }, 1000)
   }
 
   if (isSubmitted) {
@@ -92,9 +112,9 @@ export default function ContactForm() {
         <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
           <CheckCircle2 className="h-6 w-6" />
         </div>
-        <h3 className="text-xl font-semibold mb-2">Message envoyé !</h3>
+        <h3 className="text-xl font-semibold mb-2">Message préparé !</h3>
         <p className="text-muted-foreground mb-6">
-          Merci de nous avoir contacté. Nous vous répondrons dans les plus brefs délais.
+          Votre client mail s'est ouvert avec le message pré-rempli. Vérifiez et envoyez le message.
         </p>
         <Button onClick={() => setIsSubmitted(false)}>Envoyer un autre message</Button>
       </div>
@@ -224,7 +244,7 @@ export default function ContactForm() {
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Envoi en cours...
+              Préparation du message...
             </>
           ) : (
             'Envoyer le message'
