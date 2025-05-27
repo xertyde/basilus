@@ -18,14 +18,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { CheckCircle2, Loader2 } from 'lucide-react'
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,27 +26,10 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Veuillez entrer une adresse e-mail valide.",
   }),
-  pack: z.string({
-    required_error: "Veuillez sélectionner un pack",
-  }),
-  addons: z.array(z.string()).optional(),
   message: z.string().min(10, {
     message: "Le message doit contenir au moins 10 caractères.",
   }),
 })
-
-const packs = [
-  { value: "starter", label: "Pack Starter (699€)" },
-  { value: "pro", label: "Pack Pro (1199€)" },
-  { value: "custom", label: "Pack Sur-mesure (à partir de 1999€)" },
-]
-
-const addons = [
-  { id: "backend", label: "Backend personnalisé (+799€)" },
-  { id: "mobile", label: "Adaptation mobile (+290€)" },
-  { id: "hosting", label: "Hébergement premium (+99€/an)" },
-  { id: "express", label: "Livraison express (+300€)" },
-]
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -66,54 +41,22 @@ export default function ContactForm() {
     defaultValues: {
       name: "",
       email: "",
-      pack: "",
-      addons: [],
       message: "",
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     
-    try {
-      // Format the email content
-      const selectedPack = packs.find(p => p.value === values.pack)?.label || values.pack
-      const selectedAddons = values.addons?.map(id => 
-        addons.find(a => a.id === id)?.label
-      ).filter(Boolean) || []
-
-      const emailContent = `
-Nouveau message de contact:
-
-Nom: ${values.name}
-Email: ${values.email}
-Pack sélectionné: ${selectedPack}
-${selectedAddons.length > 0 ? `Options supplémentaires:\n${selectedAddons.join('\n')}` : ''}
-
-Message:
-${values.message}
-      `.trim()
-
-      // Create mailto URL with pre-filled content
-      const mailtoUrl = `mailto:thomasfonferrier@gmail.com?subject=Nouveau contact - ${values.name}&body=${encodeURIComponent(emailContent)}`
-
-      // Open default email client
-      window.location.href = mailtoUrl
-
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false)
       setIsSubmitted(true)
       toast({
-        title: "Message préparé !",
-        description: "Votre message a été préparé dans votre client mail.",
+        title: "Message envoyé !",
+        description: "Nous vous répondrons dans les plus brefs délais.",
       })
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
+    }, 1500)
   }
 
   if (isSubmitted) {
@@ -122,9 +65,9 @@ ${values.message}
         <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
           <CheckCircle2 className="h-6 w-6" />
         </div>
-        <h3 className="text-xl font-semibold mb-2">Message préparé !</h3>
+        <h3 className="text-xl font-semibold mb-2">Message envoyé !</h3>
         <p className="text-muted-foreground mb-6">
-          Votre message a été préparé dans votre client mail. Vérifiez et envoyez le message pour finaliser votre demande.
+          Merci de nous avoir contacté. Nous vous répondrons dans les plus brefs délais.
         </p>
         <Button onClick={() => setIsSubmitted(false)}>Envoyer un autre message</Button>
       </div>
@@ -162,76 +105,6 @@ ${values.message}
         />
         <FormField
           control={form.control}
-          name="pack"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Pack souhaité</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionnez un pack" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {packs.map((pack) => (
-                    <SelectItem key={pack.value} value={pack.value}>
-                      {pack.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="addons"
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormLabel>Options supplémentaires</FormLabel>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {addons.map((addon) => (
-                  <FormField
-                    key={addon.id}
-                    control={form.control}
-                    name="addons"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={addon.id}
-                          className="flex flex-row items-start space-x-3 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(addon.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value || [], addon.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== addon.id
-                                      )
-                                    )
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {addon.label}
-                          </FormLabel>
-                        </FormItem>
-                      )
-                    }}
-                  />
-                ))}
-              </div>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="message"
           render={({ field }) => (
             <FormItem>
@@ -254,7 +127,7 @@ ${values.message}
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Préparation du message...
+              Envoi en cours...
             </>
           ) : (
             'Envoyer le message'
