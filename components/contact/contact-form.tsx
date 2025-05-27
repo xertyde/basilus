@@ -72,18 +72,37 @@ export default function ContactForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      const response = await fetch('https://scompnbumndmuohgqefp.supabase.co/functions/v1/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjb21wbmJ1bW5kbXVvaGdxZWZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzMzM5MzYsImV4cCI6MjA2MzkwOTkzNn0.Dyx-d-yEI0yX4BhZlkBaAIiHykzguz6YMfbnV5-iewI`
+        },
+        body: JSON.stringify(values)
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send email')
+      }
+
       setIsSubmitted(true)
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
-    }, 1500)
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
