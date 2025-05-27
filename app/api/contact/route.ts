@@ -17,20 +17,22 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create reusable transporter object using SMTP transport
+    // Create transporter with updated Gmail settings
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: 'thomasfonferrier@gmail.com',
         pass: 'auam gmkf hbkd vork'
-      },
-      tls: {
-        rejectUnauthorized: false
       }
     });
 
     const mailOptions = {
-      from: 'thomasfonferrier@gmail.com',
+      from: {
+        name: 'Basilus Contact Form',
+        address: 'thomasfonferrier@gmail.com'
+      },
       to: 'thomasfonferrier@gmail.com',
       subject: `Nouvelle demande de contact - ${data.name}`,
       html: `
