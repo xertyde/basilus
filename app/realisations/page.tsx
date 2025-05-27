@@ -38,7 +38,7 @@ const portfolioItems = [
     id: 4,
     title: "La Winstub",
     description: "Site vitrine élégant pour un restaurant alsacien traditionnel à Mulhouse. Mise en valeur de la carte, des plats du jour et système de réservation en ligne intégré.",
-    imageUrl: "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg",
+    imageUrl: "/site6.png",
     category: "Site Vitrine",
     technologies: ["Next.js", "Tailwind CSS", "Framer Motion", "Supabase"]
   },
@@ -46,7 +46,7 @@ const portfolioItems = [
     id: 5,
     title: "Cabinet Médical Saint-Pierre",
     description: "Plateforme moderne pour un cabinet médical à Caen permettant la prise de rendez-vous en ligne et l'accès aux informations pratiques pour les patients.",
-    imageUrl: "https://images.pexels.com/photos/247786/pexels-photo-247786.jpeg",
+    imageUrl: "/site5.png",
     category: "Site Professionnel",
     technologies: ["React", "TypeScript", "Tailwind CSS", "Doctolib API"]
   },
@@ -54,7 +54,7 @@ const portfolioItems = [
     id: 6,
     title: "Hoops Factory",
     description: "E-commerce spécialisé dans la vente de ballons de basketball haut de gamme. Interface immersive avec visualisation 3D des produits et système de personnalisation.",
-    imageUrl: "https://images.pexels.com/photos/358042/pexels-photo-358042.jpeg",
+    imageUrl: "site4.png",
     category: "E-commerce",
     technologies: ["Next.js", "Three.js", "Tailwind CSS", "Stripe"]
   }
