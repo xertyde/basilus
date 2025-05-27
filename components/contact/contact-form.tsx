@@ -79,19 +79,20 @@ export default function ContactForm() {
     setError(null)
     
     try {
-      console.log('Submitting form with values:', values)
-      
-      const { error: supabaseError, data } = await supabase
+      const { error: supabaseError } = await supabase
         .from('contacts')
-        .insert([values])
-        .select()
+        .insert([{
+          name: values.name,
+          email: values.email,
+          pack: values.pack,
+          addons: values.addons || [],
+          message: values.message
+        }])
 
       if (supabaseError) {
-        console.error('Supabase error:', supabaseError)
         throw new Error(supabaseError.message)
       }
 
-      console.log('Submission successful:', data)
       setIsSubmitted(true)
       toast({
         title: "Message envoyé !",
@@ -121,7 +122,10 @@ export default function ContactForm() {
         <p className="text-muted-foreground mb-6">
           Merci de nous avoir contacté. Nous vous répondrons dans les plus brefs délais.
         </p>
-        <Button onClick={() => setIsSubmitted(false)}>Envoyer un autre message</Button>
+        <Button onClick={() => {
+          setIsSubmitted(false)
+          form.reset()
+        }}>Envoyer un autre message</Button>
       </div>
     )
   }
