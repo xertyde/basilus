@@ -49,7 +49,7 @@ export default function PricingCard({
       popular && "z-10"
     )}>
       {popular && (
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-medium shadow-lg animate-shimmer z-50">
+        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-semibold shadow-xl z-50 border border-primary/20">
           Recommandé
         </div>
       )}
