@@ -4,29 +4,32 @@ const corsHeaders = {
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Simple response to verify the function is working
+    // Simple health check response
     return new Response(
       JSON.stringify({ 
         status: 'connected', 
-        message: 'Edge function is responding correctly'
+        message: 'Edge function is working correctly'
       }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store'
+        },
         status: 200 
       }
     )
   } catch (error) {
+    console.error('Edge function error:', error)
     return new Response(
       JSON.stringify({ 
         status: 'error', 
-        message: 'Edge function error',
-        error: error.toString()
+        message: error.message || 'Internal server error'
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

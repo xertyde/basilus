@@ -27,6 +27,7 @@ export default function TestConnectionPage() {
         throw new Error(data.message || 'Failed to connect to Supabase')
       }
     } catch (error) {
+      console.error('API connection error:', error)
       setApiStatus('error')
       setErrorMessage(`API Error: ${error.message}`)
     }
@@ -48,6 +49,7 @@ export default function TestConnectionPage() {
           'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
         },
+        cache: 'no-store'
       })
       
       const data = await response.json()
@@ -62,6 +64,7 @@ export default function TestConnectionPage() {
         throw new Error(data.message || 'Failed to connect to Edge Function')
       }
     } catch (error) {
+      console.error('Edge function error:', error)
       setEdgeStatus('error')
       setErrorMessage(`Edge Function Error: ${error.message}`)
     }

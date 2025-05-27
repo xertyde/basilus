@@ -15,17 +15,12 @@ export async function GET() {
 
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    // Try to access the test table without auth check first
-    const { data, error } = await supabase
-      .from('_test_connection')
-      .select('*')
-      .limit(1)
-
-    if (error) {
-      console.error('Database error:', error)
+    // First check if we can connect to Supabase
+    const { error: authError } = await supabase.auth.getSession()
+    if (authError) {
       return NextResponse.json({ 
         status: 'error',
-        message: error.message
+        message: 'Failed to connect to Supabase authentication'
       }, { status: 500 })
     }
 
@@ -37,7 +32,7 @@ export async function GET() {
     console.error('Supabase connection error:', error)
     return NextResponse.json({ 
       status: 'error',
-      message: error.message
+      message: error.message || 'Failed to connect to Supabase'
     }, { status: 500 })
   }
 }
