@@ -8,13 +8,13 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'thomasfonferrier@gmail.com', // Replace with your Gmail address
-        pass: 'Red.shark123' // Use an app password generated from Google Account settings
+        user: 'thomasfonferrier@gmail.com',
+        pass: 'auam gmkf hbkd vork'
       }
     });
 
     const mailOptions = {
-      from: 'your-email@gmail.com',
+      from: 'thomasfonferrier@gmail.com',
       to: 'thomasfonferrier@gmail.com',
       subject: 'Nouvelle demande de contact - Basilus',
       html: `
