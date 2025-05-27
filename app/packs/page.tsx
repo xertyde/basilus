@@ -34,7 +34,7 @@ export default function PacksPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <PricingCard
               name="Starter"
-              price="899€"
+              price="699€"
               description="Idéal pour les petites entreprises et les indépendants qui souhaitent établir leur présence en ligne."
               features={[
                 "Site vitrine jusqu'à 5 pages",
@@ -50,7 +50,7 @@ export default function PacksPage() {
               options={[
                 {
                   name: "Livraison express 72h",
-                  price: "+400€",
+                  price: "+300€",
                   icon: <Clock className="h-4 w-4" />
                 }
               ]}
@@ -61,7 +61,7 @@ export default function PacksPage() {
 
             <PricingCard
               name="Pro"
-              price="1499€"
+              price="1199€"
               description="La solution complète pour les PME qui souhaitent développer leur activité en ligne."
               features={[
                 "Site jusqu'à 10 pages",
@@ -82,7 +82,7 @@ export default function PacksPage() {
                 },
                 {
                   name: "Livraison express 72h",
-                  price: "+400€",
+                  price: "+300€",
                   icon: <Clock className="h-4 w-4" />
                 }
               ]}
@@ -93,7 +93,7 @@ export default function PacksPage() {
 
             <PricingCard
               name="Sur-mesure"
-              price="À partir de 2499€"
+              price="À partir de 1999€"
               description="Pour les entreprises ayant des besoins spécifiques et complexes."
               features={[
                 "Nombre de pages illimité",
@@ -115,7 +115,7 @@ export default function PacksPage() {
               options={[
                 {
                   name: "Livraison express 72h",
-                  price: "+400€",
+                  price: "+300€",
                   icon: <Clock className="h-4 w-4" />
                 }
               ]}
@@ -139,7 +139,7 @@ export default function PacksPage() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold">Backend personnalisé</h3>
-                    <p className="text-xl font-semibold">+ 899€</p>
+                    <p className="text-xl font-semibold">+ 799€</p>
                   </div>
                 </div>
                 
