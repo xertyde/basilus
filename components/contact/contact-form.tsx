@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
-import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react'
+import { CheckCircle2, Loader2 } from 'lucide-react'
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Select,
@@ -26,7 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { supabase } from '@/lib/supabase'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -60,7 +59,6 @@ const addons = [
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -74,44 +72,18 @@ export default function ContactForm() {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-    setError(null)
     
-    try {
-      const { error: supabaseError, data } = await supabase
-        .from('contacts')
-        .insert([{
-          name: values.name,
-          email: values.email,
-          pack: values.pack,
-          addons: values.addons || [],
-          message: values.message
-        }])
-        .select()
-
-      if (supabaseError) {
-        throw new Error(supabaseError.message)
-      }
-
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false)
       setIsSubmitted(true)
-      form.reset()
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
-    } catch (err) {
-      console.error('Form submission error:', err)
-      const errorMessage = err instanceof Error ? err.message : "Une erreur est survenue lors de l'envoi du message"
-      setError(errorMessage)
-      toast({
-        title: "Erreur",
-        description: errorMessage,
-        variant: "destructive"
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
+    }, 1500)
   }
 
   if (isSubmitted) {
@@ -124,23 +96,7 @@ export default function ContactForm() {
         <p className="text-muted-foreground mb-6">
           Merci de nous avoir contacté. Nous vous répondrons dans les plus brefs délais.
         </p>
-        <Button onClick={() => {
-          setIsSubmitted(false)
-          form.reset()
-        }}>Envoyer un autre message</Button>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center p-8 text-center bg-destructive/10 rounded-xl">
-        <div className="h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center mb-4 text-destructive">
-          <AlertCircle className="h-6 w-6" />
-        </div>
-        <h3 className="text-xl font-semibold mb-2">Erreur</h3>
-        <p className="text-muted-foreground mb-6">{error}</p>
-        <Button onClick={() => setError(null)}>Réessayer</Button>
+        <Button onClick={() => setIsSubmitted(false)}>Envoyer un autre message</Button>
       </div>
     )
   }
