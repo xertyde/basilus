@@ -39,6 +39,10 @@ export default function TestConnectionPage() {
         },
       })
       
+      if (!response.ok) {
+        throw new Error('Edge function connection failed')
+      }
+      
       const data = await response.json()
       
       if (data.status === 'connected') {
@@ -108,4 +112,3 @@ export default function TestConnectionPage() {
       </div>
     </div>
   )
-}
