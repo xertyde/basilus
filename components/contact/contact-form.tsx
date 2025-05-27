@@ -76,16 +76,29 @@ export default function ContactForm() {
     setIsSubmitting(true)
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`, {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+      if (!supabaseUrl || !supabaseKey) {
+        throw new Error('Missing Supabase configuration')
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         },
         body: JSON.stringify(values),
+        cache: 'no-store'
       })
 
-      if (!response.ok) throw new Error('Failed to send email')
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.message || `Failed to send email. Status: ${response.status}`)
+      }
 
       setIsSubmitted(true)
       toast({
@@ -93,9 +106,10 @@ export default function ContactForm() {
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
     } catch (error) {
+      console.error('Form submission error:', error)
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        description: error.message || "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
         variant: "destructive",
       })
     } finally {
