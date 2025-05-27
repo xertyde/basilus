@@ -70,10 +70,10 @@ export default function Footer() {
                 <span className="block">Email: contact@basilus.fr</span>
               </li>
               <li className="text-sm text-gray-300">
-                <span className="block">Téléphone: +33 1 23 45 67 89</span>
+                <span className="block">Téléphone: +33 7 68 09 59 59</span>
               </li>
               <li className="text-sm text-gray-300">
-                <span className="block">Adresse: 123 Rue de Paris, 75001 Paris</span>
+                <span className="block">Adresse: 2 rue des Marguerites Chassieu 69680</span>
               </li>
             </ul>
           </div>

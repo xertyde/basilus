@@ -39,7 +39,6 @@ export default function ContactPage() {
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Email</h3>
                     <p className="text-muted-foreground">contact@basilus.fr</p>
-                    <p className="text-muted-foreground">support@basilus.fr</p>
                   </div>
                 </div>
 
@@ -49,7 +48,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Téléphone</h3>
-                    <p className="text-muted-foreground">+33 1 23 45 67 89</p>
+                    <p className="text-muted-foreground">+33 7 68 09 59 59</p>
                     <p className="text-muted-foreground">Du lundi au vendredi, de 9h à 18h</p>
                   </div>
                 </div>
@@ -60,8 +59,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Adresse</h3>
-                    <p className="text-muted-foreground">123 Rue de Paris</p>
-                    <p className="text-muted-foreground">75001 Paris, France</p>
+                    <p className="text-muted-foreground">2 rue des Marguerites</p>
+                    <p className="text-muted-foreground">Chassieu 69680</p>
                   </div>
                 </div>
               </div>
