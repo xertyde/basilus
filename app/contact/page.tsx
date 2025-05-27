@@ -95,7 +95,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-xl font-semibold mb-2">Quels sont les délais de réalisation ?</h3>
                 <p className="text-muted-foreground">
-                  Les délais varient en fonction de la complexité du projet. En général, comptez 2 à 4 semaines pour un site vitrine et 1 à 3 mois pour un projet plus complexe.
+                  Les délais varient en fonction de la complexité du projet. En général, comptez 1 à 2 semaines pour un site vitrine et un mois ou plus pour un projet plus complexe.
                 </p>
               </div>
               <div>
