@@ -72,18 +72,48 @@ export default function ContactForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      // Format the email content
+      const selectedPack = packs.find(p => p.value === values.pack)?.label || values.pack
+      const selectedAddons = values.addons?.map(id => 
+        addons.find(a => a.id === id)?.label
+      ).filter(Boolean) || []
+
+      const emailContent = `
+Nouveau message de contact:
+
+Nom: ${values.name}
+Email: ${values.email}
+Pack sélectionné: ${selectedPack}
+${selectedAddons.length > 0 ? `Options supplémentaires:\n${selectedAddons.join('\n')}` : ''}
+
+Message:
+${values.message}
+      `.trim()
+
+      // Create mailto URL with pre-filled content
+      const mailtoUrl = `mailto:thomasfonferrier@gmail.com?subject=Nouveau contact - ${values.name}&body=${encodeURIComponent(emailContent)}`
+
+      // Open default email client
+      window.location.href = mailtoUrl
+
       setIsSubmitted(true)
       toast({
-        title: "Message envoyé !",
-        description: "Nous vous répondrons dans les plus brefs délais.",
+        title: "Message préparé !",
+        description: "Votre message a été préparé dans votre client mail.",
       })
-    }, 1500)
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du message.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
@@ -92,9 +122,9 @@ export default function ContactForm() {
         <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
           <CheckCircle2 className="h-6 w-6" />
         </div>
-        <h3 className="text-xl font-semibold mb-2">Message envoyé !</h3>
+        <h3 className="text-xl font-semibold mb-2">Message préparé !</h3>
         <p className="text-muted-foreground mb-6">
-          Merci de nous avoir contacté. Nous vous répondrons dans les plus brefs délais.
+          Votre message a été préparé dans votre client mail. Vérifiez et envoyez le message pour finaliser votre demande.
         </p>
         <Button onClick={() => setIsSubmitted(false)}>Envoyer un autre message</Button>
       </div>
@@ -224,7 +254,7 @@ export default function ContactForm() {
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Envoi en cours...
+              Préparation du message...
             </>
           ) : (
             'Envoyer le message'
