@@ -77,35 +77,25 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
   setIsSubmitting(true);
   
   try {
-    const { data, error } = await supabase
-      .from('contacts')
-      .insert({
-        name: values.name,
-        email: values.email,
-        pack: values.pack,
-        addons: values.addons || [], // Gère le cas où addons est undefined
-        message: values.message
-      })
-      .select();
-
-    if (error) {
-      throw error;
-    }
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Message envoyé !",
-      description: "Nous vous répondrons dans les plus brefs délais.",
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values)
     });
+
+    if (!response.ok) throw new Error("Erreur réseau");
+
+    setIsSubmitted(true);
+    toast({ title: "Message envoyé !" });
+
   } catch (error) {
-    console.error('Supabase error:', error);
-    setIsSubmitting(false);
     toast({
       title: "Erreur",
-      description: `Échec de l'envoi : ${error.message}`,
+      description: "Échec de l'envoi",
       variant: "destructive"
     });
+  } finally {
+    setIsSubmitting(false);
   }
 }
 
