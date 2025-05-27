@@ -8,6 +8,7 @@ export async function POST(req: Request) {
 
   try {
     const data = await req.json();
+    console.log('Received form data:', data);
     
     if (!data.name || !data.email || !data.message) {
       return NextResponse.json(
@@ -18,11 +19,15 @@ export async function POST(req: Request) {
 
     // Create reusable transporter object using SMTP transport
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: 'thomasfonferrier@gmail.com',
         pass: 'auam gmkf hbkd vork'
-      }
+      },
+      debug: true, // Enable debug logging
+      logger: true // Log to console
     });
 
     const mailOptions = {
@@ -41,9 +46,12 @@ export async function POST(req: Request) {
       replyTo: data.email
     };
 
+    console.log('Attempting to verify SMTP connection...');
     // Verify connection configuration
     await transporter.verify();
+    console.log('SMTP connection verified successfully');
     
+    console.log('Attempting to send email...');
     // Send mail with defined transport object
     const info = await transporter.sendMail(mailOptions);
 

@@ -74,6 +74,7 @@ export default function ContactForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
+    console.log('Submitting form with values:', values);
     
     try {
       const response = await fetch('/api/contact', {
@@ -84,11 +85,13 @@ export default function ContactForm() {
         body: JSON.stringify(values),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || 'Failed to send message');
       }
 
+      console.log('Form submitted successfully:', data);
       setIsSubmitted(true)
       form.reset();
       toast({
