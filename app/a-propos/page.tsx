@@ -53,7 +53,8 @@ export default function AboutPage() {
             <div className="animate-from-left">
               <h2 className="text-3xl font-bold mb-6">Notre histoire</h2>
               <p className="text-lg text-muted-foreground mb-4">
-                Chez Basilus, nous sommes deux développeurs diplômés de CPE Lyon passionnés par la création web. Notre objectif : offrir aux petites entreprises des sites modernes, efficaces et élégants, sans compromis entre qualité et accessibilité, à un prix abordable.
+                Chez Basilus, nous sommes deux développeurs diplômés de CPE Lyon passionnés par la création web. 
+                Notre objectif : offrir aux petites entreprises des sites modernes, efficaces et élégants, sans compromis entre qualité et accessibilité, à un prix abordable.
 
 Plutôt qu’un long discours, nous mettons notre énergie dans des solutions concrètes, pensées pour vos besoins réels et vos ambitions digitales.
               </p>
