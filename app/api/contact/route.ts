@@ -8,8 +8,8 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'your-email@gmail.com', // Replace with your Gmail address
-        pass: 'your-app-password' // Use an app password generated from Google Account settings
+        user: 'thomasfonferrier@gmail.com', // Replace with your Gmail address
+        pass: 'Red.shark123' // Use an app password generated from Google Account settings
       }
     });
 
