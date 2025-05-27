@@ -18,6 +18,14 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { CheckCircle2, Loader2 } from 'lucide-react'
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -26,10 +34,27 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Veuillez entrer une adresse e-mail valide.",
   }),
+  pack: z.string({
+    required_error: "Veuillez sélectionner un pack",
+  }),
+  addons: z.array(z.string()).optional(),
   message: z.string().min(10, {
     message: "Le message doit contenir au moins 10 caractères.",
   }),
 })
+
+const packs = [
+  { value: "starter", label: "Pack Starter (699€)" },
+  { value: "pro", label: "Pack Pro (1199€)" },
+  { value: "custom", label: "Pack Sur-mesure (à partir de 1999€)" },
+]
+
+const addons = [
+  { id: "backend", label: "Backend personnalisé (+799€)" },
+  { id: "mobile", label: "Adaptation mobile (+290€)" },
+  { id: "hosting", label: "Hébergement premium (+99€/an)" },
+  { id: "express", label: "Livraison express (+300€)" },
+]
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -41,6 +66,8 @@ export default function ContactForm() {
     defaultValues: {
       name: "",
       email: "",
+      pack: "",
+      addons: [],
       message: "",
     },
   })
@@ -100,6 +127,76 @@ export default function ContactForm() {
                 <Input placeholder="votre.email@exemple.com" {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="pack"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Pack souhaité</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionnez un pack" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {packs.map((pack) => (
+                    <SelectItem key={pack.value} value={pack.value}>
+                      {pack.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="addons"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel>Options supplémentaires</FormLabel>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {addons.map((addon) => (
+                  <FormField
+                    key={addon.id}
+                    control={form.control}
+                    name="addons"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={addon.id}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(addon.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value || [], addon.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== addon.id
+                                      )
+                                    )
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {addon.label}
+                          </FormLabel>
+                        </FormItem>
+                      )
+                    }}
+                  />
+                ))}
+              </div>
             </FormItem>
           )}
         />
