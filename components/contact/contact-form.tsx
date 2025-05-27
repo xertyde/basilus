@@ -75,16 +75,11 @@ export default function ContactForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      setError("Configuration Supabase manquante. Veuillez réessayer plus tard.")
-      return
-    }
-
     setIsSubmitting(true)
     setError(null)
     
     try {
-      const { error: supabaseError } = await supabase
+      const { error: supabaseError, data } = await supabase
         .from('contacts')
         .insert([{
           name: values.name,
@@ -93,6 +88,7 @@ export default function ContactForm() {
           addons: values.addons || [],
           message: values.message
         }])
+        .select()
 
       if (supabaseError) {
         throw new Error(supabaseError.message)
