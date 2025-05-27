@@ -1,12 +1,9 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'npm:@supabase/supabase-js@2.39.8'
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -20,20 +17,11 @@ serve(async (req) => {
       throw new Error('Missing environment variables')
     }
 
-    const supabaseClient = createClient(supabaseUrl, supabaseKey)
-
-    // Try to access the test table
-    const { data, error } = await supabaseClient
-      .from('_test_connection')
-      .select('*')
-      .limit(1)
-
-    if (error) throw error
-
+    // Simple response to verify the function is working
     return new Response(
       JSON.stringify({ 
         status: 'connected', 
-        message: 'Successfully connected to Supabase'
+        message: 'Edge function is responding correctly'
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -44,8 +32,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         status: 'error', 
-        message: 'Failed to connect to Supabase',
-        error: error.message 
+        message: error.message,
+        error: error.toString()
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

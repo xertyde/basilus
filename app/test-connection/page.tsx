@@ -15,6 +15,9 @@ export default function TestConnectionPage() {
     setErrorMessage('')
     try {
       const response = await fetch('/api/test-connection')
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
       const data = await response.json()
       
       if (data.status === 'connected') {
@@ -24,7 +27,7 @@ export default function TestConnectionPage() {
       }
     } catch (error) {
       setApiStatus('error')
-      setErrorMessage(error.message)
+      setErrorMessage(`API Error: ${error.message}`)
     }
   }
 
@@ -32,15 +35,22 @@ export default function TestConnectionPage() {
     setEdgeStatus('loading')
     setErrorMessage('')
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/test-connection`, {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+      if (!supabaseUrl || !supabaseKey) {
+        throw new Error('Missing Supabase configuration')
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/test-connection`, {
         headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
         },
       })
       
       if (!response.ok) {
-        throw new Error('Edge function connection failed')
+        throw new Error(`Edge function error! Status: ${response.status}`)
       }
       
       const data = await response.json()
@@ -48,11 +58,11 @@ export default function TestConnectionPage() {
       if (data.status === 'connected') {
         setEdgeStatus('success')
       } else {
-        throw new Error(data.message || 'Failed to connect to Supabase')
+        throw new Error(data.message || 'Failed to connect to Edge Function')
       }
     } catch (error) {
       setEdgeStatus('error')
-      setErrorMessage(error.message)
+      setErrorMessage(`Edge Function Error: ${error.message}`)
     }
   }
 
