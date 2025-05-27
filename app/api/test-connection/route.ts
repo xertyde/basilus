@@ -4,6 +4,12 @@ import { NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+const headers = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0'
+}
+
 export async function GET() {
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -13,13 +19,7 @@ export async function GET() {
       return NextResponse.json({ 
         status: 'error',
         message: 'Missing Supabase configuration'
-      }, { 
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache'
-        }
-      })
+      }, { status: 500, headers })
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey)
@@ -29,14 +29,9 @@ export async function GET() {
     if (authError) {
       return NextResponse.json({ 
         status: 'error',
-        message: 'Failed to connect to Supabase authentication'
-      }, { 
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache'
-        }
-      })
+        message: 'Failed to connect to Supabase authentication',
+        details: authError.message
+      }, { status: 500, headers })
     }
 
     // Try to access the test table
@@ -48,36 +43,21 @@ export async function GET() {
     if (dbError) {
       return NextResponse.json({ 
         status: 'error',
-        message: 'Failed to query test table'
-      }, { 
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache'
-        }
-      })
+        message: 'Failed to query test table',
+        details: dbError.message
+      }, { status: 500, headers })
     }
 
     return NextResponse.json({ 
       status: 'connected',
       message: 'Successfully connected to Supabase'
-    }, {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache'
-      }
-    })
+    }, { headers })
   } catch (error) {
     console.error('Supabase connection error:', error)
     return NextResponse.json({ 
       status: 'error',
-      message: error.message || 'Failed to connect to Supabase'
-    }, { 
-      status: 500,
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache'
-      }
-    })
+      message: 'Failed to connect to Supabase',
+      details: error.message
+    }, { status: 500, headers })
   }
 }

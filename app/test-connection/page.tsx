@@ -22,11 +22,12 @@ export default function TestConnectionPage() {
         }
       })
       
-      const data = await response.json()
-      
       if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
         throw new Error(data.message || `HTTP error! status: ${response.status}`)
       }
+      
+      const data = await response.json()
       
       if (data.status === 'connected') {
         setApiStatus('success')
@@ -62,11 +63,12 @@ export default function TestConnectionPage() {
         cache: 'no-store'
       })
       
-      const data = await response.json()
-      
       if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
         throw new Error(data.message || `Edge function error! Status: ${response.status}`)
       }
+      
+      const data = await response.json()
       
       if (data.status === 'connected') {
         setEdgeStatus('success')
