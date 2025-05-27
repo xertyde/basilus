@@ -79,25 +79,31 @@ export default function ContactForm() {
     setError(null)
     
     try {
-      const { error: supabaseError } = await supabase
+      console.log('Submitting form with values:', values)
+      
+      const { error: supabaseError, data } = await supabase
         .from('contacts')
         .insert([values])
+        .select()
 
       if (supabaseError) {
+        console.error('Supabase error:', supabaseError)
         throw new Error(supabaseError.message)
       }
 
+      console.log('Submission successful:', data)
       setIsSubmitted(true)
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Une erreur est survenue"
+      console.error('Form submission error:', err)
+      const errorMessage = err instanceof Error ? err.message : "Une erreur est survenue lors de l'envoi du message"
       setError(errorMessage)
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        description: errorMessage,
         variant: "destructive"
       })
     } finally {
