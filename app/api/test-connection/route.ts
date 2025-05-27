@@ -15,8 +15,12 @@ export async function GET() {
   )
 
   try {
+    // First try to get the user to test authentication
+    const { data: authData, error: authError } = await supabase.auth.getUser()
+    if (authError) throw authError
+
+    // Then try to access the test table
     const { data, error } = await supabase.from('_test_connection').select('*').limit(1)
-    
     if (error) throw error
 
     return NextResponse.json({ 

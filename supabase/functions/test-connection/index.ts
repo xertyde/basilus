@@ -7,29 +7,39 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')
 
-    // Try to access Supabase
-    const { data, error } = await supabaseClient.auth.getUser()
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing environment variables')
+    }
+
+    const supabaseClient = createClient(supabaseUrl, supabaseKey)
+
+    // Try to access the test table
+    const { data, error } = await supabaseClient
+      .from('_test_connection')
+      .select('*')
+      .limit(1)
 
     if (error) throw error
 
     return new Response(
-      JSON.stringify({ status: 'connected', message: 'Successfully connected to Supabase' }),
+      JSON.stringify({ 
+        status: 'connected', 
+        message: 'Successfully connected to Supabase'
+      }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
       }
     )
-
   } catch (error) {
     return new Response(
       JSON.stringify({ 

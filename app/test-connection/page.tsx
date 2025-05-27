@@ -12,6 +12,7 @@ export default function TestConnectionPage() {
 
   const testApiConnection = async () => {
     setApiStatus('loading')
+    setErrorMessage('')
     try {
       const response = await fetch('/api/test-connection')
       const data = await response.json()
@@ -19,7 +20,7 @@ export default function TestConnectionPage() {
       if (data.status === 'connected') {
         setApiStatus('success')
       } else {
-        throw new Error(data.message)
+        throw new Error(data.message || 'Failed to connect to Supabase')
       }
     } catch (error) {
       setApiStatus('error')
@@ -29,11 +30,12 @@ export default function TestConnectionPage() {
 
   const testEdgeFunction = async () => {
     setEdgeStatus('loading')
+    setErrorMessage('')
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/test-connection`, {
-        method: 'POST',
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
         },
       })
       
@@ -42,7 +44,7 @@ export default function TestConnectionPage() {
       if (data.status === 'connected') {
         setEdgeStatus('success')
       } else {
-        throw new Error(data.message)
+        throw new Error(data.message || 'Failed to connect to Supabase')
       }
     } catch (error) {
       setEdgeStatus('error')
