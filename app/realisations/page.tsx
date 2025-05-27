@@ -54,7 +54,7 @@ const portfolioItems = [
     id: 6,
     title: "Hoops Factory",
     description: "E-commerce spécialisé dans la vente de ballons de basketball haut de gamme. Interface immersive avec visualisation 3D des produits et système de personnalisation.",
-    imageUrl: "site4.png",
+    imageUrl: "/site4.png",
     category: "E-commerce",
     technologies: ["Next.js", "Three.js", "Tailwind CSS", "Stripe"]
   }
