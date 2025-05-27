@@ -172,7 +172,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-6">
                     <p className="text-xl font-semibold mb-2">Dès</p>
-                    <p className="text-4xl font-bold mb-4">899€</p>
+                    <p className="text-4xl font-bold mb-4">699€</p>
                     <p className="text-sm">Site vitrine professionnel</p>
                   </div>
                 </div>
