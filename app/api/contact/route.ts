@@ -19,19 +19,18 @@ export async function POST(req: Request) {
 
     // Create reusable transporter object using SMTP transport
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      service: 'gmail',
       auth: {
         user: 'thomasfonferrier@gmail.com',
         pass: 'auam gmkf hbkd vork'
       },
-      debug: true, // Enable debug logging
-      logger: true // Log to console
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     const mailOptions = {
-      from: '"Basilus Contact Form" <thomasfonferrier@gmail.com>',
+      from: 'thomasfonferrier@gmail.com',
       to: 'thomasfonferrier@gmail.com',
       subject: `Nouvelle demande de contact - ${data.name}`,
       html: `
@@ -46,16 +45,10 @@ export async function POST(req: Request) {
       replyTo: data.email
     };
 
-    console.log('Attempting to verify SMTP connection...');
-    // Verify connection configuration
-    await transporter.verify();
-    console.log('SMTP connection verified successfully');
-    
     console.log('Attempting to send email...');
-    // Send mail with defined transport object
     const info = await transporter.sendMail(mailOptions);
-
     console.log('Message sent successfully:', info.messageId);
+    
     return NextResponse.json({ success: true, messageId: info.messageId });
 
   } catch (error: any) {
