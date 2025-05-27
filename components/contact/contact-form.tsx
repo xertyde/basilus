@@ -79,7 +79,9 @@ export default function ContactForm() {
     setError(null)
     
     try {
-      const { error: supabaseError } = await supabase
+      console.log('Submitting form with values:', values)
+      
+      const { error: supabaseError, data } = await supabase
         .from('contacts')
         .insert([{
           name: values.name,
@@ -88,6 +90,9 @@ export default function ContactForm() {
           addons: values.addons || [],
           message: values.message
         }])
+        .select()
+
+      console.log('Supabase response:', { error: supabaseError, data })
 
       if (supabaseError) {
         throw new Error(supabaseError.message)
