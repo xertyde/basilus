@@ -84,9 +84,8 @@ export default function ContactForm() {
         body: JSON.stringify(values),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || 'Failed to send message');
       }
 
@@ -96,11 +95,11 @@ export default function ContactForm() {
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error('Form submission error:', error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        description: error.message || "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
         variant: "destructive",
       })
     } finally {

@@ -9,7 +9,6 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
     
-    // Validate required fields
     if (!data.name || !data.email || !data.message) {
       return NextResponse.json(
         { error: 'Missing required fields' },
@@ -17,21 +16,17 @@ export async function POST(req: Request) {
       );
     }
 
+    // Create reusable transporter object using SMTP transport
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
+      service: 'gmail',
       auth: {
         user: 'thomasfonferrier@gmail.com',
         pass: 'auam gmkf hbkd vork'
-      },
-      tls: {
-        rejectUnauthorized: false
       }
     });
 
     const mailOptions = {
-      from: 'thomasfonferrier@gmail.com',
+      from: '"Basilus Contact Form" <thomasfonferrier@gmail.com>',
       to: 'thomasfonferrier@gmail.com',
       subject: `Nouvelle demande de contact - ${data.name}`,
       html: `
@@ -46,16 +41,19 @@ export async function POST(req: Request) {
       replyTo: data.email
     };
 
+    // Verify connection configuration
     await transporter.verify();
+    
+    // Send mail with defined transport object
     const info = await transporter.sendMail(mailOptions);
 
     console.log('Message sent successfully:', info.messageId);
     return NextResponse.json({ success: true, messageId: info.messageId });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending email:', error);
     return NextResponse.json(
-      { error: 'Failed to send email. Please try again later.' },
+      { error: error.message || 'Failed to send email. Please try again later.' },
       { status: 500 }
     );
   }
