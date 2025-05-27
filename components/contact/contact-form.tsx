@@ -73,43 +73,41 @@ export default function ContactForm() {
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true)
-    
-    try {
-      // Envoi des données à Supabase
-      const { data, error } = await supabase
-        .from('contacts') // Remplacez par le nom de votre table
-        .insert([
-          {
-            name: values.name,
-            email: values.email,
-            pack: values.pack,
-            addons: values.addons,
-            message: values.message,
-            created_at: new Date().toISOString()
-          }
-        ])
-        .select()
-
-      if (error) throw error
-
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-      toast({
-        title: "Message envoyé !",
-        description: "Nous vous répondrons dans les plus brefs délais.",
+async function onSubmit(values: z.infer<typeof formSchema>) {
+  setIsSubmitting(true);
+  
+  try {
+    const { data, error } = await supabase
+      .from('contacts')
+      .insert({
+        name: values.name,
+        email: values.email,
+        pack: values.pack,
+        addons: values.addons || [], // Gère le cas où addons est undefined
+        message: values.message
       })
-    } catch (error) {
-      console.error('Error submitting form:', error)
-      setIsSubmitting(false)
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
-        variant: "destructive"
-      })
+      .select();
+
+    if (error) {
+      throw error;
     }
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    toast({
+      title: "Message envoyé !",
+      description: "Nous vous répondrons dans les plus brefs délais.",
+    });
+  } catch (error) {
+    console.error('Supabase error:', error);
+    setIsSubmitting(false);
+    toast({
+      title: "Erreur",
+      description: `Échec de l'envoi : ${error.message}`,
+      variant: "destructive"
+    });
   }
+}
 
   if (isSubmitted) {
     return (
