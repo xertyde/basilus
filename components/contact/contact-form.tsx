@@ -45,15 +45,15 @@ const formSchema = z.object({
 })
 
 const packs = [
-  { id: "starter", name: "Pack Starter - 699€" },
-  { id: "pro", name: "Pack Pro - 1199€" },
-  { id: "custom", name: "Pack Sur-mesure - À partir de 1999€" },
+  { id: "starter", name: "Pack Starter - 590€" },
+  { id: "pro", name: "Pack Pro - 990€" },
+  { id: "custom", name: "Pack Sur-mesure - À partir de 1799€" },
 ]
 
 const addons = [
   { id: "backend", label: "Backend personnalisé (+799€)" },
-  { id: "mobile", label: "Adaptation mobile (+290€)" },
-  { id: "hosting", label: "Hébergement premium (+99€/an)" },
+  { id: "mobile", label: "Adaptation mobile (+190€)" },
+  { id: "hosting", label: "Page supplémentaire (+50€/page)" },
 ]
 
 export default function ContactForm() {
