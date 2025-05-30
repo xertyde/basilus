@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button'
 import { Check, Clock, AlertCircle, Smartphone, Database, HardDrive } from 'lucide-react'
 import Link from 'next/link'
 import PricingCard from '@/components/packs/pricing-card'
+import { FilePlus } from "lucide-react";
+
 import {
   Accordion,
   AccordionContent,
@@ -34,7 +36,7 @@ export default function PacksPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <PricingCard
               name="Starter"
-              price="699€"
+              price="590€"
               description="Idéal pour les petites entreprises et les indépendants qui souhaitent établir leur présence en ligne."
               features={[
                 "Site vitrine jusqu'à 5 pages",
@@ -43,15 +45,21 @@ export default function PacksPage() {
                 "Optimisation SEO de base",
                 "Formulaire de contact",
                 "Intégration des réseaux sociaux",
-                "Hébergement pour 1 an",
                 "Formation à l'utilisation (1h)",
                 "Sans maintenance post-livraison (option possible)"
+              ]}
+              notice={[
+                "2 fois sans frais ou 3 fois avec frais à 5%"
               ]}
               options={[
                 {
                   name: "Livraison express 72h",
                   price: "+300€",
                   icon: <Clock className="h-4 w-4" />
+                },
+                {
+                  name: "Hébergement et maintenance",
+                  price: "+99€/an",
                 }
               ]}
               ctaText="Demander un devis"
@@ -61,19 +69,21 @@ export default function PacksPage() {
 
             <PricingCard
               name="Pro"
-              price="1199€"
+              price="990€"
               description="La solution complète pour les PME qui souhaitent développer leur activité en ligne."
               features={[
                 "Site jusqu'à 10 pages",
                 "Design premium responsive",
-                "Jusqu'à 2 révisions incluses",
+                "2 révisions incluses, +50€/révision supplémentaire",
                 "Optimisation SEO avancée",
                 "Système de blog intégré",
                 "Formulaires personnalisés",
                 "Statistiques de visite",
                 "Intégration Google Business",
-                "Hébergement pour 1 an",
                 "Mises à jour techniques & sécurité (hors contenu)"
+              ]}
+              notice={[
+                "2 fois sans frais ou 3 fois avec frais à 5%"
               ]}
               options={[
                 {
@@ -84,6 +94,10 @@ export default function PacksPage() {
                   name: "Livraison express 72h",
                   price: "+300€",
                   icon: <Clock className="h-4 w-4" />
+                },
+                {
+                  name: "Hébergement et maintenance",
+                  price: "+149€/an",
                 }
               ]}
               ctaText="Demander un devis"
@@ -93,7 +107,7 @@ export default function PacksPage() {
 
             <PricingCard
               name="Sur-mesure"
-              price="À partir de 1999€"
+              price="À partir de 1790€"
               description="Pour les entreprises ayant des besoins spécifiques et complexes."
               features={[
                 "Nombre de pages illimité",
@@ -109,7 +123,7 @@ export default function PacksPage() {
                 "Support prioritaire"
               ]}
               notice={[
-                "Tarif variable selon projet – jusqu'à 6000€",
+                "Tarif variable selon projet – jusqu'à 5590€",
                 "30% d'acompte à la commande, solde à la livraison"
               ]}
               options={[
@@ -117,6 +131,10 @@ export default function PacksPage() {
                   name: "Livraison express 72h",
                   price: "+300€",
                   icon: <Clock className="h-4 w-4" />
+                },
+                {
+                  name: "Hébergement et maintenance",
+                  price: "+490€/an",
                 }
               ]}
               ctaText="Demander un devis"
@@ -201,7 +219,7 @@ export default function PacksPage() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold">Adaptation mobile</h3>
-                    <p className="text-xl font-semibold">+ 290€</p>
+                    <p className="text-xl font-semibold">+ 190€</p>
                   </div>
                 </div>
                 
@@ -235,44 +253,46 @@ export default function PacksPage() {
             </div>
 
             <div className="bg-card rounded-xl shadow-lg overflow-hidden animate-on-scroll delay-300 h-full">
-              <div className="p-8 flex flex-col h-full">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                    <HardDrive className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold">Hébergement</h3>
-                    <p className="text-xl font-semibold">+ 99€ / an</p>
-                  </div>
-                </div>
-                
-                <p className="text-muted-foreground mb-6">
-                  Prolongez votre hébergement d'une année supplémentaire avec notre service premium tout inclus.
-                </p>
+  <div className="p-8 flex flex-col h-full">
+    <div className="flex items-center gap-4 mb-4">
+      <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+        <FilePlus className="h-6 w-6" />
+      </div>
+      <div>
+        <h3 className="text-2xl font-bold">Pages supplémentaires</h3>
+        <p className="text-xl font-semibold">+ 50 € / page</p>
+      </div>
+    </div>
 
-                <div className="space-y-4 mb-6 flex-grow">
-                  <ul className="space-y-2">
-                    {[
-                      "Hébergement haute performance",
-                      "Certificat SSL inclus",
-                      "Sauvegardes quotidiennes",
-                      "Support technique prioritaire",
-                      "Surveillance 24/7",
-                      "Protection DDoS avancée"
-                    ].map((feature) => (
-                      <li key={feature} className="flex items-start">
-                        <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+    <p className="text-muted-foreground mb-6">
+      Ajoutez des pages supplémentaires à votre site pour présenter plus de contenu, services ou produits.
+    </p>
 
-                <Button asChild size="lg" className="w-full mt-auto">
-                  <Link href="/contact">Prolonger l'hébergement</Link>
-                </Button>
-              </div>
-            </div>
+    <div className="space-y-4 mb-6 flex-grow">
+      <ul className="space-y-2">
+        {[
+          "Structure 100% sur-mesure",
+          "Design cohérent avec le reste du site",
+          "Contenu optimisé pour le SEO",
+          "Responsive sur tous les appareils",
+          "Chargement rapide",
+          "Intégration de visuels et médias"
+        ].map((feature) => (
+          <li key={feature} className="flex items-start">
+            <Check className="h-5 w-5 text-primary mr-2 mt-0.5" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <Button asChild size="lg" className="w-full mt-auto">
+      <Link href="/contact">Ajouter des pages</Link>
+    </Button>
+  </div>
+</div>
+
+
           </div>
         </div>
       </section>
