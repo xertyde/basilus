@@ -77,7 +77,7 @@ export default function ContactForm() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('https://scompnbumndmuohgqefp.functions.supabase.co/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values)
