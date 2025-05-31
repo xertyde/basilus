@@ -33,13 +33,16 @@ export default function Header() {
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden'
-      // Scroll vers le haut lorsque le menu s'ouvre
-      window.scrollTo(0, 0)
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${window.scrollY}px`
+      document.body.style.width = '100%'
     } else {
+      const scrollY = document.body.style.top
       document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
     }
   }, [mobileMenuOpen])
 
@@ -101,26 +104,16 @@ export default function Header() {
         </div>
       </nav>
 
- {/* Menu mobile modifié */}
+      {/* Menu mobile */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background md:hidden" style={{ top: '0', marginTop: '0' }}>
-          <div className="flex h-full flex-col overflow-y-auto pt-20 pb-6 px-6"> {/* Ajout de pt-20 pour compenser la hauteur du header */}
-            <div className="absolute top-4 right-4"> {/* Positionnement absolu pour le bouton de fermeture */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <X className="h-6 w-6" />
-                <span className="sr-only">Fermer le menu</span>
-              </Button>
-            </div>
-            <div className="space-y-6 py-6 flex-1 flex flex-col justify-center"> {/* Centrage vertical du contenu */}
+        <div className="fixed inset-0 z-40 bg-background md:hidden mt-16"> {/* Ajout de mt-16 pour laisser l'espace du header */}
+          <div className="flex h-[calc(100vh-4rem)] flex-col overflow-y-auto py-6 px-6"> {/* Ajustement de la hauteur */}
+            <div className="flex-1 space-y-6">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block text-2xl font-medium text-foreground hover:text-primary py-2 text-center"
+                  className="block text-xl font-medium text-foreground hover:text-primary py-3"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
@@ -135,6 +128,15 @@ export default function Header() {
               </Button>
             </div>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <X className="h-6 w-6" />
+            <span className="sr-only">Fermer le menu</span>
+          </Button>
         </div>
       )}
     </header>
