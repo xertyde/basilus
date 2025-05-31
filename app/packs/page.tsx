@@ -305,7 +305,7 @@ export default function PacksPage() {
               <AccordionItem value="maintenance">
                 <AccordionTrigger>Le prix inclut-il la maintenance ?</AccordionTrigger>
                 <AccordionContent>
-                  La maintenance est incluse uniquement dans le Pack Pro, qui couvre les mises à jour techniques et de sécurité. Pour les autres packs, nous proposons des forfaits de maintenance en option. N'hésitez pas à nous contacter pour en savoir plus.
+                  La maintenance n'est pas incluse dans le prix, elle est disponible directement en option et est fortement recommandée. Elle couvre les mises à jour techniques et de sécurité. N'hésitez pas à nous contacter pour en savoir plus.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="modifications">

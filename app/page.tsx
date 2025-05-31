@@ -194,21 +194,22 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <TestimonialCard 
-              quote="Basilus a transformé notre présence en ligne. Notre nouveau site a généré 30% de leads supplémentaires dès le premier mois."
-              author="Sophie Martin"
-              company="Directrice Marketing, InnoTech"
+              quote="Grâce à Basilus, notre boutique en ligne est plus claire et professionnelle. Nos clients trouvent plus facilement nos équipements, et les ventes ont nettement augmenté."
+              author="Hugo Malaval"
+              company="Responsable commercial, Nauticare"
             />
             <TestimonialCard 
-              quote="Un travail de qualité, livré dans les délais. L'équipe a su comprendre nos besoins et y répondre parfaitement."
-              author="Thomas Dubois"
-              company="Fondateur, Eco Solutions"
+              quote="Nous avions besoin d’un site simple et intuitif pour permettre la prise de rendez-vous en ligne. Basilus a su répondre parfaitement à nos attentes, avec sérieux et rapidité."
+              author="Dr. Claire Moreau"
+              company="Gérante, MedInCaen"
             />
             <TestimonialCard 
-              quote="Professionnalisme, créativité et réactivité. Notre e-commerce a doublé ses ventes depuis le lancement du nouveau site."
-              author="Julie Lefèvre"
-              company="CEO, Mode Éthique"
+              quote="Basilus a compris les enjeux de notre secteur. Le site est fluide et a permis d’accroître notre visibilité auprès des professionnels agricoles comme des candidats."
+              author="Antoine Epifanic"
+              company="Fondateur, Agripulse"
             />
           </div>
+
         </div>
       </section>
 
