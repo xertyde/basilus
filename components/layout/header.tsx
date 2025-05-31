@@ -20,6 +20,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
 
+  // Gérer le scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -27,23 +28,27 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Empêcher le scroll quand menu mobile est ouvert
   useEffect(() => {
-  if (mobileMenuOpen) {
-    document.body.classList.add('overflow-hidden');
-  } else {
-    document.body.classList.remove('overflow-hidden');
-  }
-
-  return () => {
-    document.body.classList.remove('overflow-hidden');
-  };
-}, [mobileMenuOpen]);
-
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
 
   return (
     <header className={cn(
       "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-      isScrolled ? "bg-background/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
+      mobileMenuOpen
+        ? "bg-background shadow-sm"
+        : isScrolled
+        ? "bg-background/95 backdrop-blur-sm shadow-sm"
+        : "bg-transparent"
     )}>
       <nav className="container flex items-center justify-between py-4">
         <div className="flex items-center">
@@ -51,7 +56,7 @@ export default function Header() {
             <span className="text-2xl font-bold text-primary">Basilus</span>
           </Link>
         </div>
-        
+
         {/* Desktop menu */}
         <div className="hidden md:flex md:gap-x-8">
           {navigation.map((item) => (
@@ -64,7 +69,7 @@ export default function Header() {
             </Link>
           ))}
         </div>
-        
+
         <div className="flex items-center gap-x-4">
           <Button
             variant="ghost"
@@ -76,11 +81,11 @@ export default function Header() {
             <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </Button>
-          
+
           <Button asChild size="sm" className="hidden md:inline-flex">
             <Link href="/contact">Demander un devis</Link>
           </Button>
-          
+
           {/* Mobile menu button */}
           <Button
             variant="ghost"
@@ -93,14 +98,16 @@ export default function Header() {
           </Button>
         </div>
       </nav>
-      
+
       {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-60 bg-background bg-opacity-100 md:hidden transition-transform duration-300 ease-in-out ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={cn(
+          "fixed inset-0 z-60 md:hidden transition-transform duration-300 ease-in-out",
+          "bg-background", // couleur de fond fiable
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        )}
       >
-        <div className="flex h-screen flex-col overflow-y-auto py-6 px-6">
+        <div className="flex h-full flex-col overflow-y-auto py-6 px-6">
           <div className="flex items-center justify-between mb-8">
             <Link href="/" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
               <span className="text-2xl font-bold text-primary">Basilus</span>
