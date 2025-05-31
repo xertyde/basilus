@@ -19,46 +19,49 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
-  const [scrollPosition, setScrollPosition] = useState(0)
 
-  // Gérer le scroll
+  // Gestion du scroll pour l'ombre du header
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-      setScrollPosition(window.scrollY)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Empêcher le scroll quand menu mobile est ouvert
+  // Blocage du scroll quand le menu mobile est ouvert
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.top = `-${scrollPosition}px`
-      document.body.style.width = '100%'
+      document.documentElement.style.overflow = 'hidden'
     } else {
-      const scrollY = document.body.style.top
-      document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.top = ''
-      document.body.style.width = ''
-      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+      document.documentElement.style.overflow = ''
     }
-  }, [mobileMenuOpen, scrollPosition])
+  }, [mobileMenuOpen])
 
   return (
     <>
       <header className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        mobileMenuOpen || isScrolled ? "bg-background shadow-sm" : "bg-transparent"
+        mobileMenuOpen || isScrolled 
+          ? "bg-background shadow-sm" 
+          : "bg-transparent"
       )}>
         <nav className="container flex items-center justify-between py-4">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-x-2">
               <span className="text-2xl font-bold text-primary">Basilus</span>
             </Link>
+          </div>
+
+          {/* Navigation desktop */}
+          <div className="hidden md:flex md:gap-x-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
 
           <div className="flex items-center gap-x-4">
@@ -77,43 +80,41 @@ export default function Header() {
               <Link href="/contact">Demander un devis</Link>
             </Button>
 
+            {/* Bouton menu mobile */}
             <Button
               variant="ghost"
               size="icon"
               className="md:hidden"
               onClick={() => setMobileMenuOpen(true)}
+              aria-label="Ouvrir le menu"
             >
               <Menu className="h-6 w-6" />
-              <span className="sr-only">Ouvrir le menu</span>
             </Button>
           </div>
         </nav>
       </header>
 
-      {/* Menu mobile - en dehors du header pour un meilleur contrôle */}
+      {/* Menu mobile */}
       {mobileMenuOpen && (
-        <div 
-          className="fixed inset-0 z-40 bg-background/95 backdrop-blur-sm mt-16 md:hidden"
-          style={{ top: `${scrollPosition}px` }}
-        >
-          <div className="flex h-[calc(100vh-4rem)] flex-col overflow-y-auto py-6 px-6">
+        <div className="fixed inset-0 z-40 bg-background mt-16 md:hidden">
+          <div className="h-[calc(100vh-4rem)] overflow-y-auto py-6 px-6">
             <div className="flex justify-end mb-8">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Fermer le menu"
               >
                 <X className="h-6 w-6" />
-                <span className="sr-only">Fermer le menu</span>
               </Button>
             </div>
             
-            <div className="flex-1 space-y-6">
+            <div className="flex flex-col space-y-6">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block text-xl font-medium text-foreground hover:text-primary py-3"
+                  className="text-xl font-medium text-foreground hover:text-primary py-3"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
