@@ -33,6 +33,8 @@ export default function Header() {
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden'
+      // Scroll vers le haut lorsque le menu s'ouvre
+      window.scrollTo(0, 0)
     } else {
       document.body.style.overflow = ''
     }
@@ -99,44 +101,42 @@ export default function Header() {
         </div>
       </nav>
 
-{mobileMenuOpen && (
-  <div className="fixed inset-0 z-50 bg-background md:hidden">
-    <div className="flex h-full flex-col overflow-y-auto py-6 px-6">
-      <div className="flex items-center justify-between mb-8">
-        <Link href="/" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
-          <span className="text-2xl font-bold text-primary">Basilus</span>
-        </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <X className="h-6 w-6" />
-          <span className="sr-only">Fermer le menu</span>
-        </Button>
-      </div>
-      <div className="space-y-6 py-6">
-        {navigation.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="block text-base font-medium text-foreground hover:text-primary"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {item.name}
-          </Link>
-        ))}
-      </div>
-      <div className="mt-8">
-        <Button asChild className="w-full">
-          <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-            Demander un devis
-          </Link>
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
+ {/* Menu mobile modifié */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-background md:hidden" style={{ top: '0', marginTop: '0' }}>
+          <div className="flex h-full flex-col overflow-y-auto pt-20 pb-6 px-6"> {/* Ajout de pt-20 pour compenser la hauteur du header */}
+            <div className="absolute top-4 right-4"> {/* Positionnement absolu pour le bouton de fermeture */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <X className="h-6 w-6" />
+                <span className="sr-only">Fermer le menu</span>
+              </Button>
+            </div>
+            <div className="space-y-6 py-6 flex-1 flex flex-col justify-center"> {/* Centrage vertical du contenu */}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="block text-2xl font-medium text-foreground hover:text-primary py-2 text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+            <div className="mt-8">
+              <Button asChild className="w-full">
+                <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                  Demander un devis
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
