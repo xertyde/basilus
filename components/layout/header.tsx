@@ -99,9 +99,9 @@ export default function Header() {
         </div>
       </nav>
 
-      {mobileMenuOpen && (
+{mobileMenuOpen && (
   <div className="fixed inset-0 z-50 bg-background md:hidden">
-    <div className="flex h-full flex-col overflow-y-auto py-6 px-6 animate-slide-in">
+    <div className="flex h-full flex-col overflow-y-auto py-6 px-6">
       <div className="flex items-center justify-between mb-8">
         <Link href="/" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
           <span className="text-2xl font-bold text-primary">Basilus</span>
@@ -137,7 +137,6 @@ export default function Header() {
     </div>
   </div>
 )}
-
     </header>
   )
 }
