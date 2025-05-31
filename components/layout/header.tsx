@@ -27,6 +27,18 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+  useEffect(() => {
+  if (mobileMenuOpen) {
+    document.body.classList.add('overflow-hidden');
+  } else {
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  return () => {
+    document.body.classList.remove('overflow-hidden');
+  };
+}, [mobileMenuOpen]);
+
 
   return (
     <header className={cn(
