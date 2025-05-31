@@ -88,7 +88,7 @@ export default function Header() {
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex h-full flex-col overflow-y-auto py-6 px-6">
+        <div className="flex h-screen flex-col overflow-y-auto py-6 px-6">
           <div className="flex items-center justify-between mb-8">
             <Link href="/" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
               <span className="text-2xl font-bold text-primary">Basilus</span>
