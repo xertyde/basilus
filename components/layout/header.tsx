@@ -106,8 +106,8 @@ export default function Header() {
 
       {/* Menu mobile */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-background md:hidden mt-16"> {/* Ajout de mt-16 pour laisser l'espace du header */}
-          <div className="flex h-[calc(100vh-4rem)] flex-col overflow-y-auto py-6 px-6"> {/* Ajustement de la hauteur */}
+        <div className="fixed inset-0 z-40 bg-background md:hidden mt-16">
+          <div className="flex h-[calc(100vh-4rem)] flex-col overflow-y-auto py-6 px-6">
             <div className="flex-1 space-y-6">
               {navigation.map((item) => (
                 <Link
