@@ -99,51 +99,45 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={cn(
-          "fixed inset-0 z-60 md:hidden transition-transform duration-300 ease-in-out",
-          "bg-background", // couleur de fond fiable
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        )}
-      >
-        <div className="flex h-full flex-col overflow-y-auto py-6 px-6">
-          <div className="flex items-center justify-between mb-8">
-            <Link href="/" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
-              <span className="text-2xl font-bold text-primary">Basilus</span>
-            </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <X className="h-6 w-6" />
-              <span className="sr-only">Fermer le menu</span>
-            </Button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="space-y-6 py-6">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block text-base font-medium text-foreground hover:text-primary"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-            <div className="mt-8">
-              <Button asChild className="w-full">
-                <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
-                  Demander un devis
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
+      {mobileMenuOpen && (
+  <div className="fixed inset-0 z-50 bg-background md:hidden">
+    <div className="flex h-full flex-col overflow-y-auto py-6 px-6 animate-slide-in">
+      <div className="flex items-center justify-between mb-8">
+        <Link href="/" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
+          <span className="text-2xl font-bold text-primary">Basilus</span>
+        </Link>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <X className="h-6 w-6" />
+          <span className="sr-only">Fermer le menu</span>
+        </Button>
       </div>
+      <div className="space-y-6 py-6">
+        {navigation.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="block text-base font-medium text-foreground hover:text-primary"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {item.name}
+          </Link>
+        ))}
+      </div>
+      <div className="mt-8">
+        <Button asChild className="w-full">
+          <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+            Demander un devis
+          </Link>
+        </Button>
+      </div>
+    </div>
+  </div>
+)}
+
     </header>
   )
 }
