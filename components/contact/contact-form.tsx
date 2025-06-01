@@ -53,7 +53,7 @@ const packs = [
 const addons = [
   { id: "backend", label: "Backend personnalisé (+799€)" },
   { id: "mobile", label: "Adaptation mobile (+190€)" },
-  { id: "hosting", label: "Page supplémentaire (+50€/page)" },
+  { id: "page", label: "Page supplémentaire (+50€/page)" },
 ]
 
 export default function ContactForm() {
