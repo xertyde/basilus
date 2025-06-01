@@ -32,6 +32,12 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Le nom doit contenir au moins 2 caractères.",
   }),
+  companyName: z.string().min(2, {
+    message: "La dénomination sociale doit contenir au moins 2 caractères.",
+  }),
+  companyAddress: z.string().min(5, {
+    message: "L'adresse doit contenir au moins 5 caractères.",
+  }),
   email: z.string().email({
     message: "Veuillez entrer une adresse e-mail valide.",
   }),
@@ -66,6 +72,8 @@ export default function ContactForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      companyName: "",
+      companyAddress: "",
       email: "",
       pack: "",
       addons: [],
@@ -125,6 +133,32 @@ export default function ContactForm() {
               <FormLabel>Nom</FormLabel>
               <FormControl>
                 <Input placeholder="Votre nom" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="companyName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Dénomination sociale</FormLabel>
+              <FormControl>
+                <Input placeholder="Nom de votre entreprise" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="companyAddress"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Adresse du siège social</FormLabel>
+              <FormControl>
+                <Input placeholder="Adresse complète de votre entreprise" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
