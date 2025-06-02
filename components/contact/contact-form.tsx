@@ -94,7 +94,10 @@ export default function ContactForm() {
       if (!response.ok) throw new Error("Erreur réseau");
 
       setIsSubmitted(true);
-      toast({ title: "Message envoyé !" });
+      toast({ 
+        title: "Merci ! Votre demande a bien été envoyée.",
+        description: "Vous recevrez votre devis par e-mail dans quelques instants. L'équipe Basilus vous contactera très prochainement"
+      });
 
     } catch (error) {
       toast({
@@ -274,7 +277,7 @@ export default function ContactForm() {
               Envoi en cours...
             </>
           ) : (
-            'Envoyer le message'
+            'Obtenir mon devis gratuit'
           )}
         </Button>
       </form>

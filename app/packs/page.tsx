@@ -49,7 +49,7 @@ export default function PacksPage() {
                 "Sans maintenance post-livraison (option possible)"
               ]}
               notice={[
-                "2 fois sans frais ou 3 fois avec frais à 5%"
+                "30% d'acompte à la commande, solde à la livraison"
               ]}
               options={[
                 {
@@ -83,7 +83,7 @@ export default function PacksPage() {
                 "Mises à jour techniques & sécurité (hors contenu)"
               ]}
               notice={[
-                "2 fois sans frais ou 3 fois avec frais à 5%"
+                "30% d'acompte à la commande, solde à la livraison"
               ]}
               options={[
                 {

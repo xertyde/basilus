@@ -97,8 +97,7 @@ export default function Home() {
               Des sites web qui font briller <span className="text-primary">votre entreprise</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-              Basilus crée des sites web sur mesure qui attirent vos clients et boostent votre activité. Design épuré, code optimisé, résultats garantis.
-            </p>
+              Start-up ou PME, vous souhaitez valoriser votre activité, booster votre visibilité en ligne ou lancer votre boutique e-commerce ? Basilus vous accompagne avec un design épuré, un code optimisé et des résultats garantis.</p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Button asChild size="lg">
                 <Link href="/contact">

@@ -73,7 +73,7 @@ export default function Footer() {
                 <span className="block">Téléphone: +33 7 68 09 59 59</span>
               </li>
               <li className="text-sm text-gray-300">
-                <span className="block">Adresse: 2 rue des Marguerites Chassieu 69680</span>
+                <span className="block">Adresse: Lyon 3ème Arrondissement</span>
               </li>
             </ul>
           </div>

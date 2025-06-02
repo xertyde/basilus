@@ -15,7 +15,7 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contactez-nous</h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Vous avez un projet en tête ? Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.
+              Vous avez un projet en tête ? Remplissez le formulaire ci-dessous et recevez un devis gratuit. Nous vous recontacteront dans les plus brefs délais.
             </p>
           </div>
         </div>
@@ -25,7 +25,7 @@ export default function ContactPage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
+              <h2 className="text-2xl font-bold mb-6">Demandez votre devis gratuit en ligne</h2>
               <ContactForm />
             </div>
 
@@ -59,8 +59,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Adresse</h3>
-                    <p className="text-muted-foreground">2 rue des Marguerites</p>
-                    <p className="text-muted-foreground">Chassieu 69680</p>
+                    <p className="text-muted-foreground">Lyon 3ème Arrondissement</p>
                   </div>
                 </div>
               </div>
