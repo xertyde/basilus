@@ -105,11 +105,22 @@ export default function ProjectForm() {
       }
 
       // Insert data into Supabase
-      const { error } = await supabase
+      const { error: insertError } = await supabase
         .from('client_form')
         .insert([formattedData])
 
-      if (error) throw error
+      if (insertError) throw insertError
+
+      // Call the form-email function
+      const { error: emailError } = await supabase
+        .rpc('form-email', {
+          form_data: formattedData
+        })
+
+      if (emailError) {
+        console.error('Error sending email:', emailError)
+        // Continue with success message even if email fails
+      }
 
       toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.')
       
