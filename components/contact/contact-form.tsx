@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import Link from 'next/link'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -277,7 +278,9 @@ export default function ContactForm() {
               Envoi en cours...
             </>
           ) : (
-            'Obtenir mon devis gratuit'
+            <Link href="/form" className="w-full">
+              Obtenir mon devis gratuit
+            </Link>
           )}
         </Button>
       </form>
