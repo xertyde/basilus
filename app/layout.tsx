@@ -1,17 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import PageTransition from '@/components/layout/page-transition';
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -32,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+      <body className={`${poppins.variable} font-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
