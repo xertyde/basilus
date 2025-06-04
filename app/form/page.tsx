@@ -88,6 +88,13 @@ interface FormattedFormData extends Omit<FormData, 'devices_used' | 'pages_to_in
   expected_features: string;
 }
 
+// Modifier le style des radio buttons et checkboxes
+const radioStyle = "form-radio h-4 w-4 text-primary border-input focus:ring-primary/20 transition-colors"
+const checkboxStyle = "form-checkbox h-4 w-4 text-primary border-input focus:ring-primary/20 transition-colors"
+const labelStyle = "ml-3 text-sm text-foreground"
+const optionContainerStyle = "mt-2 space-y-3"
+const optionItemStyle = "inline-flex items-center mr-6"
+
 export default function ProjectForm() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -177,58 +184,58 @@ export default function ProjectForm() {
           <FormSection title="1. Informations générales">
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+              <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Nom de l'entreprise</label>
-                  <input
-                    type="text"
+                <input
+                  type="text"
                     {...register('company_name')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
-                
-                <div>
+                />
+              </div>
+              
+              <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Secteur d'activité</label>
-                  <input
-                    type="text"
+                <input
+                  type="text"
                     {...register('industry_sector')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Slogan ou baseline</label>
-                  <input
-                    type="text"
-                    {...register('slogan')}
+                <input
+                  type="text"
+                  {...register('slogan')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Personne de contact</label>
-                  <input
-                    type="text"
+                <input
+                  type="text"
                     {...register('contact_person')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Email</label>
-                  <input
-                    type="email"
-                    {...register('email')}
+                <input
+                  type="email"
+                  {...register('email')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Téléphone</label>
-                  <input
-                    type="tel"
-                    {...register('phone')}
+                <input
+                  type="tel"
+                  {...register('phone')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
+                />
                 </div>
               </div>
 
@@ -301,34 +308,36 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Le site est-il un outil central ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('is_central_tool')}
-                      value="oui"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('is_central_tool')}
-                      value="non"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('is_central_tool')}
-                      value="partiellement"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Partiellement</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('is_central_tool')}
+                        value="oui"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('is_central_tool')}
+                        value="non"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('is_central_tool')}
+                        value="partiellement"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Partiellement</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -336,25 +345,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Est-il lié à une campagne ou événement ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('linked_to_event')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('linked_to_event')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('linked_to_event')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('linked_to_event')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -402,36 +413,36 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Appareils utilisés principalement
                 </label>
-                <div className="mt-2 space-y-2">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      {...register('devices_used')}
-                      value="smartphone"
-                      className="form-checkbox"
-                    />
-                    <span className="ml-2">Smartphone</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      {...register('devices_used')}
-                      value="tablette"
-                      className="form-checkbox"
-                    />
-                    <span className="ml-2">Tablette</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      {...register('devices_used')}
-                      value="ordinateur"
-                      className="form-checkbox"
-                    />
-                    <span className="ml-2">Ordinateur</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="checkbox"
+                        {...register('devices_used')}
+                        value="smartphone"
+                        className={checkboxStyle}
+                      />
+                      <span className={labelStyle}>Smartphone</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="checkbox"
+                        {...register('devices_used')}
+                        value="tablette"
+                        className={checkboxStyle}
+                      />
+                      <span className={labelStyle}>Tablette</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="checkbox"
+                        {...register('devices_used')}
+                        value="ordinateur"
+                        className={checkboxStyle}
+                      />
+                      <span className={labelStyle}>Ordinateur</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -444,25 +455,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Avez-vous un logo ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_logo')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_logo')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_logo')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_logo')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -470,25 +483,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Avez-vous une charte graphique ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_brand_guidelines')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_brand_guidelines')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_brand_guidelines')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_brand_guidelines')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -496,25 +511,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Faut-il créer une charte graphique ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('need_brand_guidelines')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('need_brand_guidelines')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('need_brand_guidelines')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('need_brand_guidelines')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -533,66 +550,63 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Style souhaité
                 </label>
-                <div className="mt-2 space-y-2">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('desired_style')}
-                      value="corporate"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Corporate</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('desired_style')}
-                      value="créatif"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Créatif</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('desired_style')}
-                      value="académique"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Académique</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('desired_style')}
-                      value="minimaliste"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Minimaliste</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('desired_style')}
-                      value="convivial"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Convivial</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('desired_style')}
-                      value="autre"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Autre</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('desired_style')}
+                        value="corporate"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Corporate</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('desired_style')}
+                        value="créatif"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Créatif</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('desired_style')}
+                        value="académique"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Académique</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('desired_style')}
+                        value="minimaliste"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Minimaliste</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('desired_style')}
+                        value="convivial"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Convivial</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('desired_style')}
+                        value="autre"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Autre</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -605,25 +619,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Avez-vous une arborescence ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_site_map')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_site_map')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_site_map')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_site_map')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -631,29 +647,31 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Pages à inclure
                 </label>
-                <div className="mt-2 space-y-2">
-                  {[
-                    { id: 'Accueil', label: 'Accueil' },
-                    { id: 'À propos', label: 'À propos' },
-                    { id: 'Services', label: 'Services' },
-                    { id: 'Contact', label: 'Contact' },
-                    { id: 'FAQ', label: 'FAQ' },
-                    { id: 'Témoignages', label: 'Témoignages' },
-                    { id: 'Blog', label: 'Blog' },
-                    { id: 'Portfolio', label: 'Portfolio' },
-                    { id: 'Légal', label: 'Légal' },
-                    { id: 'Autres', label: 'Autres' },
-                  ].map((page) => (
-                    <label key={page.id} className="inline-flex items-center">
-                      <input
-                        type="checkbox"
-                        {...register('pages_to_include')}
-                        value={page.id}
-                        className="form-checkbox"
-                      />
-                      <span className="ml-2">{page.label}</span>
-                    </label>
-                  ))}
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    {[
+                      { id: 'Accueil', label: 'Accueil' },
+                      { id: 'À propos', label: 'À propos' },
+                      { id: 'Services', label: 'Services' },
+                      { id: 'Contact', label: 'Contact' },
+                      { id: 'FAQ', label: 'FAQ' },
+                      { id: 'Témoignages', label: 'Témoignages' },
+                      { id: 'Blog', label: 'Blog' },
+                      { id: 'Portfolio', label: 'Portfolio' },
+                      { id: 'Légal', label: 'Légal' },
+                      { id: 'Autres', label: 'Autres' },
+                    ].map((page) => (
+                      <label key={page.id} className={optionItemStyle}>
+                        <input
+                          type="checkbox"
+                          {...register('pages_to_include')}
+                          value={page.id}
+                          className={checkboxStyle}
+                        />
+                        <span className={labelStyle}>{page.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -661,34 +679,36 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Disposez-vous des textes ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_texts')}
-                      value="oui"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_texts')}
-                      value="non"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_texts')}
-                      value="à retravailler"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">À retravailler</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_texts')}
+                        value="oui"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_texts')}
+                        value="non"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_texts')}
+                        value="à retravailler"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>À retravailler</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -696,34 +716,36 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Disposez-vous des images/vidéos ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_media')}
-                      value="oui"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_media')}
-                      value="non"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_media')}
-                      value="partiellement"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Partiellement</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_media')}
+                        value="oui"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_media')}
+                        value="non"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_media')}
+                        value="partiellement"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Partiellement</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -731,25 +753,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous une rédaction SEO ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('needs_seo_copywriting')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('needs_seo_copywriting')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('needs_seo_copywriting')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('needs_seo_copywriting')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -811,26 +835,28 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Fonctionnalités souhaitées
                 </label>
-                <div className="mt-2 space-y-2">
-                  {[
-                    { id: 'formulaire de contact', label: 'Formulaire de contact' },
-                    { id: 'e-commerce', label: 'E-commerce' },
-                    { id: 'blog', label: 'Blog' },
-                    { id: 'galerie', label: 'Galerie' },
-                    { id: 'espace membre', label: 'Espace membre' },
-                    { id: 'réservation', label: 'Réservation' },
-                    { id: 'chatbot', label: 'Chatbot' },
-                  ].map((feature) => (
-                    <label key={feature.id} className="inline-flex items-center">
-                      <input
-                        type="checkbox"
-                        {...register('expected_features')}
-                        value={feature.id}
-                        className="form-checkbox"
-                      />
-                      <span className="ml-2">{feature.label}</span>
-                    </label>
-                  ))}
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    {[
+                      { id: 'formulaire de contact', label: 'Formulaire de contact' },
+                      { id: 'e-commerce', label: 'E-commerce' },
+                      { id: 'blog', label: 'Blog' },
+                      { id: 'galerie', label: 'Galerie' },
+                      { id: 'espace membre', label: 'Espace membre' },
+                      { id: 'réservation', label: 'Réservation' },
+                      { id: 'chatbot', label: 'Chatbot' },
+                    ].map((feature) => (
+                      <label key={feature.id} className={optionItemStyle}>
+                        <input
+                          type="checkbox"
+                          {...register('expected_features')}
+                          value={feature.id}
+                          className={checkboxStyle}
+                        />
+                        <span className={labelStyle}>{feature.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -849,36 +875,36 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Type de site souhaité
                 </label>
-                <div className="mt-2 space-y-2">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('site_type')}
-                      value="vitrine"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Vitrine</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('site_type')}
-                      value="e-commerce"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">E-commerce</span>
-                  </label>
-                  <br />
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('site_type')}
-                      value="sur mesure"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Sur mesure</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('site_type')}
+                        value="vitrine"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Vitrine</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('site_type')}
+                        value="e-commerce"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>E-commerce</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('site_type')}
+                        value="sur mesure"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Sur mesure</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -891,25 +917,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Avez-vous déjà travaillé le SEO ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_worked_on_seo')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_worked_on_seo')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_worked_on_seo')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_worked_on_seo')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -917,25 +945,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous une prestation SEO ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_seo_service')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_seo_service')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_seo_service')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_seo_service')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -959,25 +989,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Avez-vous un nom de domaine ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_domain')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_domain')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_domain')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_domain')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -985,25 +1017,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous que nous en achetions un ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('needs_domain_purchase')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('needs_domain_purchase')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('needs_domain_purchase')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('needs_domain_purchase')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1011,25 +1045,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Avez-vous un hébergeur ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_hosting')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('has_hosting')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_hosting')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('has_hosting')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1050,25 +1086,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous qu'on gère l'hébergement ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_hosting_management')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_hosting_management')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_hosting_management')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_hosting_management')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1081,25 +1119,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous une formation à l'outil ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_training')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_training')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_training')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_training')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1107,25 +1147,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous un contrat de maintenance ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_maintenance')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_maintenance')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_maintenance')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_maintenance')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1133,25 +1175,27 @@ export default function ProjectForm() {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Souhaitez-vous que nous assurions les évolutions futures ?
                 </label>
-                <div className="mt-2 space-x-4">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_future_updates')}
-                      value="true"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Oui</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input
-                      type="radio"
-                      {...register('wants_future_updates')}
-                      value="false"
-                      className="form-radio"
-                    />
-                    <span className="ml-2">Non</span>
-                  </label>
+                <div className={optionContainerStyle}>
+                  <div className="flex flex-wrap gap-x-6">
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_future_updates')}
+                        value="true"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Oui</span>
+                    </label>
+                    <label className={optionItemStyle}>
+                      <input
+                        type="radio"
+                        {...register('wants_future_updates')}
+                        value="false"
+                        className={radioStyle}
+                      />
+                      <span className={labelStyle}>Non</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
