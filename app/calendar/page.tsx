@@ -1,6 +1,9 @@
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
 
+// Log de base pour vérifier que le code s'exécute
+console.log('=== CALENDAR PAGE LOADING ===');
+
 // Types
 interface TimeSlot {
   start: Date;
@@ -15,8 +18,6 @@ interface Availability {
 // Configuration
 const CALENDAR_IDS = {
   THOMAS: 'thomasfonferrier@gmail.com',
-  // Gardons un second calendrier pour la démonstration
-  CALENDAR_2: 'calendar2@group.calendar.google.com',
 };
 
 const WORK_HOURS = {
@@ -170,16 +171,6 @@ const mockEvents = {
       end: { dateTime: '2024-03-20T16:00:00+01:00' },
     },
   ],
-  [CALENDAR_IDS.CALENDAR_2]: [
-    {
-      start: { dateTime: '2024-03-20T11:00:00+01:00' },
-      end: { dateTime: '2024-03-20T13:00:00+01:00' },
-    },
-    {
-      start: { dateTime: '2024-03-20T15:00:00+01:00' },
-      end: { dateTime: '2024-03-20T17:00:00+01:00' },
-    },
-  ],
 };
 
 // Fonction simulée pour les tests
@@ -189,57 +180,70 @@ async function getMockEvents(calendarId: string) {
 
 // Composant principal
 export default async function CalendarPage() {
+  console.log('=== CALENDAR PAGE RENDERING ===');
   const today = new Date();
-  console.log('Date du jour:', today.toISOString());
   
-  // Utilisation de la vraie fonction getCalendarEvents
-  const events1 = await getCalendarEvents(CALENDAR_IDS.THOMAS, today);
-  const events2 = await getCalendarEvents(CALENDAR_IDS.CALENDAR_2, today);
-  
-  console.log('Événements récupérés:', {
-    calendar1: events1.length,
-    calendar2: events2.length
-  });
+  try {
+    // Utilisation de la vraie fonction getCalendarEvents
+    console.log('Fetching calendar events...');
+    const events = await getCalendarEvents(CALENDAR_IDS.THOMAS, today);
+    
+    console.log('Events fetched:', { events: events.length });
 
-  const mergedEvents = mergeEvents(events1, events2);
-  const freeSlots = calculateFreeSlots(mergedEvents, today);
+    const freeSlots = calculateFreeSlots(events.map(event => ({
+      start: new Date(event.start.dateTime || event.start.date),
+      end: new Date(event.end.dateTime || event.end.date)
+    })), today);
 
-  console.log('Créneaux libres calculés:', freeSlots);
+    return (
+      <div className="min-h-screen bg-background py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold mb-8 text-center">
+            Disponibilités pour le {today.toLocaleDateString('fr-FR')}
+          </h1>
 
-  return (
-    <div className="min-h-screen bg-background py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-center">
-          Disponibilités pour le {today.toLocaleDateString('fr-FR')}
-        </h1>
-
-        {freeSlots.length === 0 ? (
-          <div className="space-y-4">
-            <p className="text-center text-muted-foreground">
-              Aucune disponibilité pour aujourd'hui.
-            </p>
-            <div className="text-sm text-muted-foreground text-center">
-              <p>Heures de disponibilité : {WORK_HOURS.start}h - {WORK_HOURS.end}h</p>
+          {freeSlots.length === 0 ? (
+            <div className="space-y-4">
+              <p className="text-center text-muted-foreground">
+                Aucune disponibilité pour aujourd'hui.
+              </p>
+              <div className="text-sm text-muted-foreground text-center">
+                <p>Heures de disponibilité : {WORK_HOURS.start}h - {WORK_HOURS.end}h</p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Créneaux disponibles :</h2>
-            <div className="grid gap-4">
-              {freeSlots.map((slot, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-card rounded-lg border border-border shadow-sm"
-                >
-                  <p className="text-lg font-medium">
-                    {slot.start} - {slot.end}
-                  </p>
-                </div>
-              ))}
+          ) : (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold mb-4">Créneaux disponibles :</h2>
+              <div className="grid gap-4">
+                {freeSlots.map((slot, index) => (
+                  <div
+                    key={index}
+                    className="p-4 bg-card rounded-lg border border-border shadow-sm"
+                  >
+                    <p className="text-lg font-medium">
+                      {slot.start} - {slot.end}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error('Error in CalendarPage:', error);
+    return (
+      <div className="min-h-screen bg-background py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold mb-8 text-center text-red-500">
+            Erreur lors du chargement du calendrier
+          </h1>
+          <p className="text-center text-muted-foreground">
+            Une erreur est survenue lors de la récupération des disponibilités.
+          </p>
+        </div>
+      </div>
+    );
+  }
 } 
