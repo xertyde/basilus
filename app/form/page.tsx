@@ -117,35 +117,31 @@ export default function ProjectForm() {
 
       if (insertError) throw insertError
 
-// ... existing code ...
+      // Call the form-email function
+      try {
+        console.log('Sending data to form-email:', formattedData);
+        
+        const { data, error: emailError } = await supabase.functions.invoke('form-email', {
+          method: 'POST',
+          body: formattedData,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
 
-// Call the form-email function
-try {
-  console.log('Sending data to form-email:', formattedData);
-  
-  const { data, error: emailError } = await supabase.functions.invoke('form-email', {
-    method: 'POST',
-    body: JSON.stringify(formattedData), // Utiliser JSON.stringify ici
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
-  });
+        if (emailError) {
+          console.error('Error sending email:', emailError);
+          throw emailError;
+        }
 
-  if (emailError) {
-    console.error('Error sending email:', emailError);
-    throw emailError;
-  }
-
-  console.log('Email function response:', data);
-  toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
-} catch (error) {
-  console.error('Error calling form-email function:', error);
-  toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
-  throw error; // Propager l'erreur pour la gestion en amont
-}
-
-// ... existing code ...
+        console.log('Email function response:', data);
+        toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+      } catch (error) {
+        console.error('Error calling form-email function:', error);
+        toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
+        throw error; // Propager l'erreur pour la gestion en amont
+      }
 
       // Reset form
       //window.location.reload()
