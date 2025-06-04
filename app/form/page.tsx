@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { createClient } from '@supabase/supabase-js'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -96,6 +97,7 @@ const optionContainerStyle = "mt-2 space-y-3"
 const optionItemStyle = "inline-flex items-center mr-6"
 
 export default function ProjectForm() {
+  const router = useRouter()
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -142,11 +144,11 @@ export default function ProjectForm() {
       } catch (error) {
         console.error('Error calling form-email function:', error);
         toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
-        throw error; // Propager l'erreur pour la gestion en amont
+        throw error;
       }
 
-      // Reset form
-      window.location.reload()
+      // Rediriger vers la page du calendrier
+      router.push('/calendar')
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Une erreur est survenue lors de l\'envoi du formulaire. Veuillez réessayer.')
@@ -311,32 +313,32 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('is_central_tool')}
                         value="oui"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('is_central_tool')}
                         value="non"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('is_central_tool')}
                         value="partiellement"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Partiellement</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -348,23 +350,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('linked_to_event')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('linked_to_event')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -416,32 +418,32 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="checkbox"
+                    <input
+                      type="checkbox"
                         {...register('devices_used')}
                         value="smartphone"
                         className={checkboxStyle}
-                      />
+                    />
                       <span className={labelStyle}>Smartphone</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="checkbox"
+                    <input
+                      type="checkbox"
                         {...register('devices_used')}
                         value="tablette"
                         className={checkboxStyle}
-                      />
+                    />
                       <span className={labelStyle}>Tablette</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="checkbox"
+                    <input
+                      type="checkbox"
                         {...register('devices_used')}
                         value="ordinateur"
                         className={checkboxStyle}
-                      />
+                    />
                       <span className={labelStyle}>Ordinateur</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -458,23 +460,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_logo')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_logo')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -486,23 +488,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_brand_guidelines')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_brand_guidelines')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -514,23 +516,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('need_brand_guidelines')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('need_brand_guidelines')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -553,59 +555,59 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('desired_style')}
-                        value="corporate"
+                      value="corporate"
                         className={radioStyle}
-                      />
+                    />
                       <span className={labelStyle}>Corporate</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('desired_style')}
                         value="créatif"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Créatif</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('desired_style')}
                         value="académique"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Académique</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('desired_style')}
                         value="minimaliste"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Minimaliste</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('desired_style')}
                         value="convivial"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Convivial</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('desired_style')}
                         value="autre"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Autre</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -622,23 +624,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_site_map')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_site_map')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -660,17 +662,17 @@ export default function ProjectForm() {
                       { id: 'Portfolio', label: 'Portfolio' },
                       { id: 'Légal', label: 'Légal' },
                       { id: 'Autres', label: 'Autres' },
-                    ].map((page) => (
+                  ].map((page) => (
                       <label key={page.id} className={optionItemStyle}>
-                        <input
-                          type="checkbox"
+                      <input
+                        type="checkbox"
                           {...register('pages_to_include')}
                           value={page.id}
                           className={checkboxStyle}
-                        />
+                      />
                         <span className={labelStyle}>{page.label}</span>
-                      </label>
-                    ))}
+                    </label>
+                  ))}
                   </div>
                 </div>
               </div>
@@ -682,32 +684,32 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_texts')}
                         value="oui"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_texts')}
                         value="non"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_texts')}
                         value="à retravailler"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>À retravailler</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -719,32 +721,32 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_media')}
                         value="oui"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_media')}
                         value="non"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_media')}
                         value="partiellement"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Partiellement</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -756,23 +758,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('needs_seo_copywriting')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('needs_seo_copywriting')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -837,25 +839,25 @@ export default function ProjectForm() {
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
-                    {[
+                  {[
                       { id: 'formulaire de contact', label: 'Formulaire de contact' },
                       { id: 'e-commerce', label: 'E-commerce' },
-                      { id: 'blog', label: 'Blog' },
+                    { id: 'blog', label: 'Blog' },
                       { id: 'galerie', label: 'Galerie' },
                       { id: 'espace membre', label: 'Espace membre' },
                       { id: 'réservation', label: 'Réservation' },
-                      { id: 'chatbot', label: 'Chatbot' },
-                    ].map((feature) => (
+                    { id: 'chatbot', label: 'Chatbot' },
+                  ].map((feature) => (
                       <label key={feature.id} className={optionItemStyle}>
-                        <input
-                          type="checkbox"
+                      <input
+                        type="checkbox"
                           {...register('expected_features')}
                           value={feature.id}
                           className={checkboxStyle}
-                        />
+                      />
                         <span className={labelStyle}>{feature.label}</span>
-                      </label>
-                    ))}
+                    </label>
+                  ))}
                   </div>
                 </div>
               </div>
@@ -878,32 +880,32 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('site_type')}
                         value="vitrine"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Vitrine</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('site_type')}
                         value="e-commerce"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>E-commerce</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('site_type')}
                         value="sur mesure"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Sur mesure</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -920,23 +922,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_worked_on_seo')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_worked_on_seo')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -948,7 +950,7 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
+                    <input
                         type="radio"
                         {...register('wants_seo_service')}
                         value="true"
@@ -964,7 +966,7 @@ export default function ProjectForm() {
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -992,23 +994,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_domain')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_domain')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -1020,23 +1022,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('needs_domain_purchase')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('needs_domain_purchase')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -1048,23 +1050,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_hosting')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('has_hosting')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -1089,23 +1091,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_hosting_management')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_hosting_management')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -1122,23 +1124,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_training')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_training')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -1150,23 +1152,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_maintenance')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_maintenance')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>
@@ -1178,23 +1180,23 @@ export default function ProjectForm() {
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_future_updates')}
                         value="true"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Oui</span>
-                    </label>
+                  </label>
                     <label className={optionItemStyle}>
-                      <input
-                        type="radio"
+                    <input
+                      type="radio"
                         {...register('wants_future_updates')}
                         value="false"
                         className={radioStyle}
                       />
                       <span className={labelStyle}>Non</span>
-                    </label>
+                  </label>
                   </div>
                 </div>
               </div>

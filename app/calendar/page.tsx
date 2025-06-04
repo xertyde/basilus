@@ -51,6 +51,12 @@ async function getCalendarEvents(calendarId: string, date: Date) {
     const endOfDay = new Date(date);
     endOfDay.setHours(WORK_HOURS.end, 0, 0, 0);
 
+    console.log('Recherche des événements pour:', {
+      calendarId,
+      startOfDay: startOfDay.toISOString(),
+      endOfDay: endOfDay.toISOString()
+    });
+
     const response = await calendar.events.list({
       calendarId,
       timeMin: startOfDay.toISOString(),
@@ -58,6 +64,11 @@ async function getCalendarEvents(calendarId: string, date: Date) {
       singleEvents: true,
       orderBy: 'startTime',
     });
+
+    console.log('Événements trouvés:', response.data.items?.length || 0);
+    if (response.data.items?.length) {
+      console.log('Premier événement:', response.data.items[0]);
+    }
 
     return response.data.items || [];
   } catch (error) {
@@ -68,10 +79,23 @@ async function getCalendarEvents(calendarId: string, date: Date) {
 
 // Fonction pour fusionner les événements de deux calendriers
 function mergeEvents(events1: any[], events2: any[]): TimeSlot[] {
-  const allEvents = [...events1, ...events2].map(event => ({
-    start: new Date(event.start.dateTime || event.start.date),
-    end: new Date(event.end.dateTime || event.end.date),
-  }));
+  console.log('Fusion des événements:', {
+    events1: events1.length,
+    events2: events2.length
+  });
+
+  const allEvents = [...events1, ...events2].map(event => {
+    const start = new Date(event.start.dateTime || event.start.date);
+    const end = new Date(event.end.dateTime || event.end.date);
+    
+    console.log('Événement traité:', {
+      summary: event.summary,
+      start: start.toISOString(),
+      end: end.toISOString()
+    });
+
+    return { start, end };
+  });
 
   // Trier les événements par date de début
   return allEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
@@ -166,13 +190,21 @@ async function getMockEvents(calendarId: string) {
 // Composant principal
 export default async function CalendarPage() {
   const today = new Date();
+  console.log('Date du jour:', today.toISOString());
   
   // Utilisation de la vraie fonction getCalendarEvents
   const events1 = await getCalendarEvents(CALENDAR_IDS.THOMAS, today);
   const events2 = await getCalendarEvents(CALENDAR_IDS.CALENDAR_2, today);
   
+  console.log('Événements récupérés:', {
+    calendar1: events1.length,
+    calendar2: events2.length
+  });
+
   const mergedEvents = mergeEvents(events1, events2);
   const freeSlots = calculateFreeSlots(mergedEvents, today);
+
+  console.log('Créneaux libres calculés:', freeSlots);
 
   return (
     <div className="min-h-screen bg-background py-24 px-4 sm:px-6 lg:px-8">
@@ -182,9 +214,14 @@ export default async function CalendarPage() {
         </h1>
 
         {freeSlots.length === 0 ? (
-          <p className="text-center text-muted-foreground">
-            Aucune disponibilité pour aujourd'hui.
-          </p>
+          <div className="space-y-4">
+            <p className="text-center text-muted-foreground">
+              Aucune disponibilité pour aujourd'hui.
+            </p>
+            <div className="text-sm text-muted-foreground text-center">
+              <p>Heures de disponibilité : {WORK_HOURS.start}h - {WORK_HOURS.end}h</p>
+            </div>
+          </div>
         ) : (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold mb-4">Créneaux disponibles :</h2>
