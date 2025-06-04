@@ -577,11 +577,18 @@ export default function ProjectForm() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   3 à 5 liens de sites que vous aimez
+                  <span className="text-muted-foreground text-xs ml-2">
+                    Besoin d'inspiration ? Découvrez notre sélection de templates modernes sur 
+                    <a href="https://webflow.com/templates" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">
+                      Webflow Templates
+                    </a>
+                  </span>
                 </label>
                 <textarea
                   {...register('liked_sites')}
-                  rows={4}
                   className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+                  rows={4}
+                  placeholder="Ex: https://www.example1.com, https://www.example2.com"
                 />
               </div>
 
