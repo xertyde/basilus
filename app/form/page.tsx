@@ -139,7 +139,7 @@ export default function ProjectForm() {
       }
 
       // Reset form
-      //window.location.reload()
+      window.location.reload()
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Une erreur est survenue lors de l\'envoi du formulaire. Veuillez réessayer.')
