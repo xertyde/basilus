@@ -123,7 +123,7 @@ try {
   
   const { data, error: emailError } = await supabase.functions.invoke('form-email', {
     method: 'POST',
-    body: JSON.stringify(formattedData), // Assurez-vous que les données sont stringifiées
+    body: formattedData, // Ne pas utiliser JSON.stringify ici, Supabase le fait automatiquement
     headers: {
       'Content-Type': 'application/json'
     }
@@ -141,6 +141,8 @@ try {
   console.error('Error calling form-email function:', error);
   toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
 }
+
+
       // Reset form
       window.location.reload()
     } catch (error) {
