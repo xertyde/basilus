@@ -82,26 +82,32 @@ interface FormData {
   additional_comments: string
 }
 
+interface FormattedFormData extends Omit<FormData, 'devices_used' | 'pages_to_include' | 'expected_features'> {
+  devices_used: string;
+  pages_to_include: string;
+  expected_features: string;
+}
+
 export default function ProjectForm() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (formData: FormData) => {
     try {
       setIsSubmitting(true)
       
       // Basic validation
-      if (!data.company_name || !data.email || !data.phone) {
+      if (!formData.company_name || !formData.email || !formData.phone) {
         toast.error('Veuillez remplir tous les champs obligatoires')
         return
       }
 
       // Convert arrays to comma-separated strings
-      const formattedData = {
-        ...data,
-        devices_used: data.devices_used.join(', '),
-        pages_to_include: data.pages_to_include.join(', '),
-        expected_features: data.expected_features.join(', ')
+      const formattedData: FormattedFormData = {
+        ...formData,
+        devices_used: formData.devices_used.join(', '),
+        pages_to_include: formData.pages_to_include.join(', '),
+        expected_features: formData.expected_features.join(', ')
       }
 
       // Insert data into Supabase
@@ -112,16 +118,17 @@ export default function ProjectForm() {
       if (insertError) throw insertError
 
       // Call the form-email function
-const { data, error: emailError } = await supabase.functions.invoke('form-email', {
-  body: formattedData
-});
+      const { error: emailError } = await supabase.functions.invoke('form-email', {
+        body: formattedData
+      });
 
-if (emailError) {
-  console.error('Error sending email:', emailError);
-  // Continue with success message even if email fails
-}
+      if (emailError) {
+        console.error('Error sending email:', emailError);
+        // Continue with success message even if email fails
+      }
 
-toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+      toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+      
       // Reset form
       window.location.reload()
     } catch (error) {
