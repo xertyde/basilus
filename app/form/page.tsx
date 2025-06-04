@@ -116,19 +116,24 @@ export default function ProjectForm() {
         .insert([formattedData])
 
       if (insertError) throw insertError
-
-      // Call the form-email function
-      const { error: emailError } = await supabase.functions.invoke('form-email', {
-        body: formattedData
-      });
-
-      if (emailError) {
-        console.error('Error sending email:', emailError);
-        // Continue with success message even if email fails
-      }
-
-      toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
       
+// Call the form-email function
+const { data, error: emailError } = await supabase.functions.invoke('form-email', {
+  body: formattedData,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+if (emailError) {
+  console.error('Error sending email:', emailError);
+  // Continue with success message even if email fails
+} else {
+  console.log('Email function response:', data);
+}
+
+toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+
       // Reset form
       window.location.reload()
     } catch (error) {
