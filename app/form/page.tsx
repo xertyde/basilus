@@ -119,9 +119,11 @@ export default function ProjectForm() {
 
 // Call the form-email function
 try {
+  console.log('Sending data to form-email:', formattedData);
+  
   const { data, error: emailError } = await supabase.functions.invoke('form-email', {
     method: 'POST',
-    body: formattedData,
+    body: JSON.stringify(formattedData), // Assurez-vous que les données sont stringifiées
     headers: {
       'Content-Type': 'application/json'
     }
