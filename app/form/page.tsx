@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { createClient } from '@supabase/supabase-js'
-import { toast } from 'sonner'
+import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
 
 // Initialize Supabase client
@@ -100,6 +100,7 @@ export default function ProjectForm() {
   const router = useRouter()
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
 
   const onSubmit = async (formData: FormData) => {
     try {
@@ -107,7 +108,11 @@ export default function ProjectForm() {
       
       // Basic validation
       if (!formData.company_name || !formData.email || !formData.phone) {
-        toast.error('Veuillez remplir tous les champs obligatoires')
+        toast({
+          title: "Erreur",
+          description: "Veuillez remplir tous les champs obligatoires",
+          variant: "destructive"
+        })
         return
       }
 
@@ -140,10 +145,17 @@ export default function ProjectForm() {
         }
 
         console.log('Email function response:', data);
-        toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+        toast({
+          title: "Succès !",
+          description: "Votre demande a été envoyée avec succès ! Nous vous contacterons dans les plus brefs délais."
+        })
       } catch (error) {
         console.error('Error calling form-email function:', error);
-        toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
+        toast({
+          title: "Erreur",
+          description: "Une erreur est survenue lors de l'envoi de votre demande. Veuillez réessayer.",
+          variant: "destructive"
+        })
         throw error;
       }
 
@@ -151,7 +163,11 @@ export default function ProjectForm() {
       router.push('/calendar')
     } catch (error) {
       console.error('Error submitting form:', error)
-      toast.error('Une erreur est survenue lors de l\'envoi du formulaire. Veuillez réessayer.')
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
+        variant: "destructive"
+      })
     } finally {
       setIsSubmitting(false)
     }

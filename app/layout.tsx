@@ -4,7 +4,7 @@ import { Poppins } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from 'sonner';
 import PageTransition from '@/components/layout/page-transition';
 
 const poppins = Poppins({
@@ -39,7 +39,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
-          <Toaster />
+          <Toaster position="bottom-right" richColors closeButton />
         </ThemeProvider>
       </body>
     </html>

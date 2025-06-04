@@ -28,6 +28,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -68,6 +69,7 @@ export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const { toast } = useToast()
   const supabase = createClientComponentClient()
+  const router = useRouter()
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -99,6 +101,7 @@ export default function ContactForm() {
         title: "Merci ! Votre demande a bien été envoyée.",
         description: "Vous recevrez votre devis par e-mail dans quelques instants. L'équipe Basilus vous contactera très prochainement"
       });
+      router.push('/form');
 
     } catch (error) {
       toast({
@@ -278,9 +281,7 @@ export default function ContactForm() {
               Envoi en cours...
             </>
           ) : (
-            <Link href="/form" className="w-full">
-              Obtenir mon devis gratuit
-            </Link>
+            <>Obtenir mon devis gratuit</>
           )}
         </Button>
       </form>
