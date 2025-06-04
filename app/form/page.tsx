@@ -123,7 +123,7 @@ try {
   
   const { data, error: emailError } = await supabase.functions.invoke('form-email', {
     method: 'POST',
-    body: JSON.stringify(formattedData), // Assurez-vous que les données sont stringifiées
+    body: formattedData, // Ne pas utiliser JSON.stringify ici
     headers: {
       'Content-Type': 'application/json'
     }
