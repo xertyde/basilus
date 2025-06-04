@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { createClient } from '@supabase/supabase-js'
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -190,11 +191,12 @@ export default function ProjectForm() {
           <p className="text-muted-foreground text-lg mb-8">
             Prenez 5 minutes pour nous partager vos besoins, envies et objectifs. Ce formulaire nous aidera à mieux comprendre votre vision avant notre échange téléphonique.
           </p>
-          <button
+          <Link
+            href="/calendar"
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary/10 text-primary font-semibold hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background transition-all transform hover:scale-[1.02]"
           >
             Planifier un appel directement
-          </button>
+          </Link>
         </div>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">

@@ -45,6 +45,8 @@ const formSchema = z.object({
   }),
   pack: z.string({
     required_error: "Veuillez sélectionner un pack",
+  }).min(1, {
+    message: "Veuillez sélectionner un pack",
   }),
   addons: z.array(z.string()).optional(),
   message: z.string().min(10, {
@@ -85,6 +87,15 @@ export default function ContactForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!values.pack) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner un pack avant d'envoyer le formulaire",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -189,7 +200,7 @@ export default function ContactForm() {
           name="pack"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Pack souhaité</FormLabel>
+              <FormLabel>Pack souhaité <span className="text-destructive">*</span></FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
