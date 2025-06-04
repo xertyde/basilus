@@ -99,7 +99,7 @@ export default function RealisationsPage() {
             <p className="text-lg text-muted-foreground mb-8">
               Vous avez un projet en tête ? Nous serions ravis de vous aider à le concrétiser. Contactez-nous pour discuter de vos besoins.
             </p>
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="animate-scale">
               <Link href="/contact">Démarrer votre projet</Link>
             </Button>
           </div>

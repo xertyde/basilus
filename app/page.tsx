@@ -155,7 +155,7 @@ export default function Home() {
         <div className="container">
           <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-3xl p-8 md:p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
+              <div className="animate-from-left">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Trouvez le pack qui vous convient</h2>
                 <p className="text-lg text-muted-foreground mb-6">
                   Du site vitrine au e-commerce complet, nous avons la solution adaptée à vos besoins et à votre budget.
@@ -166,7 +166,7 @@ export default function Home() {
                   </Link>
                 </Button>
               </div>
-              <div className="flex justify-center md:justify-end">
+              <div className="flex justify-center md:justify-end animate-from-right">
                 <div className="relative w-full max-w-sm h-72 bg-muted rounded-xl shadow-lg overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-6">
@@ -198,12 +198,12 @@ export default function Home() {
               company="Responsable commercial, Nauticare"
             />
             <TestimonialCard 
-              quote="Nous avions besoin d’un site simple et intuitif pour permettre la prise de rendez-vous en ligne. Basilus a su répondre parfaitement à nos attentes, avec sérieux et rapidité."
+              quote="Nous avions besoin d'un site simple et intuitif pour permettre la prise de rendez-vous en ligne. Basilus a su répondre parfaitement à nos attentes, avec sérieux et rapidité."
               author="Dr. Claire Moreau"
               company="Gérante, MedInCaen"
             />
             <TestimonialCard 
-              quote="Basilus a compris les enjeux de notre secteur. Le site est fluide et a permis d’accroître notre visibilité auprès des professionnels agricoles comme des candidats."
+              quote="Basilus a compris les enjeux de notre secteur. Le site est fluide et a permis d'accroître notre visibilité auprès des professionnels agricoles comme des candidats."
               author="Antoine Epifanic"
               company="Fondateur, Agripulse"
             />

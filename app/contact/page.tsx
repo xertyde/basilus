@@ -89,27 +89,27 @@ export default function ContactPage() {
       <section className="py-16 md:py-24 bg-muted/50">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Foire aux questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 animate-on-scroll">Foire aux questions</h2>
             <div className="space-y-8 text-left">
-              <div>
+              <div className="animate-on-scroll delay-100">
                 <h3 className="text-xl font-semibold mb-2">Quels sont les délais de réalisation ?</h3>
                 <p className="text-muted-foreground">
                   Les délais varient en fonction de la complexité du projet. En général, comptez 1 à 2 semaines pour un site vitrine et un mois ou plus pour un projet plus complexe.
                 </p>
               </div>
-              <div>
+              <div className="animate-on-scroll delay-200">
                 <h3 className="text-xl font-semibold mb-2">Comment se déroule la collaboration ?</h3>
                 <p className="text-muted-foreground">
                   Nous commençons par un appel pour comprendre vos besoins, puis nous vous envoyons un devis détaillé. Une fois validé, nous établissons un planning et commençons la conception.
                 </p>
               </div>
-              <div>
+              <div className="animate-on-scroll delay-300">
                 <h3 className="text-xl font-semibold mb-2">Proposez-vous des services de maintenance ?</h3>
                 <p className="text-muted-foreground">
                   Oui, nous proposons des forfaits de maintenance mensuelle pour assurer le bon fonctionnement de votre site et effectuer les mises à jour nécessaires.
                 </p>
               </div>
-              <div>
+              <div className="animate-on-scroll delay-400">
                 <h3 className="text-xl font-semibold mb-2">Dois-je déjà avoir un hébergement et un nom de domaine ?</h3>
                 <p className="text-muted-foreground">
                   Non, nous pouvons nous occuper de tout. Nous vous conseillons et mettons en place l'hébergement et le nom de domaine adaptés à votre projet.
