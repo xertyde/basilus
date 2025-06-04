@@ -117,30 +117,30 @@ export default function ProjectForm() {
 
       if (insertError) throw insertError
 
-      // Call the form-email function
-      try {
-        console.log('Sending data to form-email:', formattedData);
-        
-        const { data, error: emailError } = await supabase.functions.invoke('form-email', {
-          method: 'POST',
-          body: formattedData,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+// Call the form-email function
+try {
+  console.log('Sending data to form-email:', formattedData);
+  
+  const { data, error: emailError } = await supabase.functions.invoke('form-email', {
+    method: 'POST',
+    body: JSON.stringify(formattedData), // Assurez-vous que les données sont stringifiées
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
-        if (emailError) {
-          console.error('Error sending email:', emailError);
-          // Continue with success message even if email fails
-        } else {
-          console.log('Email function response:', data);
-        }
+  if (emailError) {
+    console.error('Error sending email:', emailError);
+    // Continue with success message even if email fails
+  } else {
+    console.log('Email function response:', data);
+  }
 
-        toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
-      } catch (error) {
-        console.error('Error calling form-email function:', error);
-        toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
-      }
+  toast.success('Votre demande a été envoyée avec succès ! Nous vous contacterons bientôt.');
+} catch (error) {
+  console.error('Error calling form-email function:', error);
+  toast.error('Une erreur est survenue lors de l\'envoi de votre demande.');
+}
 
       // Reset form
       //window.location.reload()
