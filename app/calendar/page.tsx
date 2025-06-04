@@ -15,6 +15,18 @@ interface Availability {
   end: string;
 }
 
+interface GoogleCalendarEvent {
+  start: {
+    dateTime?: string;
+    date?: string;
+  };
+  end: {
+    dateTime?: string;
+    date?: string;
+  };
+  summary?: string;
+}
+
 // Configuration
 const CALENDAR_IDS = {
   THOMAS: 'thomasfonferrier@gmail.com',
@@ -79,15 +91,28 @@ async function getCalendarEvents(calendarId: string, date: Date) {
 }
 
 // Fonction pour fusionner les événements de deux calendriers
-function mergeEvents(events1: any[], events2: any[]): TimeSlot[] {
+function mergeEvents(events1: GoogleCalendarEvent[], events2: GoogleCalendarEvent[]): TimeSlot[] {
   console.log('Fusion des événements:', {
     events1: events1.length,
     events2: events2.length
   });
 
   const allEvents = [...events1, ...events2].map(event => {
-    const start = new Date(event.start.dateTime || event.start.date);
-    const end = new Date(event.end.dateTime || event.end.date);
+    if (!event.start || !event.end) {
+      console.warn('Événement invalide:', event);
+      return null;
+    }
+
+    const startTime = event.start.dateTime || event.start.date;
+    const endTime = event.end.dateTime || event.end.date;
+
+    if (!startTime || !endTime) {
+      console.warn('Événement invalide: dateTime ou date manquant', event);
+      return null;
+    }
+
+    const start = new Date(startTime);
+    const end = new Date(endTime);
     
     console.log('Événement traité:', {
       summary: event.summary,
@@ -96,7 +121,7 @@ function mergeEvents(events1: any[], events2: any[]): TimeSlot[] {
     });
 
     return { start, end };
-  });
+  }).filter((event): event is TimeSlot => event !== null);
 
   // Trier les événements par date de début
   return allEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
@@ -190,10 +215,23 @@ export default async function CalendarPage() {
     
     console.log('Events fetched:', { events: events.length });
 
-    const freeSlots = calculateFreeSlots(events.map(event => ({
-      start: new Date(event.start.dateTime || event.start.date),
-      end: new Date(event.end.dateTime || event.end.date)
-    })), today);
+    const freeSlots = calculateFreeSlots(events.map(event => {
+      if (!event.start || !event.end) {
+        throw new Error('Événement invalide: start ou end manquant');
+      }
+
+      const startTime = event.start.dateTime || event.start.date;
+      const endTime = event.end.dateTime || event.end.date;
+
+      if (!startTime || !endTime) {
+        throw new Error('Événement invalide: dateTime ou date manquant');
+      }
+
+      return {
+        start: new Date(startTime),
+        end: new Date(endTime)
+      };
+    }), today);
 
     return (
       <div className="min-h-screen bg-background py-24 px-4 sm:px-6 lg:px-8">
