@@ -63,7 +63,7 @@ interface FormData {
   external_tools: string
   site_type: 'vitrine' | 'e-commerce' | 'sur mesure'
 
-  // 8. Référencement SEO
+  // 8. Référencement
   has_worked_on_seo: boolean
   wants_seo_service: boolean
   seo_competitors: string
@@ -559,7 +559,7 @@ export default function ProjectForm() {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous une rédaction SEO ?
+                  Souhaitez-vous une rédaction pour le référencement ?
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
@@ -677,12 +677,12 @@ export default function ProjectForm() {
             </div>
           </FormSection>
 
-          {/* 8. Référencement SEO */}
-          <FormSection title="8. Référencement SEO">
+                      {/* 8. Référencement */}
+                      <FormSection title="8. Référencement">
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous déjà travaillé le SEO ?
+                  Avez-vous déjà travaillé le référencement ?
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
@@ -694,7 +694,7 @@ export default function ProjectForm() {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous une prestation SEO ?
+                  Souhaitez-vous une prestation de référencement ?
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">

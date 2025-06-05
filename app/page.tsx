@@ -150,9 +150,6 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12 animate-on-scroll">
-            <p className="text-muted-foreground mb-6">
-              Rejoignez plus de 50 entreprises qui ont choisi Basilus pour leur transformation digitale
-            </p>
             <Button asChild variant="outline">
               <Link href="#pourquoi-basilus" className="scroll-smooth">
                 Découvrir notre approche
@@ -169,7 +166,7 @@ export default function Home() {
           <div className="text-center mb-12 animate-on-scroll">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Pourquoi choisir Basilus ?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Une approche moderne qui combine expertise technique, design élégant et stratégie digitale pour des résultats concrets.
+              Une approche moderne qui combine proximité avec le client, design élégant et expertise technique pour des résultats concrets.
             </p>
           </div>
           
@@ -186,7 +183,7 @@ export default function Home() {
             />
             <FeatureCard 
               icon={<Award className="h-6 w-6" />}
-              title="ROI garanti"
+              title="Retour sur investissement garanti"
               description="Des sites conçus pour convertir : amélioration du taux de conversion, génération de leads qualifiés et augmentation du chiffre d'affaires."
             />
           </div>
@@ -243,7 +240,7 @@ export default function Home() {
                     <p className="text-sm text-muted-foreground mb-4">Site vitrine professionnel</p>
                     <div className="space-y-2 text-xs text-muted-foreground">
                       <div>✓ Design responsive</div>
-                      <div>✓ Optimisation SEO</div>
+                      <div>✓ Optimisation référencement</div>
                       <div>✓ Support inclus</div>
                     </div>
                   </div>

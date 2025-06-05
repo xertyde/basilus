@@ -42,7 +42,7 @@ export default function PacksPage() {
                 "Site vitrine jusqu'à 5 pages",
                 "Design responsive",
                 "1 révision",
-                "Optimisation SEO de base",
+                "Optimisation du référencement de base",
                 "Formulaire de contact",
                 "Intégration des réseaux sociaux",
                 "Formation à l'utilisation (1h)",
@@ -75,7 +75,7 @@ export default function PacksPage() {
                 "Site jusqu'à 10 pages",
                 "Design premium responsive",
                 "2 révisions incluses, +50€/révision supplémentaire",
-                "Optimisation SEO avancée",
+                "Optimisation référencement avancée",
                 "Système de blog intégré",
                 "Formulaires personnalisés",
                 "Statistiques de visite",
@@ -87,7 +87,7 @@ export default function PacksPage() {
               ]}
               options={[
                 {
-                  name: "Multilingue",
+                  name: "Version multilingue (langues disponibles : Français, Anglais, Espagnol, Italien, Allemand, Portugais, Néerlandais, Russe, Japonais, Chinois, Arabe, Hindi, Coréen, Turc, Polonais, Suédois, Norvégien, Danois, Finlandais, Grec, Thaï, Vietnamien, Indonésien, Malaisien, Tchèque, Hongrois, Roumain, Bulgare, Croate, Slovaque, Slovène, Estonien, Letton, Lituanien, Ukrainien, Bengali, Tamil, Ourdou, Persan, et plus)",
                   price: "+250€"
                 },
                 {
@@ -117,7 +117,7 @@ export default function PacksPage() {
                 "E-commerce possible",
                 "Espace membre",
                 "Intégration d'API",
-                "SEO avancé",
+                "référencement avancé",
                 "Stratégie de contenu",
                 "Formation approfondie",
                 "Support prioritaire"
@@ -273,7 +273,7 @@ export default function PacksPage() {
         {[
           "Structure 100% sur-mesure",
           "Design cohérent avec le reste du site",
-          "Contenu optimisé pour le SEO",
+          "Contenu optimisé pour le référencement",
           "Responsive sur tous les appareils",
           "Chargement rapide",
           "Intégration de visuels et médias"
