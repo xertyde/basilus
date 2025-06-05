@@ -127,6 +127,29 @@ function mergeEvents(events1: GoogleCalendarEvent[], events2: GoogleCalendarEven
   return allEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
 }
 
+// Fonction pour décomposer un créneau en créneaux d'une heure
+function splitIntoHourlySlots(startTime: Date, endTime: Date): Availability[] {
+  const hourlySlots: Availability[] = [];
+  const current = new Date(startTime);
+  
+  while (current < endTime) {
+    const slotEnd = new Date(current);
+    slotEnd.setHours(slotEnd.getHours() + 1);
+    
+    // S'assurer de ne pas dépasser l'heure de fin
+    if (slotEnd <= endTime) {
+      hourlySlots.push({
+        start: formatTime(current),
+        end: formatTime(slotEnd),
+      });
+    }
+    
+    current.setHours(current.getHours() + 1);
+  }
+  
+  return hourlySlots;
+}
+
 // Fonction pour calculer les créneaux libres
 function calculateFreeSlots(events: TimeSlot[], date: Date): Availability[] {
   const freeSlots: Availability[] = [];
@@ -140,36 +163,42 @@ function calculateFreeSlots(events: TimeSlot[], date: Date): Availability[] {
 
   // Si pas d'événements, toute la journée est libre
   if (events.length === 0) {
-    return [{
-      start: formatTime(workStart),
-      end: formatTime(workEnd),
-    }];
+    return splitIntoHourlySlots(workStart, workEnd);
   }
 
   // Vérifier le créneau avant le premier événement
   if (events[0].start > workStart) {
-    freeSlots.push({
-      start: formatTime(workStart),
-      end: formatTime(events[0].start),
-    });
+    const slotStart = workStart;
+    const slotEnd = roundDownToPreviousHour(events[0].start);
+    
+    // Vérifier que le créneau arrondi est valide (au moins 1 heure)
+    if (slotEnd > slotStart) {
+      freeSlots.push(...splitIntoHourlySlots(slotStart, slotEnd));
+    }
   }
 
   // Vérifier les créneaux entre les événements
   for (let i = 0; i < events.length - 1; i++) {
     if (events[i].end < events[i + 1].start) {
-      freeSlots.push({
-        start: formatTime(events[i].end),
-        end: formatTime(events[i + 1].start),
-      });
+      const slotStart = roundUpToNextHour(events[i].end);
+      const slotEnd = roundDownToPreviousHour(events[i + 1].start);
+      
+      // Vérifier que le créneau arrondi est valide (au moins 1 heure)
+      if (slotEnd > slotStart) {
+        freeSlots.push(...splitIntoHourlySlots(slotStart, slotEnd));
+      }
     }
   }
 
   // Vérifier le créneau après le dernier événement
   if (events[events.length - 1].end < workEnd) {
-    freeSlots.push({
-      start: formatTime(events[events.length - 1].end),
-      end: formatTime(workEnd),
-    });
+    const slotStart = roundUpToNextHour(events[events.length - 1].end);
+    const slotEnd = workEnd;
+    
+    // Vérifier que le créneau arrondi est valide (au moins 1 heure)
+    if (slotEnd > slotStart) {
+      freeSlots.push(...splitIntoHourlySlots(slotStart, slotEnd));
+    }
   }
 
   return freeSlots;
@@ -182,6 +211,66 @@ function formatTime(date: Date): string {
     minute: '2-digit',
     hour12: false,
   });
+}
+
+// Fonction pour arrondir une heure de début à l'heure supérieure
+function roundUpToNextHour(date: Date): Date {
+  const rounded = new Date(date);
+  if (rounded.getMinutes() > 0 || rounded.getSeconds() > 0) {
+    rounded.setHours(rounded.getHours() + 1);
+  }
+  rounded.setMinutes(0);
+  rounded.setSeconds(0);
+  rounded.setMilliseconds(0);
+  return rounded;
+}
+
+// Fonction pour arrondir une heure de fin à l'heure inférieure
+function roundDownToPreviousHour(date: Date): Date {
+  const rounded = new Date(date);
+  if (rounded.getMinutes() > 0 || rounded.getSeconds() > 0) {
+    rounded.setMinutes(0);
+    rounded.setSeconds(0);
+    rounded.setMilliseconds(0);
+  } else {
+    // Si c'est déjà une heure ronde, on garde la même heure
+    rounded.setMinutes(0);
+    rounded.setSeconds(0);
+    rounded.setMilliseconds(0);
+  }
+  return rounded;
+}
+
+// Fonction pour formater la date
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
+// Fonction pour obtenir les 5 prochains jours ouvrables
+function getNextBusinessDays(count: number = 5): Date[] {
+  const businessDays: Date[] = [];
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+  
+  let daysAdded = 0;
+  let checkDate = new Date(currentDate);
+  
+  while (daysAdded < count) {
+    const dayOfWeek = checkDate.getDay();
+    // 0 = Dimanche, 6 = Samedi
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      businessDays.push(new Date(checkDate));
+      daysAdded++;
+    }
+    checkDate.setDate(checkDate.getDate() + 1);
+  }
+  
+  return businessDays;
 }
 
 // Exemple de données fictives pour les tests
@@ -206,66 +295,90 @@ async function getMockEvents(calendarId: string) {
 // Composant principal
 export default async function CalendarPage() {
   console.log('=== CALENDAR PAGE RENDERING ===');
-  const today = new Date();
+  const businessDays = getNextBusinessDays(5);
   
   try {
-    // Utilisation de la vraie fonction getCalendarEvents
-    console.log('Fetching calendar events...');
-    const events = await getCalendarEvents(CALENDAR_IDS.THOMAS, today);
+    // Récupération des événements pour tous les jours ouvrables
+    console.log('Fetching calendar events for business days...');
     
-    console.log('Events fetched:', { events: events.length });
+    const dailyAvailabilities = await Promise.all(
+      businessDays.map(async (date) => {
+        const events = await getCalendarEvents(CALENDAR_IDS.THOMAS, date);
+        
+        const freeSlots = calculateFreeSlots(events.map(event => {
+          if (!event.start || !event.end) {
+            throw new Error('Événement invalide: start ou end manquant');
+          }
 
-    const freeSlots = calculateFreeSlots(events.map(event => {
-      if (!event.start || !event.end) {
-        throw new Error('Événement invalide: start ou end manquant');
-      }
+          const startTime = event.start.dateTime || event.start.date;
+          const endTime = event.end.dateTime || event.end.date;
 
-      const startTime = event.start.dateTime || event.start.date;
-      const endTime = event.end.dateTime || event.end.date;
+          if (!startTime || !endTime) {
+            throw new Error('Événement invalide: dateTime ou date manquant');
+          }
 
-      if (!startTime || !endTime) {
-        throw new Error('Événement invalide: dateTime ou date manquant');
-      }
+          return {
+            start: new Date(startTime),
+            end: new Date(endTime)
+          };
+        }), date);
+        
+        return {
+          date,
+          freeSlots
+        };
+      })
+    );
 
-      return {
-        start: new Date(startTime),
-        end: new Date(endTime)
-      };
-    }), today);
+    console.log('Events fetched for all business days');
 
     return (
       <div className="min-h-screen bg-background py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-center">
-            Disponibilités pour le {today.toLocaleDateString('fr-FR')}
-          </h1>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold mb-4">
+              Réservez votre rendez-vous
+            </h1>
+            <div className="text-lg text-muted-foreground mb-2">
+              Rendez-vous téléphoniques ou visioconférence
+            </div>
+            <div className="text-base text-muted-foreground">
+              Disponibilités des 5 prochains jours ouvrables
+            </div>
+          </div>
+          
+          <div className="text-sm text-muted-foreground text-center mb-8">
+            <p>Heures de disponibilité : {WORK_HOURS.start}h - {WORK_HOURS.end}h</p>
+          </div>
 
-          {freeSlots.length === 0 ? (
-            <div className="space-y-4">
-              <p className="text-center text-muted-foreground">
-                Aucune disponibilité pour aujourd'hui.
-              </p>
-              <div className="text-sm text-muted-foreground text-center">
-                <p>Heures de disponibilité : {WORK_HOURS.start}h - {WORK_HOURS.end}h</p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold mb-4">Créneaux disponibles :</h2>
-              <div className="grid gap-4">
-                {freeSlots.map((slot, index) => (
-                  <div
-                    key={index}
-                    className="p-4 bg-card rounded-lg border border-border shadow-sm"
-                  >
-                    <p className="text-lg font-medium">
-                      {slot.start} - {slot.end}
-                    </p>
+          <div className="space-y-8">
+            {dailyAvailabilities.map((dayAvailability, dayIndex) => (
+              <div key={dayIndex} className="bg-card rounded-lg border border-border p-6">
+                <h2 className="text-xl font-semibold mb-4 capitalize">
+                  {formatDate(dayAvailability.date)}
+                </h2>
+                
+                {dayAvailability.freeSlots.length === 0 ? (
+                  <p className="text-muted-foreground">
+                    Aucune disponibilité pour cette journée.
+                  </p>
+                ) : (
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {dayAvailability.freeSlots.map((slot, slotIndex) => (
+                      <div
+                        key={slotIndex}
+                        className="p-3 bg-background rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow"
+                      >
+                        <p className="text-base font-medium">
+                          {slot.start} - {slot.end}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </div>
     );

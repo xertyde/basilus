@@ -171,10 +171,10 @@ export default function ProjectForm() {
 
       if (error) throw error
 
-      toast({
+        toast({
         title: "Merci !",
         description: "Votre demande a bien été envoyée. Nous vous contacterons dans les plus brefs délais.",
-      })
+        })
 
       router.push('/merci')
     } catch (error) {
@@ -215,7 +215,7 @@ export default function ProjectForm() {
         </div>
 
         <div className="text-center my-8">
-          <span className="text-muted-foreground text-lg font-medium">ou</span>
+          <span className="text-muted-foreground text-xl font-medium">- ou -</span>
         </div>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -223,58 +223,58 @@ export default function ProjectForm() {
           <FormSection title="1. Informations générales">
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
+              <div>
                   <RequiredLabel>Nom de l'entreprise</RequiredLabel>
-                  <input
-                    type="text"
+                <input
+                  type="text"
                     {...register('company_name')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
-                
-                <div>
+                />
+              </div>
+              
+              <div>
                   <OptionalLabel>Secteur d'activité</OptionalLabel>
-                  <input
-                    type="text"
+                <input
+                  type="text"
                     {...register('industry_sector')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <OptionalLabel>Slogan ou baseline</OptionalLabel>
-                  <input
-                    type="text"
-                    {...register('slogan')}
+                <input
+                  type="text"
+                  {...register('slogan')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <OptionalLabel>Personne de contact</OptionalLabel>
-                  <input
-                    type="text"
+                <input
+                  type="text"
                     {...register('contact_person')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <RequiredLabel>Email</RequiredLabel>
-                  <input
-                    type="email"
-                    {...register('email')}
+                <input
+                  type="email"
+                  {...register('email')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
-                </div>
+                />
+              </div>
 
-                <div>
+              <div>
                   <RequiredLabel>Téléphone</RequiredLabel>
-                  <input
-                    type="tel"
-                    {...register('phone')}
+                <input
+                  type="tel"
+                  {...register('phone')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                  />
+                />
                 </div>
               </div>
 
@@ -491,9 +491,9 @@ export default function ProjectForm() {
                       { id: 'Portfolio', label: 'Portfolio' },
                       { id: 'Légal', label: 'Légal' },
                       { id: 'Autres', label: 'Autres' },
-                    ].map((page) => (
+                  ].map((page) => (
                       <FormOption key={page.id} type="checkbox" register={register} name="pages_to_include" value={page.id} label={page.label} />
-                    ))}
+                  ))}
                   </div>
                 </div>
               </div>
@@ -586,17 +586,17 @@ export default function ProjectForm() {
                 <OptionalLabel>Fonctionnalités souhaitées</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
-                    {[
+                  {[
                       { id: 'formulaire de contact', label: 'Formulaire de contact' },
                       { id: 'e-commerce', label: 'E-commerce' },
-                      { id: 'blog', label: 'Blog' },
+                    { id: 'blog', label: 'Blog' },
                       { id: 'galerie', label: 'Galerie' },
                       { id: 'espace membre', label: 'Espace membre' },
                       { id: 'réservation', label: 'Réservation' },
-                      { id: 'chatbot', label: 'Chatbot' },
-                    ].map((feature) => (
+                    { id: 'chatbot', label: 'Chatbot' },
+                  ].map((feature) => (
                       <FormOption key={feature.id} type="checkbox" register={register} name="expected_features" value={feature.id} label={feature.label} />
-                    ))}
+                  ))}
                   </div>
                 </div>
               </div>
