@@ -17,6 +17,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'Basilus | Sites web professionnels sur mesure',
   description: 'Basilus crée des sites web professionnels et sur mesure pour votre entreprise. Découvrez nos packs et demandez un devis.',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

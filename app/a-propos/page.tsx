@@ -60,7 +60,7 @@ Notre objectif : offrir aux petites entreprises des sites modernes, efficaces et
 Plutôt qu’un long discours, nous mettons notre énergie dans des solutions concrètes, pensées pour vos besoins réels et vos ambitions digitales.
               </p>
               <p className="text-lg text-muted-foreground mb-6">
-                Aujourd'hui, notre équipe s'est agrandie mais notre mission reste la même : créer des sites web qui non seulement sont beaux, mais qui répondent également aux objectifs commerciaux de nos clients.
+                Après de nombreux sites produits, notre mission reste la même : créer des sites web qui non seulement sont beaux, mais qui répondent également aux objectifs commerciaux de nos clients.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button asChild>
