@@ -76,7 +76,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center">
+      <section className="relative min-h-screen flex items-center" id="hero">
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
           {!splineError ? (
@@ -97,7 +97,8 @@ export default function Home() {
               Des sites web qui font briller <span className="text-primary">votre entreprise</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-              Start-up ou PME, vous souhaitez valoriser votre activité, booster votre visibilité en ligne ou lancer votre boutique e-commerce ? Basilus vous accompagne avec un design épuré, un code optimisé et des résultats garantis.</p>
+              Start-up ou PME, vous souhaitez valoriser votre activité, booster votre visibilité en ligne ou lancer votre boutique e-commerce ? Basilus vous accompagne avec un design épuré, un code optimisé et des résultats garantis.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Button asChild size="lg">
                 <Link href="/contact">
@@ -105,13 +106,13 @@ export default function Home() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="/packs">
-                  Découvrir nos packs
+                <Link href="#temoignages" className="scroll-smooth">
+                  Voir nos succès clients
                 </Link>
               </Button>
               <Button asChild variant="ghost" size="lg">
                 <Link href="/realisations" className="flex items-center">
-                  Voir nos réalisations
+                  Nos réalisations
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -120,74 +121,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 md:py-24 bg-muted/50">
+      {/* Testimonials Section - Moved to 2nd position */}
+      <section className="py-16 md:py-24 bg-muted/50" id="temoignages">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Pourquoi choisir Basilus ?</h2>
+          <div className="text-center mb-12 animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ils nous font confiance</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Nous combinons design, technologie et stratégie pour créer des sites web qui génèrent des résultats.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<Zap className="h-6 w-6" />}
-              title="Design épuré"
-              description="Des interfaces élégantes et intuitives qui mettent en valeur votre marque et captivent vos visiteurs."
-            />
-            <FeatureCard 
-              icon={<Code className="h-6 w-6" />}
-              title="Développement robuste"
-              description="Un code optimisé pour des performances maximales, une sécurité renforcée et une maintenance simplifiée."
-            />
-            <FeatureCard 
-              icon={<Award className="h-6 w-6" />}
-              title="Résultats mesurables"
-              description="Des sites conçus pour convertir vos visiteurs en clients et augmenter votre chiffre d'affaires."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA for Packages */}
-      <section className="py-16 md:py-24">
-        <div className="container">
-          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-3xl p-8 md:p-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div className="animate-from-left">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Trouvez le pack qui vous convient</h2>
-                <p className="text-lg text-muted-foreground mb-6">
-                  Du site vitrine au e-commerce complet, nous avons la solution adaptée à vos besoins et à votre budget.
-                </p>
-                <Button asChild size="lg">
-                  <Link href="/packs">
-                    Découvrir nos packs
-                  </Link>
-                </Button>
-              </div>
-              <div className="flex justify-center md:justify-end animate-from-right">
-                <div className="relative w-full max-w-sm h-72 bg-muted rounded-xl shadow-lg overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-6">
-                    <p className="text-xl font-semibold mb-2">Dès</p>
-                    <p className="text-4xl font-bold mb-4">590€</p>
-                    <p className="text-sm">Site vitrine professionnel</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 md:py-24 bg-muted/50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ce que nos clients disent</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Découvrez les témoignages de ceux qui nous ont fait confiance pour leur présence en ligne.
+              Découvrez comment nos clients ont transformé leur présence digitale et boosté leur activité avec Basilus.
             </p>
           </div>
           
@@ -209,22 +149,131 @@ export default function Home() {
             />
           </div>
 
+          <div className="text-center mt-12 animate-on-scroll">
+            <p className="text-muted-foreground mb-6">
+              Rejoignez plus de 50 entreprises qui ont choisi Basilus pour leur transformation digitale
+            </p>
+            <Button asChild variant="outline">
+              <Link href="#pourquoi-basilus" className="scroll-smooth">
+                Découvrir notre approche
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section - Moved to 3rd position */}
+      <section className="py-16 md:py-24" id="pourquoi-basilus">
+        <div className="container">
+          <div className="text-center mb-12 animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Pourquoi choisir Basilus ?</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Une approche moderne qui combine expertise technique, design élégant et stratégie digitale pour des résultats concrets.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <FeatureCard 
+              icon={<Zap className="h-6 w-6" />}
+              title="Design moderne & performant"
+              description="Des interfaces élégantes et ultra-rapides qui captivent vos visiteurs dès la première seconde et renforcent votre crédibilité."
+            />
+            <FeatureCard 
+              icon={<Code className="h-6 w-6" />}
+              title="Technologies de pointe"
+              description="Un code optimisé et évolutif utilisant les dernières technologies pour garantir sécurité, rapidité et facilité de maintenance."
+            />
+            <FeatureCard 
+              icon={<Award className="h-6 w-6" />}
+              title="ROI garanti"
+              description="Des sites conçus pour convertir : amélioration du taux de conversion, génération de leads qualifiés et augmentation du chiffre d'affaires."
+            />
+          </div>
+
+          <div className="text-center mt-12 animate-on-scroll">
+            <p className="text-muted-foreground mb-6">
+              Prêt à découvrir nos solutions sur mesure ?
+            </p>
+            <Button asChild>
+              <Link href="#nos-offres" className="scroll-smooth">
+                Explorer nos packs
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA for Packages - Moved to 4th position */}
+      <section className="py-16 md:py-24 bg-muted/50" id="nos-offres">
+        <div className="container">
+          <div className="text-center mb-12 animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Trouvez votre solution idéale</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Du site vitrine élégant au e-commerce complet, chaque pack est pensé pour répondre précisément à vos objectifs et votre budget.
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-3xl p-8 md:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className="animate-from-left">
+                <h3 className="text-2xl md:text-3xl font-bold mb-4">Des solutions clés en main</h3>
+                <p className="text-lg text-muted-foreground mb-6">
+                  Que vous soyez une startup ambitieuse, une PME en croissance ou un professionnel indépendant, nous avons le pack parfait pour propulser votre présence en ligne.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button asChild size="lg">
+                    <Link href="/packs">
+                      Découvrir tous nos packs
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/contact">
+                      Conseil personnalisé
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="flex justify-center md:justify-end animate-from-right">
+                <div className="relative w-full max-w-sm h-72 bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl shadow-lg overflow-hidden border border-primary/10">
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-6">
+                    <p className="text-lg font-medium mb-2 text-muted-foreground">À partir de</p>
+                    <p className="text-4xl md:text-5xl font-bold mb-4 text-primary">590€</p>
+                    <p className="text-sm text-muted-foreground mb-4">Site vitrine professionnel</p>
+                    <div className="space-y-2 text-xs text-muted-foreground">
+                      <div>✓ Design responsive</div>
+                      <div>✓ Optimisation SEO</div>
+                      <div>✓ Support inclus</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="py-16 md:py-24">
         <div className="container">
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Prêt à lancer votre projet ?</h2>
+          <div className="text-center max-w-2xl mx-auto animate-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Transformons votre vision en réalité</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Contactez-nous dès aujourd'hui pour discuter de vos besoins et obtenir un devis personnalisé.
+              Rejoignez nos clients satisfaits et donnez à votre entreprise la présence digitale qu'elle mérite. Démarrons votre projet dès aujourd'hui !
             </p>
-            <Button asChild size="lg">
-              <Link href="/contact">
-                Demander un devis gratuit
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg">
+                <Link href="/contact">
+                  Lancer mon projet
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/calendar">
+                  Planifier un appel
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
