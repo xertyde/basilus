@@ -21,8 +21,8 @@ interface FormData {
   contact_person: string
   email: string
   phone: string
-  existing_website: string
-  social_links: string
+  existing_website?: string
+  social_links?: string
   physical_address: string
 
   // 2. Objectifs & vision
@@ -43,7 +43,7 @@ interface FormData {
   has_brand_guidelines: boolean
   need_brand_guidelines: boolean
   brand_universe: string
-  desired_style: 'corporate' | 'créatif' | 'académique' | 'minimaliste' | 'convivial' | 'autre'
+  desired_style?: 'corporate' | 'créatif' | 'académique' | 'minimaliste' | 'convivial' | 'autre'
 
   // 5. Contenu & structure
   has_site_map: boolean
@@ -52,27 +52,27 @@ interface FormData {
   has_media: 'oui' | 'non' | 'partiellement'
 
   // 6. Design / inspiration
-  liked_sites: string
-  disliked_sites: string
-  design_constraints: string
-  editorial_tone: string
+  liked_sites?: string
+  disliked_sites?: string
+  design_constraints?: string
+  editorial_tone?: string
 
   // 7. Fonctionnalités attendues
-  expected_features: string[]
-  external_tools: string
+  expected_features?: string[]
+  external_tools?: string
   site_type: 'vitrine' | 'e-commerce' | 'sur mesure'
 
   // 8. Référencement
-  has_worked_on_seo: boolean
-  wants_seo_service: boolean
-  seo_competitors: string
+  has_worked_on_seo?: boolean
+  wants_seo_service?: boolean
+  seo_competitors?: string
 
   // 9. Hébergement & nom de domaine
-  has_domain: boolean
-  needs_domain_purchase: boolean
-  has_hosting: boolean
+  has_domain?: boolean
+  needs_domain_purchase?: boolean
+  has_hosting?: boolean
   hosting_details?: string
-  wants_hosting_management: boolean
+  wants_hosting_management?: boolean
 
   // 10. Suivi & accompagnement
   wants_training: boolean
@@ -80,13 +80,13 @@ interface FormData {
   wants_future_updates: boolean
 
   // 11. Commentaires et remarques
-  additional_comments: string
+  additional_comments?: string
 }
 
 interface FormattedFormData extends Omit<FormData, 'devices_used' | 'pages_to_include' | 'expected_features'> {
   devices_used: string;
   pages_to_include: string;
-  expected_features: string;
+  expected_features?: string;
 }
 
 // Modifier le style des radio buttons et checkboxes
@@ -136,27 +136,38 @@ export default function ProjectForm() {
         return
       }
 
-      // Convert arrays to comma-separated strings
-      const formattedData: FormattedFormData = {
+      // Convert arrays to comma-separated strings and filter empty values
+      const formattedData: Partial<FormattedFormData> = {
         ...formData,
         devices_used: formData.devices_used.join(', '),
         pages_to_include: formData.pages_to_include.join(', '),
-        expected_features: formData.expected_features.join(', ')
+        expected_features: formData.expected_features?.join(', ') || ''
       }
+
+      // Filter out empty or undefined values
+      const filteredData = Object.fromEntries(
+        Object.entries(formattedData).filter(([_, value]) => {
+          // Keep the value if it's not empty, undefined, null, or empty string
+          if (value === undefined || value === null || value === '') return false;
+          // For arrays converted to strings, check if it's not just empty
+          if (typeof value === 'string' && value.trim() === '') return false;
+          return true;
+        })
+      );
 
       // Insert data into Supabase
       const { error: insertError } = await supabase
         .from('client_form')
-        .insert([formattedData])
+        .insert([filteredData])
 
       if (insertError) throw insertError
 
       // Call the form-email function
       try {
-        console.log('Sending data to form-email:', formattedData);
+        console.log('Sending data to form-email:', filteredData);
         
         const { data, error: emailError } = await supabase.functions.invoke('form-email', {
-          body: formattedData
+          body: filteredData
         });
 
         if (emailError) {
