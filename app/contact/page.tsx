@@ -12,7 +12,7 @@ export default function ContactPage() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center animate-on-scroll">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contactez-nous</h1>
             <p className="text-lg text-muted-foreground mb-8">
               Vous avez un projet en tête ? Remplissez le formulaire ci-dessous et recevez un devis gratuitement. Nous vous recontacteront dans les plus brefs délais.
@@ -24,15 +24,15 @@ export default function ContactPage() {
       <section className="pb-16 md:pb-24">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
+            <div className="animate-from-left">
               <h2 className="text-2xl font-bold mb-6">Demandez votre devis gratuit en ligne</h2>
               <ContactForm />
             </div>
 
-            <div>
+            <div className="animate-from-right">
               <h2 className="text-2xl font-bold mb-6">Nos coordonnées</h2>
               <div className="space-y-8">
-                <div className="flex items-start">
+                <div className="flex items-start animate-on-scroll delay-100">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 text-primary">
                     <Mail className="h-5 w-5" />
                   </div>
@@ -42,7 +42,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start">
+                <div className="flex items-start animate-on-scroll delay-200">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 text-primary">
                     <Phone className="h-5 w-5" />
                   </div>
@@ -53,7 +53,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start">
+                <div className="flex items-start animate-on-scroll delay-300">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 text-primary">
                     <MapPin className="h-5 w-5" />
                   </div>
@@ -64,7 +64,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="mt-12">
+              <div className="mt-12 animate-on-scroll delay-400">
                 <h3 className="text-lg font-semibold mb-4">Horaires d'ouverture</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
@@ -91,25 +91,25 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 animate-on-scroll">Foire aux questions</h2>
             <div className="space-y-8 text-left">
-              <div className="animate-on-scroll delay-100">
+              <div className="animate-slide-up delay-100">
                 <h3 className="text-xl font-semibold mb-2">Quels sont les délais de réalisation ?</h3>
                 <p className="text-muted-foreground">
                   Les délais varient en fonction de la complexité du projet. En général, comptez 1 à 2 semaines pour un site vitrine et un mois ou plus pour un projet plus complexe.
                 </p>
               </div>
-              <div className="animate-on-scroll delay-200">
+              <div className="animate-slide-up delay-200">
                 <h3 className="text-xl font-semibold mb-2">Comment se déroule la collaboration ?</h3>
                 <p className="text-muted-foreground">
                   Nous commençons par un appel pour comprendre vos besoins, puis nous vous envoyons un devis détaillé. Une fois validé, nous établissons un planning et commençons la conception.
                 </p>
               </div>
-              <div className="animate-on-scroll delay-300">
+              <div className="animate-slide-up delay-300">
                 <h3 className="text-xl font-semibold mb-2">Proposez-vous des services de maintenance ?</h3>
                 <p className="text-muted-foreground">
                   Oui, nous proposons des forfaits de maintenance mensuelle pour assurer le bon fonctionnement de votre site et effectuer les mises à jour nécessaires.
                 </p>
               </div>
-              <div className="animate-on-scroll delay-400">
+              <div className="animate-slide-up delay-400">
                 <h3 className="text-xl font-semibold mb-2">Dois-je déjà avoir un hébergement et un nom de domaine ?</h3>
                 <p className="text-muted-foreground">
                   Non, nous pouvons nous occuper de tout. Nous vous conseillons et mettons en place l'hébergement et le nom de domaine adaptés à votre projet.

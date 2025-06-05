@@ -213,10 +213,14 @@ export default function ProjectForm() {
           </p>
           <Link
             href="/calendar"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary/10 text-primary font-semibold hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background transition-all transform hover:scale-[1.02]"
+            className="inline-flex items-center justify-center px-8 py-4 text-lg rounded-xl bg-primary/10 text-primary font-semibold hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background transition-all transform hover:scale-[1.02]"
           >
             Planifier un appel directement
           </Link>
+        </div>
+
+        <div className="text-center my-8">
+          <span className="text-muted-foreground text-lg font-medium">ou</span>
         </div>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -313,7 +317,7 @@ export default function ProjectForm() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Pourquoi souhaitez-vous créer ou refondre ce site ?
+                  Pourquoi souhaitez-vous créer ou refaire ce site ?
                 </label>
                 <textarea
                   {...register('reason_for_website')}
@@ -577,7 +581,8 @@ export default function ProjectForm() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   3 à 5 liens de sites que vous aimez
-                  <span className="text-muted-foreground text-xs ml-2">
+                  <br />
+                  <span className="text-muted-foreground text-xs">
                     Besoin d'inspiration ? Découvrez notre sélection de templates modernes sur 
                     <a href="https://webflow.com/templates" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline ml-1">
                       Webflow Templates
