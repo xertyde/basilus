@@ -50,7 +50,6 @@ interface FormData {
   pages_to_include: string[]
   has_texts: 'oui' | 'non' | 'à retravailler'
   has_media: 'oui' | 'non' | 'partiellement'
-  needs_seo_copywriting: boolean
 
   // 6. Design / inspiration
   liked_sites: string
@@ -501,7 +500,7 @@ export default function ProjectForm() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous une arborescence ?
+                  Avez-vous une architecture de site en tête ?
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
@@ -537,7 +536,7 @@ export default function ProjectForm() {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Disposez-vous des textes ?
+                  Disposez-vous de textes à inclure?
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
@@ -550,7 +549,7 @@ export default function ProjectForm() {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Disposez-vous des images/vidéos ?
+                  Disposez-vous d'images/vidéos à inclure ?
                 </label>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
@@ -561,17 +560,7 @@ export default function ProjectForm() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous une rédaction pour le référencement ?
-                </label>
-                <div className={optionContainerStyle}>
-                  <div className="flex flex-wrap gap-x-6">
-                    <FormOption type="radio" register={register} name="needs_seo_copywriting" value="true" label="Oui" />
-                    <FormOption type="radio" register={register} name="needs_seo_copywriting" value="false" label="Non" />
-                  </div>
-                </div>
-              </div>
+
             </div>
           </FormSection>
 
