@@ -2,16 +2,13 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { createClient } from '@supabase/supabase-js'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 // Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const supabase = createClientComponentClient()
 
 interface FormData {
   // 1. Informations générales
@@ -116,6 +113,20 @@ const FormOption = ({ type, register, name, value, label }: {
   </label>
 )
 
+// Ajout de la fonction utilitaire pour les labels avec astérisque
+const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+  <label className="block text-sm font-medium text-foreground mb-2">
+    {children}
+    <span className="text-red-500 ml-1">*</span>
+  </label>
+)
+
+const OptionalLabel = ({ children }: { children: React.ReactNode }) => (
+  <label className="block text-sm font-medium text-foreground mb-2">
+    {children}
+  </label>
+)
+
 export default function ProjectForm() {
   const router = useRouter()
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
@@ -147,51 +158,25 @@ export default function ProjectForm() {
       // Filter out empty or undefined values
       const filteredData = Object.fromEntries(
         Object.entries(formattedData).filter(([_, value]) => {
-          // Keep the value if it's not empty, undefined, null, or empty string
           if (value === undefined || value === null || value === '') return false;
-          // For arrays converted to strings, check if it's not just empty
-          if (typeof value === 'string' && value.trim() === '') return false;
+          if (Array.isArray(value) && value.length === 0) return false;
           return true;
         })
-      );
+      )
 
-      // Insert data into Supabase
-      const { error: insertError } = await supabase
-        .from('client_form')
+      // Insert into Supabase
+      const { error } = await supabase
+        .from('project_requests')
         .insert([filteredData])
 
-      if (insertError) throw insertError
+      if (error) throw error
 
-      // Call the form-email function
-      try {
-        console.log('Sending data to form-email:', filteredData);
-        
-        const { data, error: emailError } = await supabase.functions.invoke('form-email', {
-          body: filteredData
-        });
+      toast({
+        title: "Merci !",
+        description: "Votre demande a bien été envoyée. Nous vous contacterons dans les plus brefs délais.",
+      })
 
-        if (emailError) {
-          console.error('Error sending email:', emailError);
-          throw emailError;
-        }
-
-        console.log('Email function response:', data);
-        toast({
-          title: "Succès !",
-          description: "Votre demande a été envoyée avec succès ! Nous vous contacterons dans les plus brefs délais."
-        })
-      } catch (error) {
-        console.error('Error calling form-email function:', error);
-        toast({
-          title: "Erreur",
-          description: "Une erreur est survenue lors de l'envoi de votre demande. Veuillez réessayer.",
-          variant: "destructive"
-        })
-        throw error;
-      }
-
-      // Rediriger vers la page du calendrier
-      router.push('/calendar')
+      router.push('/merci')
     } catch (error) {
       console.error('Error submitting form:', error)
       toast({
@@ -238,63 +223,63 @@ export default function ProjectForm() {
           <FormSection title="1. Informations générales">
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Nom de l'entreprise</label>
-                <input
-                  type="text"
+                <div>
+                  <RequiredLabel>Nom de l'entreprise</RequiredLabel>
+                  <input
+                    type="text"
                     {...register('company_name')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                />
-              </div>
-              
-              <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Secteur d'activité</label>
-                <input
-                  type="text"
+                  />
+                </div>
+                
+                <div>
+                  <OptionalLabel>Secteur d'activité</OptionalLabel>
+                  <input
+                    type="text"
                     {...register('industry_sector')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                />
-              </div>
+                  />
+                </div>
 
-              <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Slogan ou baseline</label>
-                <input
-                  type="text"
-                  {...register('slogan')}
+                <div>
+                  <OptionalLabel>Slogan ou baseline</OptionalLabel>
+                  <input
+                    type="text"
+                    {...register('slogan')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                />
-              </div>
+                  />
+                </div>
 
-              <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Personne de contact</label>
-                <input
-                  type="text"
+                <div>
+                  <OptionalLabel>Personne de contact</OptionalLabel>
+                  <input
+                    type="text"
                     {...register('contact_person')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                />
-              </div>
+                  />
+                </div>
 
-              <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Email</label>
-                <input
-                  type="email"
-                  {...register('email')}
+                <div>
+                  <RequiredLabel>Email</RequiredLabel>
+                  <input
+                    type="email"
+                    {...register('email')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                />
-              </div>
+                  />
+                </div>
 
-              <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Téléphone</label>
-                <input
-                  type="tel"
-                  {...register('phone')}
+                <div>
+                  <RequiredLabel>Téléphone</RequiredLabel>
+                  <input
+                    type="tel"
+                    {...register('phone')}
                     className="w-full px-4 py-2 rounded-lg bg-background border border-input focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                />
+                  />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Site web existant (URL)</label>
+                <OptionalLabel>Site web existant (URL)</OptionalLabel>
                 <input
                   type="url"
                   {...register('existing_website')}
@@ -303,7 +288,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Réseaux sociaux</label>
+                <OptionalLabel>Réseaux sociaux</OptionalLabel>
                 <textarea
                   {...register('social_links')}
                   rows={3}
@@ -312,7 +297,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Adresse physique</label>
+                <RequiredLabel>Adresse physique</RequiredLabel>
                 <textarea
                   {...register('physical_address')}
                   rows={2}
@@ -326,9 +311,7 @@ export default function ProjectForm() {
           <FormSection title="2. Objectifs & vision">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Pourquoi souhaitez-vous créer ou refaire ce site ?
-                </label>
+                <RequiredLabel>Pourquoi souhaitez-vous créer ou refaire ce site ?</RequiredLabel>
                 <textarea
                   {...register('reason_for_website')}
                   rows={4}
@@ -337,9 +320,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Objectifs stratégiques du site
-                </label>
+                <RequiredLabel>Objectifs stratégiques du site</RequiredLabel>
                 <textarea
                   {...register('strategic_objectives')}
                   rows={4}
@@ -348,9 +329,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Vision à 1 an et 3 ans
-                </label>
+                <RequiredLabel>Vision à 1 an et 3 ans</RequiredLabel>
                 <textarea
                   {...register('vision_1_3_years')}
                   rows={4}
@@ -359,9 +338,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Le site est-il un outil central ?
-                </label>
+                <RequiredLabel>Le site est-il un outil central ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="is_central_tool" value="oui" label="Oui" />
@@ -372,9 +349,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Est-il lié à une campagne ou événement ?
-                </label>
+                <OptionalLabel>Est-il lié à une campagne ou événement ?</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="linked_to_event" value="true" label="Oui" />
@@ -385,9 +360,7 @@ export default function ProjectForm() {
 
               {watch('linked_to_event') === true && (
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Précisez l'événement ou la campagne
-                  </label>
+                  <OptionalLabel>Précisez l'événement ou la campagne</OptionalLabel>
                   <textarea
                     {...register('event_details')}
                     rows={2}
@@ -402,9 +375,7 @@ export default function ProjectForm() {
           <FormSection title="3. Cible & utilisateurs">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Décrivez votre cible (âge, sexe, métier, niveau tech...)
-                </label>
+                <RequiredLabel>Décrivez votre cible (âge, sexe, métier, niveau tech...)</RequiredLabel>
                 <textarea
                   {...register('target_description')}
                   rows={4}
@@ -413,9 +384,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Que doivent-ils trouver rapidement sur le site ?
-                </label>
+                <RequiredLabel>Que doivent-ils trouver rapidement sur le site ?</RequiredLabel>
                 <textarea
                   {...register('what_to_find')}
                   rows={4}
@@ -424,9 +393,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Appareils utilisés principalement
-                </label>
+                <RequiredLabel>Appareils utilisés principalement</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="checkbox" register={register} name="devices_used" value="smartphone" label="Smartphone" />
@@ -442,9 +409,7 @@ export default function ProjectForm() {
           <FormSection title="4. Identité de marque">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous un logo ?
-                </label>
+                <RequiredLabel>Avez-vous un logo ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_logo" value="true" label="Oui" />
@@ -454,9 +419,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous une charte graphique ?
-                </label>
+                <RequiredLabel>Avez-vous une charte graphique ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_brand_guidelines" value="true" label="Oui" />
@@ -466,9 +429,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Faut-il créer une charte graphique ?
-                </label>
+                <RequiredLabel>Faut-il créer une charte graphique ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="need_brand_guidelines" value="true" label="Oui" />
@@ -478,9 +439,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Univers de marque / émotions à transmettre
-                </label>
+                <RequiredLabel>Univers de marque / émotions à transmettre</RequiredLabel>
                 <textarea
                   {...register('brand_universe')}
                   rows={4}
@@ -489,9 +448,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Style souhaité
-                </label>
+                <OptionalLabel>Style souhaité</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="desired_style" value="corporate" label="Corporate" />
@@ -510,9 +467,7 @@ export default function ProjectForm() {
           <FormSection title="5. Contenu & structure">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous une architecture de site en tête ?
-                </label>
+                <RequiredLabel>Avez-vous une architecture de site en tête ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_site_map" value="true" label="Oui" />
@@ -522,9 +477,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Pages à inclure
-                </label>
+                <RequiredLabel>Pages à inclure</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     {[
@@ -538,17 +491,15 @@ export default function ProjectForm() {
                       { id: 'Portfolio', label: 'Portfolio' },
                       { id: 'Légal', label: 'Légal' },
                       { id: 'Autres', label: 'Autres' },
-                  ].map((page) => (
+                    ].map((page) => (
                       <FormOption key={page.id} type="checkbox" register={register} name="pages_to_include" value={page.id} label={page.label} />
-                  ))}
+                    ))}
                   </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Disposez-vous de textes à inclure?
-                </label>
+                <RequiredLabel>Disposez-vous de textes à inclure?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_texts" value="oui" label="Oui" />
@@ -559,9 +510,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Disposez-vous d'images/vidéos à inclure ?
-                </label>
+                <RequiredLabel>Disposez-vous d'images/vidéos à inclure ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_media" value="oui" label="Oui" />
@@ -570,8 +519,6 @@ export default function ProjectForm() {
                   </div>
                 </div>
               </div>
-
-
             </div>
           </FormSection>
 
@@ -636,30 +583,26 @@ export default function ProjectForm() {
           <FormSection title="7. Fonctionnalités attendues">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Fonctionnalités souhaitées
-                </label>
+                <OptionalLabel>Fonctionnalités souhaitées</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
-                  {[
+                    {[
                       { id: 'formulaire de contact', label: 'Formulaire de contact' },
                       { id: 'e-commerce', label: 'E-commerce' },
-                    { id: 'blog', label: 'Blog' },
+                      { id: 'blog', label: 'Blog' },
                       { id: 'galerie', label: 'Galerie' },
                       { id: 'espace membre', label: 'Espace membre' },
                       { id: 'réservation', label: 'Réservation' },
-                    { id: 'chatbot', label: 'Chatbot' },
-                  ].map((feature) => (
+                      { id: 'chatbot', label: 'Chatbot' },
+                    ].map((feature) => (
                       <FormOption key={feature.id} type="checkbox" register={register} name="expected_features" value={feature.id} label={feature.label} />
-                  ))}
+                    ))}
                   </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Outils externes à intégrer ? (CRM, Analytics, etc.)
-                </label>
+                <OptionalLabel>Outils externes à intégrer ? (CRM, Analytics, etc.)</OptionalLabel>
                 <textarea
                   {...register('external_tools')}
                   rows={4}
@@ -668,9 +611,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Type de site souhaité
-                </label>
+                <RequiredLabel>Type de site souhaité</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="site_type" value="vitrine" label="Vitrine" />
@@ -682,13 +623,11 @@ export default function ProjectForm() {
             </div>
           </FormSection>
 
-                      {/* 8. Référencement */}
-                      <FormSection title="8. Référencement">
+          {/* 8. Référencement */}
+          <FormSection title="8. Référencement">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous déjà travaillé le référencement ?
-                </label>
+                <OptionalLabel>Avez-vous déjà travaillé le référencement ?</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_worked_on_seo" value="true" label="Oui" />
@@ -698,9 +637,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous une prestation de référencement ?
-                </label>
+                <OptionalLabel>Souhaitez-vous une prestation de référencement ?</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="wants_seo_service" value="true" label="Oui" />
@@ -710,9 +647,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Concurrents à référencer ou dépasser ?
-                </label>
+                <OptionalLabel>Concurrents à référencer ou dépasser ?</OptionalLabel>
                 <textarea
                   {...register('seo_competitors')}
                   rows={4}
@@ -726,9 +661,7 @@ export default function ProjectForm() {
           <FormSection title="9. Hébergement & nom de domaine">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous un nom de domaine ?
-                </label>
+                <RequiredLabel>Avez-vous un nom de domaine ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_domain" value="true" label="Oui" />
@@ -738,9 +671,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous que nous en achetions un ?
-                </label>
+                <OptionalLabel>Souhaitez-vous que nous en achetions un ?</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="needs_domain_purchase" value="true" label="Oui" />
@@ -750,9 +681,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Avez-vous un hébergeur ?
-                </label>
+                <RequiredLabel>Avez-vous un hébergeur ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="has_hosting" value="true" label="Oui" />
@@ -763,9 +692,7 @@ export default function ProjectForm() {
 
               {watch('has_hosting') === true && (
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
-                    Précisez votre hébergeur
-                  </label>
+                  <OptionalLabel>Précisez votre hébergeur</OptionalLabel>
                   <input
                     type="text"
                     {...register('hosting_details')}
@@ -775,9 +702,7 @@ export default function ProjectForm() {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous qu'on gère l'hébergement ?
-                </label>
+                <OptionalLabel>Souhaitez-vous qu'on gère l'hébergement ?</OptionalLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="wants_hosting_management" value="true" label="Oui" />
@@ -792,9 +717,7 @@ export default function ProjectForm() {
           <FormSection title="10. Suivi & accompagnement">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous une formation à l'outil ?
-                </label>
+                <RequiredLabel>Souhaitez-vous une formation à l'outil ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="wants_training" value="true" label="Oui" />
@@ -804,9 +727,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous un contrat de maintenance ?
-                </label>
+                <RequiredLabel>Souhaitez-vous un contrat de maintenance ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="wants_maintenance" value="true" label="Oui" />
@@ -816,9 +737,7 @@ export default function ProjectForm() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Souhaitez-vous que nous assurions les évolutions futures ?
-                </label>
+                <RequiredLabel>Souhaitez-vous que nous assurions les évolutions futures ?</RequiredLabel>
                 <div className={optionContainerStyle}>
                   <div className="flex flex-wrap gap-x-6">
                     <FormOption type="radio" register={register} name="wants_future_updates" value="true" label="Oui" />
@@ -832,9 +751,7 @@ export default function ProjectForm() {
           {/* 11. Commentaires et remarques */}
           <FormSection title="11. Commentaires et remarques">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Contraintes, idées ou remarques supplémentaires
-              </label>
+              <OptionalLabel>Contraintes, idées ou remarques supplémentaires</OptionalLabel>
               <textarea
                 {...register('additional_comments')}
                 rows={6}
