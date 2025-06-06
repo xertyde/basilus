@@ -16,9 +16,10 @@ const nextConfig = {
   webpack: (config, { isServer, dev }) => {
     // Activer le cache en production
     if (!dev) {
+      const path = require('path');
       config.cache = {
         type: 'filesystem',
-        cacheDirectory: '.next/cache/webpack',
+        cacheDirectory: path.join(process.cwd(), '.next/cache/webpack'),
       };
     } else {
       config.cache = false;
