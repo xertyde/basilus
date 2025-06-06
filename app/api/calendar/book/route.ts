@@ -141,6 +141,16 @@ async function sendJitsiEmail(email: string, jitsiLink: string, eventDate: strin
 
             <div class="divider"></div>
 
+            <div style="background-color: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <h3 style="color: #0ea5e9; margin-top: 0;">📋 Questionnaire de préparation</h3>
+              <p style="margin-bottom: 15px;">Si vous n'avez pas encore répondu au questionnaire pour préparer le rendez-vous, vous pouvez le remplir ici :</p>
+              <div style="text-align: center;">
+                <a href="https://www.basilus.fr/form" style="background-color: #0ea5e9; color: white !important; padding: 12px 25px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">
+                  📝 Remplir le questionnaire
+                </a>
+              </div>
+            </div>
+
             <h3 style="color: #374151;">💡 Conseils pour une meilleure expérience</h3>
             <ul style="color: #6B7280;">
               <li>Testez votre caméra et votre microphone avant la réunion</li>
@@ -285,6 +295,16 @@ async function sendPhoneEmail(email: string, phoneNumber: string, eventDate: str
             </div>
 
             <div class="divider"></div>
+
+            <div style="background-color: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <h3 style="color: #0ea5e9; margin-top: 0;">📋 Questionnaire de préparation</h3>
+              <p style="margin-bottom: 15px;">Si vous n'avez pas encore répondu au questionnaire pour préparer le rendez-vous, vous pouvez le remplir ici :</p>
+              <div style="text-align: center;">
+                <a href="https://www.basilus.fr/form" style="background-color: #0ea5e9; color: white !important; padding: 12px 25px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">
+                  📝 Remplir le questionnaire
+                </a>
+              </div>
+            </div>
 
             <h3 style="color: #374151;">💡 Conseils pour votre rendez-vous</h3>
             <ul style="color: #6B7280;">

@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import ContactForm from '@/components/contact/contact-form'
-import { Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone, Calendar } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
   title: 'Contact | Basilus',
@@ -66,7 +68,7 @@ export default function ContactPage() {
 
               <div className="mt-12 animate-on-scroll delay-400">
                 <h3 className="text-lg font-semibold mb-4">Horaires d'ouverture</h3>
-                <div className="space-y-2">
+                <div className="space-y-2 mb-6">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Lundi - Vendredi</span>
                     <span className="font-medium">9h - 18h</span>
@@ -80,6 +82,13 @@ export default function ContactPage() {
                     <span className="font-medium">Fermé</span>
                   </div>
                 </div>
+                
+                <Button asChild className="w-full">
+                  <Link href="/calendar" className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    Planifier un rendez-vous
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>

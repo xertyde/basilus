@@ -81,10 +81,14 @@ export default function Header() {
                 variant="ghost"
                 size="icon"
                 className="md:hidden"
-                onClick={() => setMobileMenuOpen(true)}
-                aria-label="Ouvrir le menu"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               >
-                <Menu className="h-6 w-6" />
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </Button>
             </div>
           </div>
@@ -95,7 +99,8 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-background mt-16 md:hidden">
           <div className="h-[calc(100vh-4rem)] overflow-y-auto py-6 px-6">
-            <div className="flex justify-end mb-8">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-xl font-semibold text-foreground">Menu</h2>
               <Button
                 variant="ghost"
                 size="icon"
@@ -111,7 +116,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-xl font-medium text-foreground hover:text-primary py-3"
+                  className="text-lg font-medium text-foreground hover:text-primary py-3 border-b border-border/50 last:border-b-0"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
