@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-// Log de base pour vérifier que le code s'exécute
-console.log('=== CALENDAR PAGE LOADING ===');
+
 
 // Types
 interface Availability {
@@ -51,11 +50,8 @@ export default function CalendarPage() {
 
   useEffect(() => {
     async function loadAvailabilities() {
-      console.log('=== CALENDAR PAGE LOADING ===');
-      
       try {
         setIsLoading(true);
-        console.log('Fetching calendar events from API...');
         
         const response = await fetch('/api/calendar/availability');
         
@@ -65,9 +61,7 @@ export default function CalendarPage() {
         
         const data = await response.json();
         setDailyAvailabilities(data.dailyAvailabilities);
-        console.log('Events fetched for all business days');
       } catch (err) {
-        console.error('Error loading availabilities:', err);
         setError('Erreur lors du chargement des disponibilités');
       } finally {
         setIsLoading(false);
@@ -83,7 +77,6 @@ export default function CalendarPage() {
     setMeetingType(null); // Reset meeting type when selecting a new slot
     setEmail(''); // Reset email when selecting a new slot
     setPhoneNumber(''); // Reset phone number when selecting a new slot
-    console.log('Créneau sélectionné:', slotId);
   };
 
   const handleBookSlot = async () => {
@@ -102,7 +95,6 @@ export default function CalendarPage() {
     setIsBooking(true);
     setError(null); // Reset error
     try {
-      console.log('Réservation du créneau:', selectedSlot, 'Type:', meetingType);
       
       const response = await fetch('/api/calendar/book', {
         method: 'POST',
@@ -123,7 +115,6 @@ export default function CalendarPage() {
         throw new Error(data.error || 'Erreur lors de la réservation');
       }
 
-      console.log('Réservation réussie:', data);
       setBookingSuccess(true);
       
       // Créer un lien Jitsi Meet uniquement pour les rendez-vous en visio
@@ -131,7 +122,6 @@ export default function CalendarPage() {
         const meetingRoomId = `basilus-${selectedSlot.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
         const jitsiMeetLink = `https://meet.jit.si/${meetingRoomId}`;
         setJitsiLink(jitsiMeetLink);
-        console.log('Lien Jitsi Meet créé:', jitsiMeetLink);
       } else {
         setJitsiLink(null);
       }
@@ -140,7 +130,6 @@ export default function CalendarPage() {
       // On pourrait reload les disponibilités ici pour voir le créneau disparaître
       
     } catch (err) {
-      console.error('Erreur de réservation:', err);
       setError(err instanceof Error ? err.message : 'Erreur lors de la réservation');
     } finally {
       setIsBooking(false);

@@ -6,15 +6,22 @@ import { ArrowRight, Zap, Award, Code, RefreshCcw } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
 import dynamic from 'next/dynamic'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
-// Lazy load Spline with a longer timeout
+// Optimized Spline lazy loading with intersection observer
 const Spline = dynamic(() => 
   import('@splinetool/react-spline').then(mod => mod.default),
   {
     ssr: false,
     loading: () => (
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-16 h-16 relative">
+            <div className="w-10 h-1 bg-primary rounded-full animate-spin origin-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="w-6 h-0.5 bg-primary/60 rounded-full animate-spin origin-center animation-delay-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{animationDirection: 'reverse'}}></div>
+          </div>
+        </div>
+      </div>
     ),
   }
 )
@@ -22,35 +29,85 @@ const Spline = dynamic(() =>
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
   const [splineLoaded, setSplineLoaded] = useState(false)
+  const [shouldLoadSpline, setShouldLoadSpline] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
+  const heroRef = useRef<HTMLElement>(null)
+  const splineTimeoutRef = useRef<NodeJS.Timeout>()
   const maxRetries = 3
+
+  // Intersection Observer pour charger Spline seulement quand la hero section est visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        if (entry.isIntersecting && !shouldLoadSpline) {
+          setShouldLoadSpline(true)
+          observer.disconnect()
+        }
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '50px' // Précharge légèrement avant
+      }
+    )
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [shouldLoadSpline])
+
+  // Timeout de sécurité pour éviter un chargement infini
+  useEffect(() => {
+    if (shouldLoadSpline && !splineLoaded && !splineError) {
+      splineTimeoutRef.current = setTimeout(() => {
+        if (!splineLoaded) {
+          setSplineError(true)
+        }
+      }, 10000) // 10 secondes timeout
+    }
+
+    return () => {
+      if (splineTimeoutRef.current) {
+        clearTimeout(splineTimeoutRef.current)
+      }
+    }
+  }, [shouldLoadSpline, splineLoaded, splineError])
 
   useEffect(() => {
     if (splineError && retryCount < maxRetries) {
       const timer = setTimeout(() => {
         setSplineError(false)
         setRetryCount(prev => prev + 1)
+        setShouldLoadSpline(true)
       }, 2000 * (retryCount + 1)) // Exponential backoff
 
       return () => clearTimeout(timer)
     }
   }, [splineError, retryCount])
 
-  const handleSplineLoad = () => {
+  const handleSplineLoad = useCallback(() => {
     setSplineLoaded(true)
     setSplineError(false)
     setRetryCount(0)
-  }
+    if (splineTimeoutRef.current) {
+      clearTimeout(splineTimeoutRef.current)
+    }
+  }, [])
 
-  const handleSplineError = () => {
-    console.error('Failed to load Spline scene')
+  const handleSplineError = useCallback(() => {
     setSplineError(true)
-  }
+    if (splineTimeoutRef.current) {
+      clearTimeout(splineTimeoutRef.current)
+    }
+  }, [])
 
-  const handleRetry = () => {
+  const handleRetry = useCallback(() => {
     setSplineError(false)
     setRetryCount(0)
-  }
+    setShouldLoadSpline(true)
+  }, [])
 
   const FallbackBackground = () => (
     <div className="absolute inset-0">
@@ -76,15 +133,34 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center" id="hero">
+      <section ref={heroRef} className="relative min-h-screen flex items-center" id="hero">
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
-          {!splineError ? (
-            <Spline 
-              scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
-              onLoad={handleSplineLoad}
-              onError={handleSplineError}
-            />
+          {shouldLoadSpline && !splineError ? (
+            <div className="absolute inset-0">
+              <Spline 
+                scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
+                onLoad={handleSplineLoad}
+                onError={handleSplineError}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  transform: splineLoaded ? 'translateZ(0)' : 'translateZ(0) scale(1.05)',
+                  transition: 'transform 0.8s ease-out',
+                  willChange: 'transform'
+                }}
+              />
+              {!splineLoaded && (
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 z-10">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 relative">
+                      <div className="w-10 h-1 bg-primary rounded-full animate-spin origin-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                      <div className="w-6 h-0.5 bg-primary/60 rounded-full animate-spin origin-center animation-delay-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{animationDirection: 'reverse'}}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <FallbackBackground />
           )}

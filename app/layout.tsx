@@ -12,13 +12,52 @@ const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   variable: '--font-poppins',
   display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {
   title: 'Basilus | Sites web professionnels sur mesure',
   description: 'Basilus crée des sites web professionnels et sur mesure pour votre entreprise. Découvrez nos packs et demandez un devis.',
+  keywords: 'sites web, développement web, design web, création site internet, PME, startup',
+  authors: [{ name: 'Basilus' }],
+  creator: 'Basilus',
+  publisher: 'Basilus',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://basilus.fr'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Basilus | Sites web professionnels sur mesure',
+    description: 'Basilus crée des sites web professionnels et sur mesure pour votre entreprise.',
+    url: 'https://basilus.fr',
+    siteName: 'Basilus',
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Basilus | Sites web professionnels sur mesure',
+    description: 'Basilus crée des sites web professionnels et sur mesure pour votre entreprise.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: '/favicon.png',
+    apple: '/favicon.png',
   },
 };
 
@@ -29,6 +68,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://prod.spline.design" />
+        <link rel="dns-prefetch" href="https://images.pexels.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#db2777" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body className={`${poppins.variable} font-sans`}>
         <ThemeProvider
           attribute="class"

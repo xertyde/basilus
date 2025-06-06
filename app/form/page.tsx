@@ -178,7 +178,7 @@ export default function ProjectForm() {
 
       router.push('/merci')
     } catch (error) {
-      console.error('Error submitting form:', error)
+
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",

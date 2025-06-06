@@ -73,7 +73,7 @@ async function getCalendarEvents(calendarId: string, date: Date) {
 
     return response.data.items || [];
   } catch (error) {
-    console.error(`Erreur lors de la récupération des événements du calendrier ${calendarId}:`, error);
+    
     return [];
   }
 }
@@ -280,7 +280,6 @@ export async function GET() {
 
     return NextResponse.json({ dailyAvailabilities });
   } catch (error) {
-    console.error('Error fetching calendar availability:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des disponibilités' },
       { status: 500 }

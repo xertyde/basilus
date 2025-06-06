@@ -28,13 +28,9 @@ async function getOAuthClient() {
 // Fonction pour envoyer un email avec le lien Jitsi
 async function sendJitsiEmail(email: string, jitsiLink: string, eventDate: string, eventTime: string) {
   try {
-    console.log('Début de sendJitsiEmail avec:', { email, jitsiLink, eventDate, eventTime });
-    
     // Corriger le formatage de la date
     const [year, month, day] = eventDate.split('-');
     const formattedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-    
-    console.log('Date formatée pour Jitsi:', formattedDate);
 
     const { data, error } = await resend.emails.send({
       from: 'Basilus <contact@basilus.fr>',
@@ -176,14 +172,11 @@ async function sendJitsiEmail(email: string, jitsiLink: string, eventDate: strin
     });
 
     if (error) {
-      console.error('Erreur Resend Jitsi:', error);
       throw error;
     }
 
-    console.log('Email Jitsi envoyé avec succès:', data);
     return data;
   } catch (error) {
-    console.error('Erreur lors de l\'envoi de l\'email Jitsi:', error);
     throw error;
   }
 }
@@ -191,13 +184,9 @@ async function sendJitsiEmail(email: string, jitsiLink: string, eventDate: strin
 // Fonction pour envoyer un email de confirmation pour les rendez-vous téléphoniques
 async function sendPhoneEmail(email: string, phoneNumber: string, eventDate: string, eventTime: string) {
   try {
-    console.log('Début de sendPhoneEmail avec:', { email, phoneNumber, eventDate, eventTime });
-    
     // Corriger le formatage de la date
     const [year, month, day] = eventDate.split('-');
     const formattedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-    
-    console.log('Date formatée:', formattedDate);
 
     const { data, error } = await resend.emails.send({
       from: 'Basilus <contact@basilus.fr>',
@@ -328,14 +317,11 @@ async function sendPhoneEmail(email: string, phoneNumber: string, eventDate: str
     });
 
     if (error) {
-      console.error('Erreur Resend:', error);
       throw error;
     }
 
-    console.log('Email téléphonique envoyé avec succès:', data);
     return data;
   } catch (error) {
-    console.error('Erreur lors de l\'envoi de l\'email téléphonique:', error);
     throw error;
   }
 }
@@ -369,33 +355,21 @@ async function createCalendarEvent(calendarId: string, eventData: {
       description: eventData.description,
     };
 
-    console.log('Création d\'événement:', {
-      summary: event.summary,
-      start: event.start.dateTime,
-      end: event.end.dateTime,
-      description: event.description,
-    });
-
     const response = await calendar.events.insert({
       calendarId,
       requestBody: event,
     });
 
-    console.log('Événement créé:', response.data.id);
     return response.data;
   } catch (error) {
-    console.error(`Erreur lors de la création de l'événement:`, error);
     throw error;
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('=== DÉBUT DE LA RÉSERVATION ===');
     const body = await request.json();
     const { slotId, meetingType, email, phoneNumber } = body;
-
-    console.log('Données reçues:', { slotId, meetingType, email, phoneNumber });
 
     if (!slotId) {
       return NextResponse.json(
@@ -426,8 +400,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('Validation OK, parsing slotId...');
-
     // Extraire les informations du slotId
     // Format: "YYYY-MM-DD_HH:MM_HH:MM"
     const parts = slotId.split('_');
@@ -439,7 +411,6 @@ export async function POST(request: NextRequest) {
     }
 
     const [date, startTime, endTime] = parts;
-    console.log('Données extraites:', { date, startTime, endTime });
 
     // Convertir les heures au format HH:MM
     const formatTime = (time: string) => {
@@ -466,33 +437,21 @@ export async function POST(request: NextRequest) {
       description,
     };
 
-    console.log('Données de réservation:', eventData);
-
     // Créer l'événement dans le calendrier
-    console.log('Création de l\'événement Google Calendar...');
     const createdEvent = await createCalendarEvent(CALENDAR_IDS.THOMAS, eventData);
-    console.log('Événement créé avec succès:', createdEvent.id);
 
     // Envoi de l'email de confirmation selon le type de rendez-vous
-    console.log('Envoi de l\'email de confirmation...');
     try {
       if (meetingType === 'video') {
-        console.log('Envoi email visio...');
         const meetingRoomId = `basilus-${slotId.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
         const jitsiLink = `https://meet.jit.si/${meetingRoomId}`;
         await sendJitsiEmail(email, jitsiLink, date, `${formatTime(startTime)} - ${formatTime(endTime)}`);
-        console.log('Email visio envoyé avec succès');
       } else if (meetingType === 'phone') {
-        console.log('Envoi email téléphonique...');
         await sendPhoneEmail(email, phoneNumber, date, `${formatTime(startTime)} - ${formatTime(endTime)}`);
-        console.log('Email téléphonique envoyé avec succès');
       }
     } catch (emailError) {
-      console.error('Erreur lors de l\'envoi de l\'email, mais réservation réussie:', emailError);
       // On ne fait pas échouer la réservation si l'email échoue
     }
-
-    console.log('=== RÉSERVATION TERMINÉE AVEC SUCCÈS ===');
     return NextResponse.json({
       success: true,
       event: {
@@ -505,9 +464,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('=== ERREUR DANS LA RÉSERVATION ===');
-    console.error('Error booking calendar slot:', error);
-    console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace');
     return NextResponse.json(
       { 
         error: 'Erreur lors de la réservation du créneau',
