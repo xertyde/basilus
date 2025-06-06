@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Check, Clock, AlertCircle, Smartphone, Database, HardDrive } from 'lucide-react'
 import Link from 'next/link'
 import PricingCard from '@/components/packs/pricing-card'
+import MultilingualOption from '@/components/packs/multilingual-option'
 import { FilePlus } from "lucide-react";
 
 import {
@@ -53,6 +54,11 @@ export default function PacksPage() {
               ]}
               options={[
                 {
+                  name: "multilingue",
+                  price: "+250€",
+                  customContent: <MultilingualOption price="+250€" />
+                },
+                {
                   name: "Livraison express 72h",
                   price: "+300€",
                   icon: <Clock className="h-4 w-4" />
@@ -87,8 +93,9 @@ export default function PacksPage() {
               ]}
               options={[
                 {
-                  name: "Version multilingue (langues disponibles : Français, Anglais, Espagnol, Italien, Allemand, Portugais, Néerlandais, Russe, Japonais, Chinois, Arabe, Hindi, Coréen, Turc, Polonais, Suédois, Norvégien, Danois, Finlandais, Grec, Thaï, Vietnamien, Indonésien, Malaisien, Tchèque, Hongrois, Roumain, Bulgare, Croate, Slovaque, Slovène, Estonien, Letton, Lituanien, Ukrainien, Bengali, Tamil, Ourdou, Persan, et plus)",
-                  price: "+250€"
+                  name: "multilingue",
+                  price: "+250€",
+                  customContent: <MultilingualOption price="+250€" />
                 },
                 {
                   name: "Livraison express 72h",
@@ -127,6 +134,11 @@ export default function PacksPage() {
                 "30% d'acompte à la commande, solde à la livraison"
               ]}
               options={[
+                {
+                  name: "multilingue",
+                  price: "+250€",
+                  customContent: <MultilingualOption price="+250€" />
+                },
                 {
                   name: "Livraison express 72h",
                   price: "+300€",

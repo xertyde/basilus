@@ -11,6 +11,7 @@ interface Option {
   name: string
   price: string
   icon?: React.ReactNode
+  customContent?: React.ReactNode
 }
 
 interface PricingCardProps {
@@ -49,7 +50,11 @@ export default function PricingCard({
       popular && "z-10"
     )}>
       {popular && (
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-semibold shadow-xl z-50 border border-primary/20">
+        <div className={cn(
+          "absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-semibold shadow-xl z-50 border border-primary/20 transition-all duration-700 opacity-0",
+          inView && "animate-scale",
+          delay && `delay-${delay}`
+        )}>
           Recommandé
         </div>
       )}
@@ -92,10 +97,16 @@ export default function PricingCard({
               <h4 className="text-sm font-medium mb-3">Options disponibles :</h4>
               <ul className="space-y-2">
                 {options.map((option) => (
-                  <li key={option.name} className="flex items-center text-sm hover-lift">
-                    {option.icon && <span className="mr-2">{option.icon}</span>}
-                    <span>{option.name}</span>
-                    <span className="ml-1 font-medium">{option.price}</span>
+                  <li key={option.name} className={option.customContent ? "" : "flex items-center text-sm hover-lift"}>
+                    {option.customContent ? (
+                      option.customContent
+                    ) : (
+                      <>
+                        {option.icon && <span className="mr-2">{option.icon}</span>}
+                        <span>{option.name}</span>
+                        <span className="ml-1 font-medium">{option.price}</span>
+                      </>
+                    )}
                   </li>
                 ))}
               </ul>
