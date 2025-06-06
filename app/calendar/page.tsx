@@ -208,19 +208,19 @@ export default function CalendarPage() {
         {selectedSlot && (
           <div className={`rounded-lg p-4 mb-6 text-center shadow-md animate-in fade-in-0 slide-in-from-top-2 duration-500 ${
             bookingSuccess 
-              ? 'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 border-2 border-emerald-400 dark:border-emerald-500 dark:shadow-emerald-900/20'
-              : 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-300 dark:border-green-600 dark:shadow-green-900/20'
+              ? 'bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20 border-2 border-cyan-400 dark:border-cyan-500 dark:shadow-cyan-900/20'
+              : 'bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20 border-2 border-cyan-300 dark:border-cyan-600 dark:shadow-cyan-900/20'
           }`}>
             <div className="flex items-center justify-center gap-2 mb-2">
               <div className={`w-2.5 h-2.5 rounded-full ${
                 bookingSuccess 
-                  ? 'bg-emerald-500 dark:bg-emerald-400' 
-                  : 'bg-green-500 dark:bg-green-400 animate-pulse'
+                  ? 'bg-cyan-500 dark:bg-cyan-400' 
+                  : 'bg-cyan-500 dark:bg-cyan-400 animate-pulse'
               }`}></div>
               <p className={`font-semibold text-base ${
                 bookingSuccess 
-                  ? 'text-emerald-800 dark:text-emerald-200' 
-                  : 'text-green-800 dark:text-green-200'
+                  ? 'text-cyan-800 dark:text-cyan-200' 
+                  : 'text-cyan-800 dark:text-cyan-200'
               }`}>
                 {bookingSuccess ? 'Réservation confirmée !' : 'Créneau sélectionné'}
               </p>
@@ -228,15 +228,15 @@ export default function CalendarPage() {
             <div className="mb-4">
               <p className={`font-medium text-sm mb-0.5 ${
                 bookingSuccess 
-                  ? 'text-emerald-600 dark:text-emerald-400' 
-                  : 'text-green-600 dark:text-green-400'
+                  ? 'text-cyan-600 dark:text-cyan-400' 
+                  : 'text-cyan-600 dark:text-cyan-400'
               }`}>
                 {formatDate(selectedSlot.split('_')[0])}
               </p>
               <p className={`font-semibold text-xl ${
                 bookingSuccess 
-                  ? 'text-emerald-700 dark:text-emerald-300' 
-                  : 'text-green-700 dark:text-green-300'
+                  ? 'text-cyan-700 dark:text-cyan-300' 
+                  : 'text-cyan-700 dark:text-cyan-300'
               }`}>
                 {selectedSlot.split('_').slice(1).join(' ')}
               </p>
@@ -244,23 +244,23 @@ export default function CalendarPage() {
             
             {bookingSuccess ? (
               <div className="text-center space-y-3">
-                <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg p-3">
+                <div className="bg-cyan-50 dark:bg-cyan-900/30 border border-cyan-200 dark:border-cyan-700 rounded-lg p-3">
                   <div className="flex items-center justify-center gap-2 mb-3">
                     {meetingType === 'phone' ? (
-                      <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                     ) : (
-                      <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                       </svg>
                     )}
-                    <p className="font-semibold text-green-800 dark:text-green-200">
+                    <p className="font-semibold text-cyan-800 dark:text-cyan-200">
                       Rendez-vous {meetingType === 'phone' ? 'téléphonique' : 'en visioconférence'} confirmé
                     </p>
                   </div>
                   {meetingType === 'phone' ? (
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-green-100 dark:border-green-800">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-cyan-100 dark:border-cyan-800">
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">📞 Vous serez contacté par téléphone</p>
                       <p className="text-xs text-gray-500 dark:text-gray-500">
                         Assurez-vous d'être disponible à l'heure prévue. Un numéro de téléphone de contact vous sera demandé par email.
@@ -268,7 +268,7 @@ export default function CalendarPage() {
                     </div>
                   ) : (
                     jitsiLink && (
-                      <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-green-100 dark:border-green-800">
+                      <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-cyan-100 dark:border-cyan-800">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Rejoindre la réunion :</p>
                         <div className="flex items-center gap-2">
                           <input 
@@ -296,7 +296,7 @@ export default function CalendarPage() {
                     // Recharger la page pour récupérer les vraies disponibilités
                     window.location.reload();
                   }}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-emerald-300 dark:border-emerald-600 rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 hover:border-emerald-400 dark:hover:border-emerald-500 transition-all duration-200 font-medium text-sm shadow-sm"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-cyan-300 dark:border-cyan-600 rounded-lg text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all duration-200 font-medium text-sm shadow-sm"
                 >
                   Choisir un autre créneau
                 </button>
@@ -424,7 +424,7 @@ export default function CalendarPage() {
                       <button 
                         onClick={handleBookSlot}
                         disabled={isBooking}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 dark:bg-green-700 border border-green-600 dark:border-green-700 rounded-lg text-white hover:bg-green-700 dark:hover:bg-green-800 hover:border-green-700 dark:hover:border-green-800 transition-all duration-200 font-semibold text-base shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 dark:bg-cyan-700 border border-cyan-600 dark:border-cyan-700 rounded-lg text-white hover:bg-cyan-700 dark:hover:bg-cyan-800 hover:border-cyan-700 dark:hover:border-cyan-800 transition-all duration-200 font-semibold text-base shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isBooking ? (
                           <>
@@ -446,7 +446,7 @@ export default function CalendarPage() {
                           setEmail('');
                           setPhoneNumber('');
                         }}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-orange-300 dark:border-orange-600 rounded-lg text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-200 font-medium text-sm shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-pink-300 dark:border-pink-600 rounded-lg text-pink-700 dark:text-pink-300 hover:bg-pink-100 dark:hover:bg-pink-900/30 hover:border-pink-400 dark:hover:border-pink-500 transition-all duration-200 font-medium text-sm shadow-sm"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -460,7 +460,7 @@ export default function CalendarPage() {
                 <div className="text-center">
                   <button 
                     onClick={() => setSelectedSlot(null)}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-green-300 dark:border-green-600 rounded-lg text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30 hover:border-green-400 dark:hover:border-green-500 transition-all duration-200 font-medium text-sm shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-cyan-300 dark:border-cyan-600 rounded-lg text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all duration-200 font-medium text-sm shadow-sm"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

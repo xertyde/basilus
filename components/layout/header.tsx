@@ -43,43 +43,50 @@ export default function Header() {
           ? "bg-background shadow-sm" 
           : "bg-transparent"
       )}>
-        <nav className="container flex items-center justify-between py-4">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-x-2">
-              <span className="text-2xl font-bold text-primary">Basilus</span>
-            </Link>
-          </div>
-
-          {/* Navigation desktop */}
-          <div className="hidden md:flex md:gap-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-              >
-                {item.name}
+        <nav className="container py-4">
+          {/* Grille 3 colonnes pour un centrage parfait */}
+          <div className="grid grid-cols-3 items-center">
+            {/* Logo à gauche */}
+            <div className="flex items-center justify-start">
+              <Link href="/" className="flex items-center gap-x-2">
+                <span className="text-2xl font-bold text-primary">Basilus</span>
               </Link>
-            ))}
-          </div>
+            </div>
 
-          <div className="flex items-center gap-x-4">
-            <SimpleThemeToggle />
+            {/* Navigation au centre */}
+            <div className="hidden md:flex justify-center">
+              <div className="flex gap-x-8">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-            <Button asChild size="sm" className="hidden md:inline-flex">
-              <Link href="/contact">Demander un devis</Link>
-            </Button>
+            {/* Boutons à droite */}
+            <div className="flex items-center justify-end gap-x-4">
+              <SimpleThemeToggle />
 
-            {/* Bouton menu mobile */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-label="Ouvrir le menu"
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
+              <Button asChild size="sm" className="hidden md:inline-flex">
+                <Link href="/contact">Demander un devis</Link>
+              </Button>
+
+              {/* Bouton menu mobile */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-label="Ouvrir le menu"
+              >
+                <Menu className="h-6 w-6" />
+              </Button>
+            </div>
           </div>
         </nav>
       </header>

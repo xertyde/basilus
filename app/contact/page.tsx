@@ -49,7 +49,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Téléphone</h3>
                     <p className="text-muted-foreground">+33 7 68 09 59 59</p>
-                    <p className="text-muted-foreground">Du lundi au vendredi, de 9h à 18h</p>
+                    <p className="text-muted-foreground">Du lundi au vendredi, de 9h à 20h</p>
                   </div>
                 </div>
 
