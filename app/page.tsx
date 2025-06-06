@@ -220,7 +220,7 @@ export default function Home() {
             />
             <TestimonialCard 
               quote="Basilus a compris les enjeux de notre secteur. Le site est fluide et a permis d'accroître notre visibilité auprès des professionnels agricoles comme des candidats."
-              author="Antoine Epifanic"
+              author="Pierre-Louis Gille"
               company="Fondateur, Agripulse"
             />
           </div>
