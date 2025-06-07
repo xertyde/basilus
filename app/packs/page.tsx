@@ -59,13 +59,13 @@ export default function PacksPage() {
                   customContent: <MultilingualOption price="+200€" />
                 },
                 {
+                  name: "Hébergement et maintenance",
+                  price: "+99€/an",
+                },
+                {
                   name: "Livraison express 72h",
                   price: "+200€",
                   icon: <Clock className="h-4 w-4" />
-                },
-                {
-                  name: "Hébergement et maintenance",
-                  price: "+99€/an",
                 }
               ]}
               ctaText="Demander un devis"
@@ -98,13 +98,13 @@ export default function PacksPage() {
                   customContent: <MultilingualOption price="+250€" />
                 },
                 {
+                  name: "Hébergement et maintenance",
+                  price: "+149€/an",
+                },
+                {
                   name: "Livraison express 72h",
                   price: "+300€",
                   icon: <Clock className="h-4 w-4" />
-                },
-                {
-                  name: "Hébergement et maintenance",
-                  price: "+149€/an",
                 }
               ]}
               ctaText="Demander un devis"
@@ -140,13 +140,13 @@ export default function PacksPage() {
                   customContent: <MultilingualOption price="+300€" />
                 },
                 {
+                  name: "Hébergement et maintenance",
+                  price: "+490€/an",
+                },
+                {
                   name: "Livraison express 72h",
                   price: "+400€",
                   icon: <Clock className="h-4 w-4" />
-                },
-                {
-                  name: "Hébergement et maintenance",
-                  price: "+490€/an",
                 }
               ]}
               ctaText="Demander un devis"
