@@ -45,17 +45,17 @@ export default function MultilingualOption({ price }: MultilingualOptionProps) {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-medium text-foreground">Version multilingue</span>
-              <button
-                onClick={() => setShowLanguages(!showLanguages)}
+          <button
+            onClick={() => setShowLanguages(!showLanguages)}
                 className="p-1.5 hover:bg-primary/10 rounded-full transition-colors duration-200 group"
-                title={showLanguages ? "Masquer les langues" : "Voir les langues disponibles"}
-              >
-                {showLanguages ? (
+            title={showLanguages ? "Masquer les langues" : "Voir les langues disponibles"}
+          >
+            {showLanguages ? (
                   <ChevronUp className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
-                ) : (
+            ) : (
                   <ChevronDown className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
-                )}
-              </button>
+            )}
+          </button>
             </div>
             <p className="text-xs text-muted-foreground mt-0.5">
               Élargissez votre audience internationale
@@ -98,7 +98,7 @@ export default function MultilingualOption({ price }: MultilingualOptionProps) {
                 <div
                   key={language.name}
                   className="flex items-center gap-1.5 p-1.5 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors text-xs"
-                >
+              >
                   <span className="text-sm">{language.flag}</span>
                   <span className="text-muted-foreground font-medium truncate">{language.name}</span>
                 </div>

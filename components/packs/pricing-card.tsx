@@ -105,8 +105,8 @@ export default function PricingCard({
                       option.customContent ? "" : "hover-lift",
                       isHostingOption && "bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/50 rounded-lg p-3 border border-blue-200/50 dark:border-blue-800/50"
                     )}>
-                      {option.customContent ? (
-                        option.customContent
+                    {option.customContent ? (
+                      option.customContent
                       ) : isHostingOption ? (
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
@@ -127,12 +127,12 @@ export default function PricingCard({
                         </div>
                       ) : (
                         <div className="flex items-center text-sm">
-                          {option.icon && <span className="mr-2">{option.icon}</span>}
-                          <span>{option.name}</span>
-                          <span className="ml-1 font-medium">{option.price}</span>
+                        {option.icon && <span className="mr-2">{option.icon}</span>}
+                        <span>{option.name}</span>
+                        <span className="ml-1 font-medium">{option.price}</span>
                         </div>
-                      )}
-                    </li>
+                    )}
+                  </li>
                   );
                 })}
               </ul>
