@@ -31,7 +31,7 @@ export default function Footer() {
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: `url('/star.svg')`,
-          backgroundSize: '80px 80px',
+          backgroundSize: '40px 40px',
           backgroundRepeat: 'repeat',
           backgroundPosition: '0 0'
         }} />
