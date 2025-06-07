@@ -415,7 +415,7 @@ export default function CalendarPage() {
 
                       {meetingType === 'video' && (
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Le lien de visioconférence vous sera envoyé par email et affiché après confirmation
+                          Le lien de visioconférence vous sera envoyé par email
                         </p>
                       )}
                     </div>
@@ -446,7 +446,7 @@ export default function CalendarPage() {
                           setEmail('');
                           setPhoneNumber('');
                         }}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-pink-300 dark:border-pink-600 rounded-lg text-pink-700 dark:text-pink-300 hover:bg-pink-100 dark:hover:bg-pink-900/30 hover:border-pink-400 dark:hover:border-pink-500 transition-all duration-200 font-medium text-sm shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-pink-300 dark:border-pink-600 rounded-lg text-pink-700 dark:text-pink-300 hover:bg-pink-100 dark:hover:bg-pink-900/30 hover:border-pink-400 dark:hover:border-pink-500 transition-all duration-200 font-medium text-sm shadow-sm w-full sm:w-auto justify-center"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -460,7 +460,7 @@ export default function CalendarPage() {
                 <div className="text-center">
                   <button 
                     onClick={() => setSelectedSlot(null)}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-cyan-300 dark:border-cyan-600 rounded-lg text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all duration-200 font-medium text-sm shadow-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-cyan-300 dark:border-cyan-600 rounded-lg text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 hover:border-cyan-400 dark:hover:border-cyan-500 transition-all duration-200 font-medium text-sm shadow-sm w-full sm:w-auto justify-center"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

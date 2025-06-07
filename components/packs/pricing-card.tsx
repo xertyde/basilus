@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check, AlertCircle } from "lucide-react"
+import { Check, AlertCircle, Shield, Server } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useInView } from 'react-intersection-observer'
@@ -95,20 +95,46 @@ export default function PricingCard({
           {options && options.length > 0 && (
             <div className="mt-6 pt-6 border-t">
               <h4 className="text-sm font-medium mb-3">Options disponibles :</h4>
-              <ul className="space-y-2">
-                {options.map((option) => (
-                  <li key={option.name} className={option.customContent ? "" : "flex items-center text-sm hover-lift"}>
-                    {option.customContent ? (
-                      option.customContent
-                    ) : (
-                      <>
-                        {option.icon && <span className="mr-2">{option.icon}</span>}
-                        <span>{option.name}</span>
-                        <span className="ml-1 font-medium">{option.price}</span>
-                      </>
-                    )}
-                  </li>
-                ))}
+              <ul className="space-y-3">
+                {options.map((option) => {
+                  const isHostingOption = option.name.toLowerCase().includes('hébergement') || 
+                                        option.name.toLowerCase().includes('maintenance');
+                  
+                  return (
+                    <li key={option.name} className={cn(
+                      option.customContent ? "" : "hover-lift",
+                      isHostingOption && "bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/50 dark:to-cyan-950/50 rounded-lg p-3 border border-blue-200/50 dark:border-blue-800/50"
+                    )}>
+                      {option.customContent ? (
+                        option.customContent
+                      ) : isHostingOption ? (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                              <Server className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-blue-900 dark:text-blue-100">{option.name}</span>
+                                <Shield className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                              </div>
+                              <div className="text-xs text-blue-700 dark:text-blue-300">Sécurité & Performance incluses</div>
+                            </div>
+                          </div>
+                          <div className="text-sm font-semibold text-blue-800 dark:text-blue-200 bg-blue-100 dark:bg-blue-900/50 px-2 py-1 rounded-md">
+                            {option.price}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center text-sm">
+                          {option.icon && <span className="mr-2">{option.icon}</span>}
+                          <span>{option.name}</span>
+                          <span className="ml-1 font-medium">{option.price}</span>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}
