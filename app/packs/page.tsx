@@ -55,12 +55,12 @@ export default function PacksPage() {
               options={[
                 {
                   name: "multilingue",
-                  price: "+250€",
-                  customContent: <MultilingualOption price="+250€" />
+                  price: "+200€",
+                  customContent: <MultilingualOption price="+200€" />
                 },
                 {
                   name: "Livraison express 72h",
-                  price: "+300€",
+                  price: "+200€",
                   icon: <Clock className="h-4 w-4" />
                 },
                 {
@@ -136,12 +136,12 @@ export default function PacksPage() {
               options={[
                 {
                   name: "multilingue",
-                  price: "+250€",
-                  customContent: <MultilingualOption price="+250€" />
+                  price: "+300€",
+                  customContent: <MultilingualOption price="+300€" />
                 },
                 {
                   name: "Livraison express 72h",
-                  price: "+300€",
+                  price: "+400€",
                   icon: <Clock className="h-4 w-4" />
                 },
                 {

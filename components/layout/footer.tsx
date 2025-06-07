@@ -30,7 +30,7 @@ export default function Footer() {
     <footer className="bg-[#0A192F] relative overflow-hidden">
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M30 8l4 8h8l-6 6 2 8-8-4-8 4 2-8-6-6h8l4-8zm0-8l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4zm-18 36l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4zm36 0l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M30 20l5 10-5 10-5-10 5-10zm-18 18l5 10-5 10-5-10 5-10zm36 0l5 10-5 10-5-10 5-10zm-18-36l5 10-5 10-5-10 5-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
         }} />
       </div>
       <div className="container py-16 md:py-20 lg:py-24 relative">
