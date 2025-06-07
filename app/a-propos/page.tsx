@@ -93,20 +93,20 @@ Plutôt qu’un long discours, nous mettons notre énergie dans des solutions co
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-100">
-              <h3 className="text-xl font-bold mb-4">Excellence</h3>
+            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-100 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Excellence</h3>
               <p className="text-muted-foreground">
                 Nous ne nous contentons pas du minimum. Chaque projet est une opportunité de créer quelque chose d'exceptionnel qui dépasse les attentes de nos clients.
               </p>
             </div>
-            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-200">
-              <h3 className="text-xl font-bold mb-4">Transparence</h3>
+            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-200 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Transparence</h3>
               <p className="text-muted-foreground">
                 Nous communiquons de manière claire et honnête à chaque étape du projet. Pas de surprises, pas de coûts cachés.
               </p>
             </div>
-            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-300">
-              <h3 className="text-xl font-bold mb-4">Innovation</h3>
+            <div className="bg-card p-8 rounded-xl shadow-sm animate-on-scroll delay-300 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">Innovation</h3>
               <p className="text-muted-foreground">
                 Nous restons à la pointe des nouvelles technologies et tendances pour offrir des solutions modernes et performantes.
               </p>
