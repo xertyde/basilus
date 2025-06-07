@@ -240,8 +240,8 @@ async function sendPhoneEmail(email: string, phoneNumber: string, eventDate: str
               margin-top: 30px; 
             }
             .meeting-info {
-              background-color: #f0fdf4;
-              border: 1px solid #22c55e;
+              background-color: #f0f9ff;
+              border: 1px solid #0ea5e9;
               border-radius: 8px;
               padding: 20px;
               margin: 20px 0;
@@ -268,7 +268,7 @@ async function sendPhoneEmail(email: string, phoneNumber: string, eventDate: str
             <p>Nous vous confirmons votre rendez-vous téléphonique avec notre équipe Basilus.</p>
             
             <div class="meeting-info">
-              <h3 style="color: #22c55e; margin-top: 0;">📅 Détails du rendez-vous</h3>
+              <h3 style="color: #0ea5e9; margin-top: 0;">📅 Détails du rendez-vous</h3>
               <p><strong>Date :</strong> ${formattedDate.toLocaleDateString('fr-FR', { 
                 weekday: 'long',
                 year: 'numeric',
@@ -288,8 +288,8 @@ async function sendPhoneEmail(email: string, phoneNumber: string, eventDate: str
               </p>
             </div>
 
-            <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin: 20px 0;">
-              <p style="margin: 0; color: #92400e;">
+            <div style="background-color: #fce7f3; border: 1px solid #f63c7a; border-radius: 8px; padding: 15px; margin: 20px 0;">
+              <p style="margin: 0; color: #be185d;">
                 <strong>⚠️ Important :</strong> Assurez-vous d'être disponible à l'heure prévue. Notre équipe vous contactera directement sur ce numéro.
               </p>
             </div>

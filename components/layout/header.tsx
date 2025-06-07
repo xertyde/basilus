@@ -44,8 +44,8 @@ export default function Header() {
           : "bg-transparent"
       )}>
         <nav className="container py-4">
-          {/* Grille 3 colonnes pour un centrage parfait */}
-          <div className="grid grid-cols-3 items-center">
+          {/* Layout responsive : flex sur mobile, grille sur desktop */}
+          <div className="flex justify-between items-center md:grid md:grid-cols-3">
             {/* Logo à gauche */}
             <div className="flex items-center justify-start">
               <Link href="/" className="flex items-center gap-x-2">
@@ -53,7 +53,7 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Navigation au centre */}
+            {/* Navigation au centre (desktop seulement) */}
             <div className="hidden md:flex justify-center">
               <div className="flex gap-x-8">
                 {navigation.map((item) => (
