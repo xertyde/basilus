@@ -30,7 +30,10 @@ export default function Footer() {
     <footer className="bg-[#0A192F] relative overflow-hidden">
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M30 20l5 10-5 10-5-10 5-10zm-18 18l5 10-5 10-5-10 5-10zm36 0l5 10-5 10-5-10 5-10zm-18-36l5 10-5 10-5-10 5-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          backgroundImage: `url('/star.svg')`,
+          backgroundSize: '80px 80px',
+          backgroundRepeat: 'repeat',
+          backgroundPosition: '0 0'
         }} />
       </div>
       <div className="container py-16 md:py-20 lg:py-24 relative">
