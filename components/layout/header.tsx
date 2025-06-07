@@ -99,16 +99,8 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-background mt-16 md:hidden">
           <div className="h-[calc(100vh-4rem)] overflow-y-auto py-6 px-6">
-            <div className="flex justify-between items-center mb-8">
+            <div className="mb-8">
               <h2 className="text-xl font-semibold text-foreground">Menu</h2>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setMobileMenuOpen(false)}
-                aria-label="Fermer le menu"
-              >
-                <X className="h-6 w-6" />
-              </Button>
             </div>
             
             <div className="flex flex-col space-y-6">
