@@ -15,7 +15,7 @@ export default function SimpleThemeToggle() {
     setIsDark(isDarkMode)
   }, [])
 
-  const toggleTheme = () => {
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
     const newTheme = !isDark
     setIsDark(newTheme)
     
@@ -26,6 +26,9 @@ export default function SimpleThemeToggle() {
       document.documentElement.classList.remove('dark')
       localStorage.setItem('theme', 'light')
     }
+
+    // Supprimer le focus après le clic pour éviter l'effet hover collé sur mobile
+    event.currentTarget.blur()
   }
 
   if (!mounted) {
@@ -37,7 +40,8 @@ export default function SimpleThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="rounded-full"
+      onTouchEnd={(e) => e.currentTarget.blur()}
+      className="rounded-full hover:bg-accent/50 focus-visible:bg-accent active:bg-accent/70 transition-colors"
       aria-label="Toggle theme"
     >
       {isDark ? (
