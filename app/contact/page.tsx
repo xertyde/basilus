@@ -71,7 +71,7 @@ export default function ContactPage() {
                 <div className="space-y-2 mb-6">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Lundi - Vendredi</span>
-                    <span className="font-medium">9h - 18h</span>
+                    <span className="font-medium">9h - 20h</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Samedi</span>

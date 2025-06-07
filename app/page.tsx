@@ -172,7 +172,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
               Des sites web qui font briller <span className="text-primary">votre entreprise</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl drop-shadow-lg [text-shadow:_1px_1px_2px_rgb(0_0_0_/_50%)] bg-background/20 backdrop-blur-[1px] rounded-lg px-4 py-3 border border-white/10">
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl drop-shadow-lg [text-shadow:_1px_1px_2px_rgb(0_0_0_/_50%)] bg-background/20 backdrop-blur-[1px] rounded-lg px-4 py-3">
               Start-up ou PME, vous souhaitez valoriser votre activité, booster votre visibilité en ligne ou lancer votre boutique e-commerce ? Basilus vous accompagne avec un design épuré, un code optimisé et des résultats garantis.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
