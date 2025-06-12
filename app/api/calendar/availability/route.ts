@@ -224,12 +224,14 @@ function filterPastSlots(slots: Availability[], date: Date): Availability[] {
 
 function getNextBusinessDays(count: number = 5): Date[] {
   const businessDays: Date[] = [];
-  const currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
-  
+  // Obtenir la date actuelle en France
+  const now = new Date();
+  const parisNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
+  parisNow.setHours(0, 0, 0, 0);
+
   let daysAdded = 0;
-  let checkDate = new Date(currentDate);
-  
+  let checkDate = new Date(parisNow);
+
   while (daysAdded < count) {
     const dayOfWeek = checkDate.getDay();
     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
@@ -238,7 +240,7 @@ function getNextBusinessDays(count: number = 5): Date[] {
     }
     checkDate.setDate(checkDate.getDate() + 1);
   }
-  
+
   return businessDays;
 }
 
