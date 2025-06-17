@@ -69,8 +69,16 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://prod.spline.design" />
         <link rel="dns-prefetch" href="https://images.pexels.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -100,18 +108,17 @@ export default function RootLayout({
       <body className={`${poppins.variable} font-sans`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">
-              <PageTransition>{children}</PageTransition>
-            </main>
-            <Footer />
-          </div>
-          <Toaster />
+          <Header />
+          <PageTransition>
+            <main className="min-h-screen">{children}</main>
+          </PageTransition>
+          <Footer />
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
