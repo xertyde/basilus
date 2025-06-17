@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import styles from '../page.module.css';
+import styles from './page.module.css';
 import { createClient } from '@supabase/supabase-js';
 import SEO from '../components/SEO';
 import Image from 'next/image';
