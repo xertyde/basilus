@@ -1,10 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './page.module.css';
 import { createClient } from '@supabase/supabase-js';
-import SEO from '../components/SEO';
-import Image from 'next/image';
+import { Upload, FileText, Image, Video, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useToast } from '@/hooks/use-toast';
 
 // Configuration du client Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -19,27 +25,24 @@ export default function UploadPage() {
   const [contentType, setContentType] = useState<'file' | 'text'>('file');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const { toast } = useToast();
 
-  // Schema.org pour la page d'upload
-  const uploadPageSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: 'Téléchargement de contenu - Basilus',
-    description: 'Téléchargez vos contenus (images, vidéos ou texte) sur Basilus',
-    url: 'https://basilus.com/upload',
-    publisher: {
-      '@type': 'Organization',
-      name: 'Basilus',
-      url: 'https://basilus.com'
-    }
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFile(selectedFile);
+  };
+
+  const clearFile = () => {
+    setFile(null);
+    // Reset the file input
+    const fileInput = document.getElementById('file') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    setSuccess(false);
 
     try {
       if (contentType === 'text') {
@@ -81,14 +84,30 @@ export default function UploadPage() {
         if (insertError) throw insertError;
       }
 
-      setSuccess(true);
+      // Afficher le toast de succès
+      toast({
+        title: "Contenu téléchargé !",
+        description: "Votre contenu a été téléchargé avec succès.",
+      });
+
       // Réinitialisation du formulaire
       setUsername('');
       setContentName('');
       setFile(null);
       setTextContent('');
+      // Reset the file input
+      const fileInput = document.getElementById('file') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      const errorMessage = err instanceof Error ? err.message : 'Une erreur est survenue';
+      setError(errorMessage);
+      
+      // Afficher le toast d'erreur
+      toast({
+        title: "Erreur",
+        description: errorMessage,
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
@@ -96,120 +115,230 @@ export default function UploadPage() {
 
   return (
     <>
-      <SEO
-        title="Télécharger du contenu"
-        description="Téléchargez vos contenus (images, vidéos ou texte) sur Basilus. Partagez facilement vos médias et textes avec notre plateforme."
-        keywords="téléchargement, contenu, images, vidéos, texte, partage, Basilus"
-        ogType="website"
-        canonical="/upload"
-        schema={uploadPageSchema}
-      />
-
-      <div className={styles.container}>
-        <h1 className={styles.title}>Télécharger du contenu</h1>
-        
-        {error && (
-          <div className={styles.error}>
-            {error}
+      <section className="pt-28 md:pt-36 pb-16 md:pb-20">
+        <div className="container">
+          <div className="max-w-3xl mx-auto text-center animate-on-scroll">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Télécharger du contenu</h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Partagez facilement vos images, vidéos ou textes avec notre plateforme sécurisée. 
+              Vos contenus sont automatiquement organisés et accessibles.
+            </p>
           </div>
-        )}
+        </div>
+      </section>
 
-        {success && (
-          <div className={styles.success}>
-            Contenu téléchargé avec succès !
+      <section className="pb-16 md:pb-24">
+        <div className="container">
+          <div className="max-w-2xl mx-auto">
+            <Card className="animate-on-scroll">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Upload className="h-5 w-5" />
+                  Formulaire de téléchargement
+                </CardTitle>
+                <CardDescription>
+                  Remplissez les informations ci-dessous pour télécharger votre contenu
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                {error && (
+                  <Alert variant="destructive" className="mb-6">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="username">Nom d'utilisateur</Label>
+                    <Input
+                      id="username"
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                      disabled={isLoading}
+                      placeholder="Votre nom ou pseudo"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contentName">Nom du contenu</Label>
+                    <Input
+                      id="contentName"
+                      type="text"
+                      value={contentName}
+                      onChange={(e) => setContentName(e.target.value)}
+                      required
+                      disabled={isLoading}
+                      placeholder="Titre descriptif de votre contenu"
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label>Type de contenu</Label>
+                    <RadioGroup
+                      value={contentType}
+                      onValueChange={(value) => setContentType(value as 'file' | 'text')}
+                      disabled={isLoading}
+                      className="grid grid-cols-2 gap-4"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="file" id="file" />
+                        <Label htmlFor="file" className="flex items-center gap-2 cursor-pointer">
+                          <Image className="h-4 w-4" />
+                          Fichier (Image/Vidéo)
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="text" id="text" />
+                        <Label htmlFor="text" className="flex items-center gap-2 cursor-pointer">
+                          <FileText className="h-4 w-4" />
+                          Texte
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  {contentType === 'file' ? (
+                    <div className="space-y-3">
+                      <Label htmlFor="file">Sélectionner un fichier</Label>
+                      <div className="relative">
+                        <Input
+                          id="file"
+                          type="file"
+                          accept="image/*,video/*"
+                          onChange={handleFileChange}
+                          required
+                          disabled={isLoading}
+                          className="cursor-pointer file:cursor-pointer"
+                        />
+                        {file && (
+                          <div className="mt-3 p-3 bg-muted rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                {file.type.startsWith('image/') ? (
+                                  <Image className="h-4 w-4 text-blue-500" />
+                                ) : (
+                                  <Video className="h-4 w-4 text-purple-500" />
+                                )}
+                                <span className="text-sm font-medium">{file.name}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                                </span>
+                              </div>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={clearFile}
+                                disabled={isLoading}
+                                className="h-6 w-6 p-0"
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Formats acceptés : JPG, PNG, GIF, MP4, MOV, AVI (max 10MB)
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Label htmlFor="textContent">Contenu textuel</Label>
+                      <Textarea
+                        id="textContent"
+                        value={textContent}
+                        onChange={(e) => setTextContent(e.target.value)}
+                        required
+                        disabled={isLoading}
+                        placeholder="Saisissez votre texte ici..."
+                        rows={5}
+                      />
+                    </div>
+                  )}
+
+                  <Button 
+                    type="submit" 
+                    className="w-full"
+                    disabled={isLoading}
+                    size="lg"
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Téléchargement...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mr-2 h-4 w-4" />
+                        Télécharger
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
-        )}
+        </div>
+      </section>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="username">Nom d'utilisateur</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className={styles.input}
-              disabled={isLoading}
-            />
-          </div>
+      <section className="py-16 md:py-24 bg-muted/50">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Informations importantes</h2>
+              <p className="text-lg text-muted-foreground">
+                Tout ce que vous devez savoir sur le téléchargement de contenu
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <Card className="text-center animate-on-scroll">
+                <CardContent className="pt-6">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Image className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Images & Vidéos</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Support des formats courants : JPG, PNG, GIF, MP4, MOV, AVI. 
+                    Taille maximale : 10MB par fichier.
+                  </p>
+                </CardContent>
+              </Card>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="contentName">Nom du contenu</label>
-            <input
-              type="text"
-              id="contentName"
-              value={contentName}
-              onChange={(e) => setContentName(e.target.value)}
-              required
-              className={styles.input}
-              disabled={isLoading}
-            />
-          </div>
+              <Card className="text-center animate-on-scroll delay-100">
+                <CardContent className="pt-6">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <FileText className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Contenu textuel</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Partagez vos textes, notes, ou documents. 
+                    Formatage automatique et organisation claire.
+                  </p>
+                </CardContent>
+              </Card>
 
-          <div className={styles.formGroup}>
-            <label>Type de contenu</label>
-            <div className={styles.radioGroup}>
-              <label>
-                <input
-                  type="radio"
-                  value="file"
-                  checked={contentType === 'file'}
-                  onChange={() => setContentType('file')}
-                  disabled={isLoading}
-                />
-                Fichier (Image/Vidéo)
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="text"
-                  checked={contentType === 'text'}
-                  onChange={() => setContentType('text')}
-                  disabled={isLoading}
-                />
-                Texte
-              </label>
+              <Card className="text-center animate-on-scroll delay-200">
+                <CardContent className="pt-6">
+                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Sécurisé & Organisé</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Vos contenus sont stockés de manière sécurisée et 
+                    automatiquement organisés par nom d'utilisateur.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
-
-          {contentType === 'file' ? (
-            <div className={styles.formGroup}>
-              <label htmlFor="file">Sélectionner un fichier</label>
-              <input
-                type="file"
-                id="file"
-                accept="image/*,video/*"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                required
-                className={styles.fileInput}
-                disabled={isLoading}
-              />
-            </div>
-          ) : (
-            <div className={styles.formGroup}>
-              <label htmlFor="textContent">Contenu textuel</label>
-              <textarea
-                id="textContent"
-                value={textContent}
-                onChange={(e) => setTextContent(e.target.value)}
-                required
-                className={styles.textarea}
-                rows={5}
-                disabled={isLoading}
-              />
-            </div>
-          )}
-
-          <button 
-            type="submit" 
-            className={styles.submitButton}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Téléchargement...' : 'Télécharger'}
-          </button>
-        </form>
-      </div>
+        </div>
+      </section>
     </>
   );
 } 
