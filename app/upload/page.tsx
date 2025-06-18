@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { Upload, FileText, Image, Video, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,8 @@ export default function UploadPage() {
   const [contentType, setContentType] = useState<'file' | 'text'>('file');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,11 +34,43 @@ export default function UploadPage() {
     setFile(selectedFile);
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && (droppedFile.type.startsWith('image/') || droppedFile.type.startsWith('video/'))) {
+      setFile(droppedFile);
+      // Mettre à jour l'input file pour la soumission
+      if (fileInputRef.current) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(droppedFile);
+        fileInputRef.current.files = dataTransfer.files;
+      }
+    } else {
+      toast({
+        title: "Type de fichier non supporté",
+        description: "Veuillez sélectionner une image ou une vidéo.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const clearFile = () => {
     setFile(null);
-    // Reset the file input
-    const fileInput = document.getElementById('file') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,14 +124,14 @@ export default function UploadPage() {
         description: "Votre contenu a été téléchargé avec succès.",
       });
 
-      // Réinitialisation du formulaire
+      // Réinitialisation complète du formulaire
       setUsername('');
       setContentName('');
       setFile(null);
       setTextContent('');
-      // Reset the file input
-      const fileInput = document.getElementById('file') as HTMLInputElement;
-      if (fileInput) fileInput.value = '';
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Une erreur est survenue';
       setError(errorMessage);
@@ -205,28 +239,65 @@ export default function UploadPage() {
                     <div className="space-y-3">
                       <Label htmlFor="file">Sélectionner un fichier</Label>
                       <div className="relative">
+                        <div
+                          className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                            isDragOver 
+                              ? 'border-primary bg-primary/5' 
+                              : 'border-muted-foreground/25 hover:border-primary/50'
+                          }`}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                        >
+                          <div className="flex flex-col items-center gap-4">
+                            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                              <Upload className="h-8 w-8 text-primary" />
+                            </div>
+                            <div>
+                              <p className="text-lg font-medium mb-2">
+                                Glissez-déposez votre fichier ici
+                              </p>
+                              <p className="text-sm text-muted-foreground mb-4">
+                                ou cliquez pour sélectionner un fichier
+                              </p>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isLoading}
+                              >
+                                Choisir un fichier
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                        
                         <Input
+                          ref={fileInputRef}
                           id="file"
                           type="file"
                           accept="image/*,video/*"
                           onChange={handleFileChange}
                           required
                           disabled={isLoading}
-                          className="cursor-pointer file:cursor-pointer"
+                          className="hidden"
                         />
+                        
                         {file && (
-                          <div className="mt-3 p-3 bg-muted rounded-lg">
+                          <div className="mt-4 p-4 bg-muted rounded-lg">
                             <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-3">
                                 {file.type.startsWith('image/') ? (
-                                  <Image className="h-4 w-4 text-blue-500" />
+                                  <Image className="h-5 w-5 text-blue-500" />
                                 ) : (
-                                  <Video className="h-4 w-4 text-purple-500" />
+                                  <Video className="h-5 w-5 text-purple-500" />
                                 )}
-                                <span className="text-sm font-medium">{file.name}</span>
-                                <span className="text-xs text-muted-foreground">
-                                  ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                                </span>
+                                <div>
+                                  <p className="text-sm font-medium">{file.name}</p>
+                                  <p className="text-xs text-muted-foreground">
+                                    {(file.size / 1024 / 1024).toFixed(2)} MB
+                                  </p>
+                                </div>
                               </div>
                               <Button
                                 type="button"
@@ -234,9 +305,9 @@ export default function UploadPage() {
                                 size="sm"
                                 onClick={clearFile}
                                 disabled={isLoading}
-                                className="h-6 w-6 p-0"
+                                className="h-8 w-8 p-0"
                               >
-                                <X className="h-3 w-3" />
+                                <X className="h-4 w-4" />
                               </Button>
                             </div>
                           </div>
