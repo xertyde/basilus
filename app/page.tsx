@@ -2,40 +2,24 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Zap, Award, Code, RefreshCcw } from 'lucide-react'
+import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
 import dynamic from 'next/dynamic'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
-// Optimized Spline lazy loading with intersection observer
+// Spline lazy loading simplifié
 const Spline = dynamic(() => 
   import('@splinetool/react-spline').then(mod => mod.default),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 relative">
-            <div className="w-10 h-1 bg-primary rounded-full animate-spin origin-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="w-6 h-0.5 bg-primary/60 rounded-full animate-spin origin-center animation-delay-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{animationDirection: 'reverse'}}></div>
-          </div>
-        </div>
-      </div>
-    ),
-  }
+  { ssr: false }
 )
 
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
-  const [splineLoaded, setSplineLoaded] = useState(false)
-  const [shouldLoadSpline, setShouldLoadSpline] = useState(false)
-  const [retryCount, setRetryCount] = useState(0)
   const heroRef = useRef<HTMLElement>(null)
-  const splineTimeoutRef = useRef<NodeJS.Timeout>()
-  const maxRetries = 3
+  const [shouldLoadSpline, setShouldLoadSpline] = useState(false)
 
-  // Intersection Observer pour charger Spline seulement quand la hero section est visible
+  // Intersection Observer simplifié
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -45,10 +29,7 @@ export default function Home() {
           observer.disconnect()
         }
       },
-      { 
-        threshold: 0.1,
-        rootMargin: '50px' // Précharge légèrement avant
-      }
+      { threshold: 0.1 }
     )
 
     if (heroRef.current) {
@@ -58,77 +39,9 @@ export default function Home() {
     return () => observer.disconnect()
   }, [shouldLoadSpline])
 
-  // Timeout de sécurité pour éviter un chargement infini
-  useEffect(() => {
-    if (shouldLoadSpline && !splineLoaded && !splineError) {
-      splineTimeoutRef.current = setTimeout(() => {
-        if (!splineLoaded) {
-          setSplineError(true)
-        }
-      }, 10000) // 10 secondes timeout
-    }
-
-    return () => {
-      if (splineTimeoutRef.current) {
-        clearTimeout(splineTimeoutRef.current)
-      }
-    }
-  }, [shouldLoadSpline, splineLoaded, splineError])
-
-  useEffect(() => {
-    if (splineError && retryCount < maxRetries) {
-      const timer = setTimeout(() => {
-        setSplineError(false)
-        setRetryCount(prev => prev + 1)
-        setShouldLoadSpline(true)
-      }, 2000 * (retryCount + 1)) // Exponential backoff
-
-      return () => clearTimeout(timer)
-    }
-  }, [splineError, retryCount])
-
-  const handleSplineLoad = useCallback(() => {
-    setSplineLoaded(true)
-    setSplineError(false)
-    setRetryCount(0)
-    if (splineTimeoutRef.current) {
-      clearTimeout(splineTimeoutRef.current)
-    }
-  }, [])
-
-  const handleSplineError = useCallback(() => {
+  const handleSplineError = () => {
     setSplineError(true)
-    if (splineTimeoutRef.current) {
-      clearTimeout(splineTimeoutRef.current)
-    }
-  }, [])
-
-  const handleRetry = useCallback(() => {
-    setSplineError(false)
-    setRetryCount(0)
-    setShouldLoadSpline(true)
-  }, [])
-
-  const FallbackBackground = () => (
-    <div className="absolute inset-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-        <div className="absolute inset-0 opacity-20">
-          <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
-        </div>
-      </div>
-      {retryCount >= maxRetries && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-background/80 backdrop-blur-sm p-6 rounded-lg shadow-lg text-center">
-            <p className="text-muted-foreground mb-4">Une erreur est survenue lors du chargement de l'animation</p>
-            <Button onClick={handleRetry} variant="outline" size="sm">
-              <RefreshCcw className="mr-2 h-4 w-4" />
-              Réessayer
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  )
+  }
 
   return (
     <>
@@ -137,32 +50,16 @@ export default function Home() {
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
           {shouldLoadSpline && !splineError ? (
-            <div className="absolute inset-0">
-              <Spline 
-                scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
-                onLoad={handleSplineLoad}
-                onError={handleSplineError}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  transform: splineLoaded ? 'translateZ(0)' : 'translateZ(0) scale(1.05)',
-                  transition: 'transform 0.8s ease-out',
-                  willChange: 'transform'
-                }}
-              />
-              {!splineLoaded && (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 z-10">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 relative">
-                      <div className="w-10 h-1 bg-primary rounded-full animate-spin origin-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                      <div className="w-6 h-0.5 bg-primary/60 rounded-full animate-spin origin-center animation-delay-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{animationDirection: 'reverse'}}></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Spline 
+              scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
+              onError={handleSplineError}
+            />
           ) : (
-            <FallbackBackground />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+              <div className="absolute inset-0 opacity-20">
+                <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
+              </div>
+            </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
         </div>
