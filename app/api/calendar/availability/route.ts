@@ -229,8 +229,11 @@ function getNextBusinessDays(count: number = 5): Date[] {
   const parisNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
   parisNow.setHours(0, 0, 0, 0);
 
-  let daysAdded = 0;
+  // Commencer à partir de demain
   let checkDate = new Date(parisNow);
+  checkDate.setDate(checkDate.getDate() + 1);
+
+  let daysAdded = 0;
 
   while (daysAdded < count) {
     const dayOfWeek = checkDate.getDay();
