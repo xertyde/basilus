@@ -81,7 +81,7 @@ export default function Footer() {
               </li>
               <li className="text-sm text-gray-300">
                 <span className="block font-medium text-gray-200 mb-1">Adresse</span>
-                <span className="block">Lyon 3ème Arrondissement</span>
+                <span className="block">Paris 12e arrondissement</span>
               </li>
             </ul>
           </div>
