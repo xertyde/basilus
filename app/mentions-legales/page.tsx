@@ -28,9 +28,8 @@ export default function MentionsLegalesPage() {
             
             <h2>2. Hébergement</h2>
             <p>
-              Le site Basilus est hébergé par la société Hébergeur Pro, SAS au capital de 100 000 euros, 
-              immatriculée au RCS de Lyon sous le numéro 987 654 321, 
-              dont le siège social est situé au 456 Avenue de Lyon, 69000 Lyon.
+              Le site Basilus est hébergé par Vercel Inc., 
+              dont le siège social est situé au 650, California St., San Francisco, Californie 94108, États-Unis.
             </p>
             
             <h2>3. Propriété intellectuelle</h2>
