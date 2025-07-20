@@ -17,20 +17,16 @@ export default function MentionsLegalesPage() {
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <h2>1. Informations légales</h2>
             <p>
-              Le site Basilus est édité par la société Basilus, SAS au capital de 100 euros, 
-              immatriculée au Registre du Commerce et des Sociétés de Lyon sous le numéro 123 456 789, 
-              dont le siège social est situé au 2 rue des Marguerites, 69680 Chassieu.
+              Le site Basilus est édité par l'auto-entreprise d'Antoine EPIFANIC,
+              immatriculée au Registre du Commerce et des Sociétés de Créteil sous le numéro 930 108 196, 
+              dont le siège social est situé au 86 avenue Ledru-Rollin, 75012 Paris.
             </p>
-            <p>
-              Numéro de TVA intracommunautaire : FR 12 123 456 789<br />
-              Directeur de la publication : Jean Dupont
-            </p>
+            
             
             <h2>2. Hébergement</h2>
             <p>
-              Le site Basilus est hébergé par la société Hébergeur Pro, SAS au capital de 100 000 euros, 
-              immatriculée au RCS de Lyon sous le numéro 987 654 321, 
-              dont le siège social est situé au 456 Avenue de Lyon, 69000 Lyon.
+              Le site Basilus est hébergé par Vercel Inc., 
+              dont le siège social est situé au 650, California St., San Francisco, Californie 94108, États-Unis.
             </p>
             
             <h2>3. Propriété intellectuelle</h2>

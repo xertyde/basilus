@@ -77,11 +77,11 @@ export default function Footer() {
               </li>
               <li className="text-sm text-gray-300">
                 <span className="block font-medium text-gray-200 mb-1">Téléphone</span>
-                <span className="block">+33 7 68 09 59 59</span>
+                <span className="block">+33 7 71 25 80 39</span>
               </li>
               <li className="text-sm text-gray-300">
                 <span className="block font-medium text-gray-200 mb-1">Adresse</span>
-                <span className="block">Lyon 3ème Arrondissement</span>
+                <span className="block">Paris 12e arrondissement</span>
               </li>
             </ul>
           </div>
