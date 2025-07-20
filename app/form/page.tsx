@@ -192,8 +192,6 @@ export default function ProjectForm() {
         title: "Merci !",
         description: "Votre demande a bien été envoyée. Nous vous contacterons dans les plus brefs délais.",
       })
-
-      router.push('/merci')
     } catch (error) {
       console.error('Erreur complète:', error)
       
