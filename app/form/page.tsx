@@ -33,7 +33,7 @@ interface FormData {
   // 3. Cible & utilisateurs
   target_description: string
   what_to_find: string
-  devices_used: string[]
+  devices_used: string[] | undefined
 
   // 4. Identité de marque
   has_logo: boolean
@@ -44,7 +44,7 @@ interface FormData {
 
   // 5. Contenu & structure
   has_site_map: boolean
-  pages_to_include: string[]
+  pages_to_include: string[] | undefined
   has_texts: 'oui' | 'non' | 'à retravailler'
   has_media: 'oui' | 'non' | 'partiellement'
 
@@ -150,8 +150,8 @@ export default function ProjectForm() {
       // Convert arrays to comma-separated strings and filter empty values
       const formattedData: Partial<FormattedFormData> = {
         ...formData,
-        devices_used: formData.devices_used.join(', '),
-        pages_to_include: formData.pages_to_include.join(', '),
+        devices_used: formData.devices_used?.join(', ') || '',
+        pages_to_include: formData.pages_to_include?.join(', ') || '',
         expected_features: formData.expected_features?.join(', ') || ''
       }
 
@@ -164,24 +164,33 @@ export default function ProjectForm() {
         })
       )
 
+      console.log('Données à envoyer:', filteredData)
+
       // Insert into Supabase
-      const { error } = await supabase
-        .from('project_requests')
+      const { data, error } = await supabase
+        .from('client_form')
         .insert([filteredData])
+        .select()
 
-      if (error) throw error
+      if (error) {
+        console.error('Erreur Supabase:', error)
+        throw new Error(`Erreur Supabase: ${error.message}`)
+      }
 
-        toast({
+      console.log('Données insérées:', data)
+
+      toast({
         title: "Merci !",
         description: "Votre demande a bien été envoyée. Nous vous contacterons dans les plus brefs délais.",
-        })
+      })
 
       router.push('/merci')
     } catch (error) {
-
+      console.error('Erreur complète:', error)
+      
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
+        description: error instanceof Error ? error.message : "Une erreur est survenue lors de l'envoi du formulaire. Veuillez réessayer.",
         variant: "destructive"
       })
     } finally {
