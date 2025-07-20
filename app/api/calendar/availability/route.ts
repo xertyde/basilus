@@ -182,43 +182,24 @@ function calculateFreeSlots(events: TimeSlot[], date: Date): Availability[] {
   return freeSlots;
 }
 
-// Fonction pour filtrer les créneaux passés (pour aujourd'hui seulement)
-function filterPastSlots(slots: Availability[], date: Date): Availability[] {
-  // Obtenir l'heure actuelle en France
+// Fonction pour obtenir la date/heure actuelle en France
+function getCurrentDateTimeInParis(): Date {
   const now = new Date();
-  const parisTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Paris"}));
-  
-  // Créer une date de comparaison pour aujourd'hui en France
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayParis = new Date(today.toLocaleString("en-US", {timeZone: "Europe/Paris"}));
-  todayParis.setHours(0, 0, 0, 0);
-  
-  const checkDate = new Date(date);
-  checkDate.setHours(0, 0, 0, 0);
-  
-  // Si ce n'est pas aujourd'hui, retourner tous les créneaux
-  if (checkDate.getTime() !== todayParis.getTime()) {
-    return slots;
-  }
-  
-  // Si c'est aujourd'hui, filtrer les créneaux passés
-  const currentHour = parisTime.getHours();
-  const currentMinute = parisTime.getMinutes();
+  return new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
+}
+
+// Fonction pour filtrer les créneaux passés de manière fiable
+function filterPastSlots(slots: Availability[], date: Date): Availability[] {
+  const currentDateTime = getCurrentDateTimeInParis();
   
   return slots.filter(slot => {
-    // Extraire l'heure de début du créneau (format "HH:MM")
-    const startTime = slot.start;
-    const [startHour, startMinute] = startTime.split(':').map(Number);
+    // Créer une date complète pour le créneau (date + heure)
+    const slotDate = new Date(date);
+    const [startHour, startMinute] = slot.start.split(':').map(Number);
+    slotDate.setHours(startHour, startMinute, 0, 0);
     
     // Comparer avec l'heure actuelle
-    if (startHour > currentHour) {
-      return true; // Créneau dans le futur
-    } else if (startHour === currentHour) {
-      return startMinute > currentMinute; // Même heure, mais minutes futures
-    } else {
-      return false; // Créneau passé
-    }
+    return slotDate > currentDateTime;
   });
 }
 
@@ -229,10 +210,7 @@ function getNextBusinessDays(count: number = 5): Date[] {
   const parisNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
   parisNow.setHours(0, 0, 0, 0);
 
-  // Commencer à partir de demain
   let checkDate = new Date(parisNow);
-  checkDate.setDate(checkDate.getDate() + 1);
-
   let daysAdded = 0;
 
   while (daysAdded < count) {
@@ -245,6 +223,16 @@ function getNextBusinessDays(count: number = 5): Date[] {
   }
 
   return businessDays;
+}
+
+// Fonction pour valider qu'une date est dans les 5 prochains jours ouvrables
+function isValidBusinessDay(date: Date): boolean {
+  const businessDays = getNextBusinessDays(5);
+  const dateStr = date.toISOString().split('T')[0];
+  
+  return businessDays.some(businessDay => 
+    businessDay.toISOString().split('T')[0] === dateStr
+  );
 }
 
 export async function GET() {
@@ -273,7 +261,7 @@ export async function GET() {
           };
         }), date);
         
-        // Filtrer les créneaux passés pour aujourd'hui
+        // Filtrer les créneaux passés de manière fiable
         const filteredSlots = filterPastSlots(freeSlots, date);
         
         return {
