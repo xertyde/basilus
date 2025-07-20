@@ -33,7 +33,7 @@ interface FormData {
   // 3. Cible & utilisateurs
   target_description: string
   what_to_find: string
-  devices_used: string[] | undefined
+  devices_used: string[]
 
   // 4. Identité de marque
   has_logo: boolean
@@ -44,7 +44,7 @@ interface FormData {
 
   // 5. Contenu & structure
   has_site_map: boolean
-  pages_to_include: string[] | undefined
+  pages_to_include: string[]
   has_texts: 'oui' | 'non' | 'à retravailler'
   has_media: 'oui' | 'non' | 'partiellement'
 
@@ -129,7 +129,13 @@ const OptionalLabel = ({ children }: { children: React.ReactNode }) => (
 
 export default function ProjectForm() {
   const router = useRouter()
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
+    defaultValues: {
+      devices_used: [],
+      pages_to_include: [],
+      expected_features: []
+    }
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
@@ -150,9 +156,9 @@ export default function ProjectForm() {
       // Convert arrays to comma-separated strings and filter empty values
       const formattedData: Partial<FormattedFormData> = {
         ...formData,
-        devices_used: formData.devices_used?.join(', ') || '',
-        pages_to_include: formData.pages_to_include?.join(', ') || '',
-        expected_features: formData.expected_features?.join(', ') || ''
+        devices_used: Array.isArray(formData.devices_used) ? formData.devices_used.join(', ') : '',
+        pages_to_include: Array.isArray(formData.pages_to_include) ? formData.pages_to_include.join(', ') : '',
+        expected_features: Array.isArray(formData.expected_features) ? formData.expected_features.join(', ') : ''
       }
 
       // Filter out empty or undefined values
@@ -164,7 +170,10 @@ export default function ProjectForm() {
         })
       )
 
-      console.log('Données à envoyer:', filteredData)
+      // Vérification supplémentaire des données
+      console.log('Données brutes:', formData)
+      console.log('Données formatées:', formattedData)
+      console.log('Données filtrées:', filteredData)
 
       // Insert into Supabase
       const { data, error } = await supabase
