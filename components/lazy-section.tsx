@@ -2,6 +2,7 @@
 
 import { ReactNode, Suspense } from 'react'
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer'
+
 interface LazySectionProps {
   children: ReactNode
   fallback?: ReactNode
