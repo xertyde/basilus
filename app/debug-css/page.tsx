@@ -6,8 +6,12 @@ export default function DebugCSSPage() {
   const [cssLoaded, setCssLoaded] = useState(false);
   const [tailwindClasses, setTailwindClasses] = useState(false);
   const [customCSS, setCustomCSS] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // Marquer que nous sommes côté client
+    setIsClient(true);
+
     // Vérifier si le CSS est chargé
     const checkCSS = () => {
       // Vérifier Tailwind
@@ -39,6 +43,18 @@ export default function DebugCSSPage() {
 
     return () => window.removeEventListener('load', checkCSS);
   }, []);
+
+  // Rendu côté serveur - afficher un état de chargement
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Chargement du diagnostic...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
@@ -100,10 +116,10 @@ export default function DebugCSSPage() {
         <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Informations techniques</h2>
           <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-            <p><strong>User Agent :</strong> {navigator.userAgent}</p>
-            <p><strong>Viewport :</strong> {window.innerWidth} x {window.innerHeight}</p>
-            <p><strong>Theme :</strong> {document.documentElement.classList.contains('dark') ? 'Dark' : 'Light'}</p>
-            <p><strong>CSS Variables :</strong> {getComputedStyle(document.documentElement).getPropertyValue('--primary') || 'Non définies'}</p>
+            <p><strong>User Agent :</strong> {typeof navigator !== 'undefined' ? navigator.userAgent : 'Non disponible'}</p>
+            <p><strong>Viewport :</strong> {typeof window !== 'undefined' ? `${window.innerWidth} x ${window.innerHeight}` : 'Non disponible'}</p>
+            <p><strong>Theme :</strong> {typeof document !== 'undefined' ? (document.documentElement.classList.contains('dark') ? 'Dark' : 'Light') : 'Non disponible'}</p>
+            <p><strong>CSS Variables :</strong> {typeof document !== 'undefined' ? (getComputedStyle(document.documentElement).getPropertyValue('--primary') || 'Non définies') : 'Non disponible'}</p>
           </div>
         </div>
 
@@ -119,8 +135,10 @@ export default function DebugCSSPage() {
             </button>
             <button 
               onClick={() => {
-                localStorage.removeItem('theme');
-                window.location.reload();
+                if (typeof localStorage !== 'undefined') {
+                  localStorage.removeItem('theme');
+                  window.location.reload();
+                }
               }}
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-3"
             >

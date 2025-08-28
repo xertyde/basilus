@@ -12,8 +12,8 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'date-fns', '@radix-ui/react-icons'],
     serverComponentsExternalPackages: [],
-    // Optimisations CSS
-    optimizeCss: true,
+    // Optimisations CSS - désactivé temporairement
+    // optimizeCss: true,
   },
   webpack: (config, { isServer, dev }) => {
     // Activer le cache en production
