@@ -14,7 +14,6 @@ const nextConfig = {
     serverComponentsExternalPackages: [],
     // Optimisations CSS
     optimizeCss: true,
-    cssChunking: true,
   },
   webpack: (config, { isServer, dev }) => {
     // Activer le cache en production
@@ -56,18 +55,6 @@ const nextConfig = {
         },
       },
     };
-
-    // Optimisations CSS
-    if (!isServer) {
-      config.module.rules.push({
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader',
-        ],
-      });
-    }
 
     return config;
   },
