@@ -41,6 +41,9 @@ next-env.d.ts
 # src directory (conflictuel avec la structure Next.js 13+)
 /src/
 
+# Supabase functions (utilisent Deno, incompatible avec Next.js)
+/supabase/
+
 # Development tools
 components.json
 .eslintrc.json
