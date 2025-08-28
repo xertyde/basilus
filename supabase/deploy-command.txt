@@ -1,0 +1,6 @@
+supabase login
+supabase functions deploy send-email --no-verify-jwt --use-api
+supabase functions deploy form-email --no-verify-jwt --use-api
+
+git reset --hard <commit-hash>
+git push origin main --force

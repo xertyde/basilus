@@ -12,6 +12,9 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'date-fns', '@radix-ui/react-icons'],
     serverComponentsExternalPackages: [],
+    // Optimisations CSS
+    optimizeCss: true,
+    cssChunking: true,
   },
   webpack: (config, { isServer, dev }) => {
     // Activer le cache en production
@@ -43,9 +46,28 @@ const nextConfig = {
             chunks: 'all',
             enforce: true,
           },
+          // Optimisation spécifique pour le CSS
+          styles: {
+            name: 'styles',
+            test: /\.css$/,
+            chunks: 'all',
+            enforce: true,
+          },
         },
       },
     };
+
+    // Optimisations CSS
+    if (!isServer) {
+      config.module.rules.push({
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+        ],
+      });
+    }
 
     return config;
   },
@@ -85,6 +107,20 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable'
+          },
+        ],
+      },
+      // Headers spécifiques pour le CSS
+      {
+        source: '/_next/static/css/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          },
+          {
+            key: 'Content-Type',
+            value: 'text/css'
           },
         ],
       },
