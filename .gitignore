@@ -35,23 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Supabase
-/supabase/.temp
-
-# src directory (conflictuel avec la structure Next.js 13+)
-/src/
-
 # Supabase functions (utilisent Deno, incompatible avec Next.js)
 /supabase/
 
-# Development tools
-components.json
-.eslintrc.json
-postcss.config.js
-tailwind.config.ts
-
-# Documentation
-README.md
-
-# Large development assets (si pas utilisées)
-public/site*.png
+# src directory (conflictuel avec la structure Next.js 13+)
+/src/

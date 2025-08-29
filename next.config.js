@@ -4,19 +4,16 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { 
-    unoptimized: false, // Activer l'optimisation des images
+    unoptimized: false,
     domains: ['images.pexels.com'],
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 jours
+    minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'date-fns', '@radix-ui/react-icons'],
     serverComponentsExternalPackages: [],
-    // Optimisations CSS - désactivé temporairement
-    // optimizeCss: true,
   },
   webpack: (config, { isServer, dev }) => {
-    // Activer le cache en production
     if (!dev) {
       const path = require('path');
       config.cache = {
@@ -27,7 +24,6 @@ const nextConfig = {
       config.cache = false;
     }
 
-    // Optimisations de bundle
     config.optimization = {
       ...config.optimization,
       splitChunks: {
@@ -45,25 +41,16 @@ const nextConfig = {
             chunks: 'all',
             enforce: true,
           },
-          // Optimisation spécifique pour le CSS
-          styles: {
-            name: 'styles',
-            test: /\.css$/,
-            chunks: 'all',
-            enforce: true,
-          },
         },
       },
     };
 
     return config;
   },
-  // Optimisations de compilation
   swcMinify: true,
   compress: true,
   poweredByHeader: false,
   
-  // Headers de performance
   async headers() {
     return [
       {
@@ -94,20 +81,6 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable'
-          },
-        ],
-      },
-      // Headers spécifiques pour le CSS
-      {
-        source: '/_next/static/css/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          },
-          {
-            key: 'Content-Type',
-            value: 'text/css'
           },
         ],
       },
