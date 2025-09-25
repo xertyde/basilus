@@ -148,10 +148,12 @@ export default function ContactForm() {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://scompnbumndmuohgqefp.functions.supabase.co/send-email', {
+      // Utiliser la fonction Supabase Edge Function pour l'envoi d'email
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
           'X-CSRF-Token': values.csrfToken
         },
         body: JSON.stringify({
@@ -160,7 +162,11 @@ export default function ContactForm() {
         })
       });
 
-      if (!response.ok) throw new Error("Erreur réseau");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Erreur Supabase:', errorData);
+        throw new Error(errorData.error || "Erreur lors de l'envoi du formulaire");
+      }
 
       setIsSubmitted(true);
       
@@ -180,9 +186,10 @@ export default function ContactForm() {
       router.push('/form');
 
     } catch (error) {
+      console.error('Erreur lors de l\'envoi du formulaire:', error);
       toast({
         title: "Erreur",
-        description: "Échec de l'envoi",
+        description: error instanceof Error ? error.message : "Échec de l'envoi du formulaire. Veuillez réessayer.",
         variant: "destructive"
       });
     } finally {
