@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { generateCSRFToken, validateContactForm, checkRateLimit } from '@/lib/security'
+import { generateCSRFToken } from '@/lib/security'
 import { trackConversion } from '@/lib/analytics'
 import { Button } from "@/components/ui/button"
 import {
@@ -77,7 +77,6 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [csrfToken, setCsrfToken] = useState('')
-  const [rateLimitInfo, setRateLimitInfo] = useState<{remaining: number, resetTime: number} | null>(null)
   const { toast } = useToast()
   const supabase = createClientComponentClient()
   const router = useRouter()
@@ -111,41 +110,6 @@ export default function ContactForm() {
         variant: "destructive"
       });
       return;
-    }
-
-    // Vérification du rate limiting côté client
-    const rateLimit = checkRateLimit(values.email)
-    if (!rateLimit.allowed) {
-      toast({
-        title: "Trop de requêtes",
-        description: `Veuillez attendre ${Math.ceil((rateLimit.resetTime - Date.now()) / 60000)} minutes avant de réessayer.`,
-        variant: "destructive",
-      })
-      return
-    }
-    
-    setRateLimitInfo({
-      remaining: rateLimit.remaining,
-      resetTime: rateLimit.resetTime
-    })
-
-    // Validation côté client avec les fonctions de sécurité
-    const validation = validateContactForm({
-      name: values.name,
-      email: values.email,
-      phone: '', // Pas de téléphone dans ce formulaire
-      company: values.companyName,
-      message: values.message,
-      csrfToken: values.csrfToken
-    })
-
-    if (!validation.valid) {
-      toast({
-        title: "Erreur de validation",
-        description: validation.errors.join(', '),
-        variant: "destructive",
-      })
-      return
     }
 
     setIsSubmitting(true);
