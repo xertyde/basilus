@@ -41,7 +41,7 @@ export function generateMetadata({
     'site vitrine'
   ]
 
-  const allKeywords = [...new Set([...defaultKeywords, ...keywords])]
+  const allKeywords = Array.from(new Set([...defaultKeywords, ...keywords]))
 
   return {
     title: fullTitle,
