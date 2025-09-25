@@ -182,10 +182,29 @@ function calculateFreeSlots(events: TimeSlot[], date: Date): Availability[] {
   return freeSlots;
 }
 
-// Fonction pour obtenir la date/heure actuelle en France
+// Fonction pour obtenir la date/heure actuelle en France de manière fiable
 function getCurrentDateTimeInParis(): Date {
+  // Utiliser Intl.DateTimeFormat pour une gestion correcte du fuseau horaire
   const now = new Date();
-  return new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
+  const parisTime = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).formatToParts(now);
+  
+  const year = parseInt(parisTime.find(part => part.type === 'year')!.value);
+  const month = parseInt(parisTime.find(part => part.type === 'month')!.value) - 1; // Les mois commencent à 0
+  const day = parseInt(parisTime.find(part => part.type === 'day')!.value);
+  const hour = parseInt(parisTime.find(part => part.type === 'hour')!.value);
+  const minute = parseInt(parisTime.find(part => part.type === 'minute')!.value);
+  const second = parseInt(parisTime.find(part => part.type === 'second')!.value);
+  
+  return new Date(year, month, day, hour, minute, second);
 }
 
 // Fonction pour filtrer les créneaux passés de manière fiable
@@ -193,21 +212,23 @@ function filterPastSlots(slots: Availability[], date: Date): Availability[] {
   const currentDateTime = getCurrentDateTimeInParis();
   
   return slots.filter(slot => {
-    // Créer une date complète pour le créneau (date + heure)
+    // Créer une date complète pour le créneau (date + heure) en utilisant le fuseau horaire de Paris
     const slotDate = new Date(date);
     const [startHour, startMinute] = slot.start.split(':').map(Number);
-    slotDate.setHours(startHour, startMinute, 0, 0);
     
-    // Comparer avec l'heure actuelle
-    return slotDate > currentDateTime;
+    // Créer la date du créneau en utilisant le même fuseau horaire que la date de référence
+    const slotDateTime = new Date(slotDate.getFullYear(), slotDate.getMonth(), slotDate.getDate(), startHour, startMinute, 0, 0);
+    
+    // Comparer avec l'heure actuelle (les deux dates sont dans le même fuseau horaire)
+    return slotDateTime > currentDateTime;
   });
 }
 
 function getNextBusinessDays(count: number = 5): Date[] {
   const businessDays: Date[] = [];
-  // Obtenir la date actuelle en France
-  const now = new Date();
-  const parisNow = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
+  // Obtenir la date actuelle en France de manière cohérente
+  const currentDateTime = getCurrentDateTimeInParis();
+  const parisNow = new Date(currentDateTime);
   parisNow.setHours(0, 0, 0, 0);
 
   let checkDate = new Date(parisNow);
@@ -215,7 +236,8 @@ function getNextBusinessDays(count: number = 5): Date[] {
 
   while (daysAdded < count) {
     const dayOfWeek = checkDate.getDay();
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+    // Inclure seulement les jours ouvrés (lundi=1 à vendredi=5)
+    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
       businessDays.push(new Date(checkDate));
       daysAdded++;
     }
@@ -235,14 +257,37 @@ function isValidBusinessDay(date: Date): boolean {
   );
 }
 
+// Fonction utilitaire pour déboguer les dates (peut être supprimée en production)
+function debugDateInfo(date: Date, label: string): void {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`${label}:`, {
+      date: date.toISOString(),
+      localString: date.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }),
+      dayOfWeek: date.getDay(),
+      isWeekend: date.getDay() === 0 || date.getDay() === 6
+    });
+  }
+}
+
 export async function GET() {
   try {
+    // Obtenir l'heure actuelle pour le débogage
+    const currentTime = getCurrentDateTimeInParis();
+    debugDateInfo(currentTime, 'Heure actuelle en France');
+    
+    // Récupérer les 5 prochains jours ouvrés
     const businessDays = getNextBusinessDays(5);
+    debugDateInfo(businessDays[0], 'Premier jour ouvré');
+    debugDateInfo(businessDays[businessDays.length - 1], 'Dernier jour ouvré');
     
     const dailyAvailabilities = await Promise.all(
       businessDays.map(async (date) => {
+        debugDateInfo(date, `Traitement du jour: ${date.toISOString().split('T')[0]}`);
+        
+        // Récupérer les événements du calendrier pour cette date
         const events = await getCalendarEvents(CALENDAR_IDS.THOMAS, date);
 
+        // Calculer les créneaux libres
         const freeSlots = calculateFreeSlots(events.map(event => {
           if (!event.start || !event.end) {
             throw new Error('Événement invalide: start ou end manquant');
@@ -264,6 +309,11 @@ export async function GET() {
         // Filtrer les créneaux passés de manière fiable
         const filteredSlots = filterPastSlots(freeSlots, date);
         
+        // Log pour le débogage
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Jour ${date.toISOString().split('T')[0]}: ${freeSlots.length} créneaux avant filtrage, ${filteredSlots.length} après filtrage`);
+        }
+        
         return {
           date: date.toISOString(),
           freeSlots: filteredSlots
@@ -273,6 +323,7 @@ export async function GET() {
 
     return NextResponse.json({ dailyAvailabilities });
   } catch (error) {
+    console.error('Erreur dans l\'API availability:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des disponibilités' },
       { status: 500 }

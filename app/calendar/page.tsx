@@ -24,15 +24,28 @@ const WORK_HOURS = {
   end: 20,  // 20h
 };
 
-// Fonction pour formater la date
+// Fonction pour formater la date de manière fiable
 function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('fr-FR', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  try {
+    const date = new Date(dateStr);
+    
+    // Vérifier que la date est valide
+    if (isNaN(date.getTime())) {
+      console.error('Date invalide reçue:', dateStr);
+      return 'Date invalide';
+    }
+    
+    return date.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'Europe/Paris' // S'assurer que le formatage utilise le bon fuseau horaire
+    });
+  } catch (error) {
+    console.error('Erreur lors du formatage de la date:', error);
+    return 'Date invalide';
+  }
 }
 
 // Composant principal
@@ -52,17 +65,29 @@ export default function CalendarPage() {
     async function loadAvailabilities() {
       try {
         setIsLoading(true);
+        setError(null); // Reset any previous errors
         
+        console.log('Chargement des disponibilités...');
         const response = await fetch('/api/calendar/availability');
         
         if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des disponibilités');
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Erreur HTTP ${response.status}: ${response.statusText}`);
         }
         
         const data = await response.json();
+        
+        // Valider la structure des données reçues
+        if (!data.dailyAvailabilities || !Array.isArray(data.dailyAvailabilities)) {
+          throw new Error('Format de données invalide reçu du serveur');
+        }
+        
+        console.log('Disponibilités chargées:', data.dailyAvailabilities.length, 'jours');
         setDailyAvailabilities(data.dailyAvailabilities);
       } catch (err) {
-        setError('Erreur lors du chargement des disponibilités');
+        const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue lors du chargement des disponibilités';
+        console.error('Erreur lors du chargement des disponibilités:', err);
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
@@ -474,57 +499,83 @@ export default function CalendarPage() {
         )}
 
         <div className="space-y-8">
-          {dailyAvailabilities.map((dayAvailability, dayIndex) => (
-            <div key={dayIndex} className="bg-card dark:bg-gray-800 rounded-lg border border-border dark:border-gray-700 p-6">
-              <h2 className="text-xl font-semibold mb-4 capitalize text-foreground dark:text-gray-100">
-                {formatDate(dayAvailability.date)}
-              </h2>
-              
-              {dayAvailability.freeSlots.length === 0 ? (
-                <p className="text-muted-foreground dark:text-gray-400">
-                  Aucune disponibilité pour cette journée.
-                </p>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {dayAvailability.freeSlots.map((slot, slotIndex) => (
-                    <button
-                      key={slotIndex}
-                      onClick={() => handleSlotSelect(slot.id)}
-                      className={`group p-4 rounded-xl border-2 text-left transition-all duration-150 ${
-                        selectedSlot === slot.id
-                          ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-400 dark:border-blue-500 shadow-lg scale-105 ring-2 ring-blue-200 dark:ring-blue-800'
-                          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md hover:bg-blue-50/50 dark:hover:bg-blue-900/20'
-                      }`}
-                    >
-                      <div className={`flex items-center justify-between ${
-                        selectedSlot === slot.id 
-                          ? 'text-blue-700 dark:text-blue-300' 
-                          : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400'
-                      }`}>
-                        <div>
-                          <p className="text-lg font-semibold">
-                            {slot.start} - {slot.end}
-                          </p>
-                          <p className="text-sm opacity-75 mt-1">
-                            Disponible
-                          </p>
-                        </div>
-                        {selectedSlot === slot.id && (
-                          <div className="flex-shrink-0">
-                            <div className="w-6 h-6 bg-blue-500 dark:bg-blue-600 rounded-full flex items-center justify-center">
-                              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
+          {dailyAvailabilities.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                Aucune disponibilité trouvée
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Aucun créneau disponible n'a été trouvé pour les 5 prochains jours ouvrés.
+              </p>
             </div>
-          ))}
+          ) : (
+            dailyAvailabilities.map((dayAvailability, dayIndex) => (
+              <div key={dayIndex} className="bg-card dark:bg-gray-800 rounded-lg border border-border dark:border-gray-700 p-6">
+                <h2 className="text-xl font-semibold mb-4 capitalize text-foreground dark:text-gray-100">
+                  {formatDate(dayAvailability.date)}
+                </h2>
+                
+                {dayAvailability.freeSlots.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <p className="text-muted-foreground dark:text-gray-400 font-medium">
+                      Aucune disponibilité pour cette journée
+                    </p>
+                    <p className="text-sm text-muted-foreground dark:text-gray-500 mt-1">
+                      Tous les créneaux sont déjà réservés ou passés
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {dayAvailability.freeSlots.map((slot, slotIndex) => (
+                      <button
+                        key={slotIndex}
+                        onClick={() => handleSlotSelect(slot.id)}
+                        className={`group p-4 rounded-xl border-2 text-left transition-all duration-150 ${
+                          selectedSlot === slot.id
+                            ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-400 dark:border-blue-500 shadow-lg scale-105 ring-2 ring-blue-200 dark:ring-blue-800'
+                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md hover:bg-blue-50/50 dark:hover:bg-blue-900/20'
+                        }`}
+                      >
+                        <div className={`flex items-center justify-between ${
+                          selectedSlot === slot.id 
+                            ? 'text-blue-700 dark:text-blue-300' 
+                            : 'text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                        }`}>
+                          <div>
+                            <p className="text-lg font-semibold">
+                              {slot.start} - {slot.end}
+                            </p>
+                            <p className="text-sm opacity-75 mt-1">
+                              Disponible
+                            </p>
+                          </div>
+                          {selectedSlot === slot.id && (
+                            <div className="flex-shrink-0">
+                              <div className="w-6 h-6 bg-blue-500 dark:bg-blue-600 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
