@@ -82,13 +82,6 @@ export default function ContactForm() {
   const supabase = createClientComponentClient()
   const router = useRouter()
 
-  // Génération du token CSRF au chargement
-  useEffect(() => {
-    const token = generateCSRFToken()
-    setCsrfToken(token)
-    form.setValue('csrfToken', token)
-  }, [form])
-  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -102,6 +95,13 @@ export default function ContactForm() {
       csrfToken: "",
     },
   })
+
+  // Génération du token CSRF au chargement
+  useEffect(() => {
+    const token = generateCSRFToken()
+    setCsrfToken(token)
+    form.setValue('csrfToken', token)
+  }, [form])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.pack) {
