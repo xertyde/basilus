@@ -1,4 +1,4 @@
-import { TeamImage } from '@/components/ui/optimized-image'
+import { OptimizedImage } from '@/components/ui/optimized-image'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
@@ -71,11 +71,14 @@ Plutôt qu’un long discours, nous mettons notre énergie dans des solutions co
               </div>
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl animate-from-right">
-              <TeamImage
+              <OptimizedImage
                 src="/apropos.jpg"
                 alt="Équipe Basilus - Développeurs web professionnels diplômés CPE Lyon spécialisés création sites PME et startups"
                 fill
                 className="object-cover"
+                quality={95}
+                priority={true}
+                context="team"
               />
             </div>
           </div>

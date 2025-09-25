@@ -49,7 +49,8 @@ export default function OptimizedImage({
     placeholder,
     blurDataURL: placeholder === 'blur' ? defaultBlurDataURL : undefined,
     onLoad: () => setIsLoading(false),
-    onError: () => {
+    onError: (error) => {
+      console.error('Erreur lors du chargement de l\'image:', src, error)
       setHasError(true)
       setIsLoading(false)
     },
@@ -62,7 +63,10 @@ export default function OptimizedImage({
         className={`${className} bg-gray-200 dark:bg-gray-700 flex items-center justify-center`}
         style={fill ? {} : { width, height }}
       >
-        <span className="text-gray-500 text-sm">Image non disponible</span>
+        <div className="text-center p-4">
+          <span className="text-gray-500 text-sm block">Image non disponible</span>
+          <span className="text-gray-400 text-xs block mt-1">Erreur de chargement: {src}</span>
+        </div>
       </div>
     )
   }
