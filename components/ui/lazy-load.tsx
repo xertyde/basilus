@@ -104,6 +104,24 @@ export function LazySection({
   )
 }
 
+// Composant spécialisé pour les sections
+export function LazySection({ 
+  children, 
+  className = '',
+  ...props 
+}: LazyLoadProps) {
+  return (
+    <LazyLoad
+      className={cn('w-full', className)}
+      threshold={0.1}
+      rootMargin="100px"
+      {...props}
+    >
+      {children}
+    </LazyLoad>
+  )
+}
+
 // Composant spécialisé pour les images
 export function LazyImage({ 
   children, 

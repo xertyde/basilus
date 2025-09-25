@@ -1,3 +1,5 @@
+"use client"
+
 import Image from 'next/image'
 import { generateAltText } from '@/lib/seo'
 import { useState } from 'react'
