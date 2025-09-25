@@ -38,7 +38,7 @@ export default function AboutPage() {
         <div className="container">
           <Breadcrumbs items={breadcrumbConfigs.about} />
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">À Propos Basilus - Équipe Création Sites Web Lyon</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">À Propos de Basilus - Équipe de Création de Sites Web à Lyon</h1>
             <p className="text-lg text-muted-foreground">
               Nous créons des sites web qui font briller votre entreprise et génèrent des résultats concrets.
             </p>
