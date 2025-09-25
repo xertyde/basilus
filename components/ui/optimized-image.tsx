@@ -49,7 +49,7 @@ export default function OptimizedImage({
     placeholder,
     blurDataURL: placeholder === 'blur' ? defaultBlurDataURL : undefined,
     onLoad: () => setIsLoading(false),
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('Erreur lors du chargement de l\'image:', src, error)
       setHasError(true)
       setIsLoading(false)
