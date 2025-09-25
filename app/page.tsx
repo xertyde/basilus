@@ -190,7 +190,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* CTA for Packages - Moved to 4th position */}
       <section className="py-16 md:py-24 bg-muted/50" id="nos-offres">
