@@ -84,8 +84,10 @@ export default function ContactForm() {
 
   // Génération du token CSRF au chargement
   useEffect(() => {
-    setCsrfToken(generateCSRFToken())
-  }, [])
+    const token = generateCSRFToken()
+    setCsrfToken(token)
+    form.setValue('csrfToken', token)
+  }, [form])
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,6 +99,7 @@ export default function ContactForm() {
       pack: "",
       addons: [],
       message: "",
+      csrfToken: "",
     },
   })
 
@@ -148,8 +151,15 @@ export default function ContactForm() {
     setIsSubmitting(true);
     
     try {
+      console.log('Envoi du formulaire avec les données:', {
+        name: values.name,
+        email: values.email,
+        pack: values.pack,
+        addons: values.addons
+      });
+      
       // Utiliser la fonction Supabase Edge Function pour l'envoi d'email
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`, {
+      const response = await fetch('https://scompnbumndmuohgqefp.supabase.co/functions/v1/send-email', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -162,12 +172,17 @@ export default function ContactForm() {
         })
       });
 
+      console.log('Réponse reçue:', response.status, response.statusText);
+      
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         console.error('Erreur Supabase:', errorData);
         throw new Error(errorData.error || "Erreur lors de l'envoi du formulaire");
       }
 
+      const responseData = await response.json();
+      console.log('Données de réponse:', responseData);
+      
       setIsSubmitted(true);
       
       // Tracking de la conversion
