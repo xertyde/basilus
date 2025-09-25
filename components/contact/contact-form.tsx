@@ -56,9 +56,6 @@ const formSchema = z.object({
   }).max(2000, {
     message: "Le message ne peut pas dépasser 2000 caractères.",
   }),
-  csrfToken: z.string().min(1, {
-    message: "Token de sécurité requis.",
-  }),
 })
 
 const packs = [
@@ -91,7 +88,6 @@ export default function ContactForm() {
       pack: "",
       addons: [],
       message: "",
-      csrfToken: "",
     },
   })
 
@@ -99,11 +95,13 @@ export default function ContactForm() {
   useEffect(() => {
     const token = generateCSRFToken()
     setCsrfToken(token)
-    form.setValue('csrfToken', token)
-  }, [form])
+  }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('🚀 Fonction onSubmit appelée avec les valeurs:', values);
+    
     if (!values.pack) {
+      console.log('❌ Aucun pack sélectionné');
       toast({
         title: "Erreur",
         description: "Veuillez sélectionner un pack avant d'envoyer le formulaire",
@@ -112,6 +110,7 @@ export default function ContactForm() {
       return;
     }
 
+    console.log('✅ Pack sélectionné, démarrage de l\'envoi...');
     setIsSubmitting(true);
     
     try {
@@ -119,7 +118,8 @@ export default function ContactForm() {
         name: values.name,
         email: values.email,
         pack: values.pack,
-        addons: values.addons
+        addons: values.addons,
+        csrfToken: csrfToken
       });
       
       // Utiliser la fonction Supabase Edge Function pour l'envoi d'email
@@ -128,11 +128,11 @@ export default function ContactForm() {
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-          'X-CSRF-Token': values.csrfToken
+          'X-CSRF-Token': csrfToken
         },
         body: JSON.stringify({
           ...values,
-          csrfToken: values.csrfToken
+          csrfToken: csrfToken
         })
       });
 
@@ -338,13 +338,7 @@ export default function ContactForm() {
         />
         
         {/* Champ CSRF caché */}
-        <FormField
-          control={form.control}
-          name="csrfToken"
-          render={({ field }) => (
-            <input type="hidden" {...field} value={csrfToken} />
-          )}
-        />
+        <input type="hidden" name="csrfToken" value={csrfToken} />
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
