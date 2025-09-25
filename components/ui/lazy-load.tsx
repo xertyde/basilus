@@ -10,6 +10,7 @@ interface LazyLoadProps {
   className?: string
   fallback?: ReactNode
   delay?: number
+  id?: string
 }
 
 export default function LazyLoad({
@@ -18,7 +19,8 @@ export default function LazyLoad({
   rootMargin = '50px',
   className = '',
   fallback,
-  delay = 0
+  delay = 0,
+  id
 }: LazyLoadProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -73,6 +75,7 @@ export default function LazyLoad({
     <div
       ref={elementRef}
       className={cn('transition-opacity duration-300', className)}
+      id={id}
     >
       {isLoaded ? (
         <div className="animate-fade-in">
