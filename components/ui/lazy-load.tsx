@@ -94,25 +94,6 @@ export function LazySection({
   return (
     <LazyLoad
       className={cn('w-full', className)}
-      threshold={0.05}
-      rootMargin="100px"
-      delay={50}
-      {...props}
-    >
-      {children}
-    </LazyLoad>
-  )
-}
-
-// Composant spécialisé pour les sections
-export function LazySection({ 
-  children, 
-  className = '',
-  ...props 
-}: LazyLoadProps) {
-  return (
-    <LazyLoad
-      className={cn('w-full', className)}
       threshold={0.1}
       rootMargin="100px"
       {...props}
