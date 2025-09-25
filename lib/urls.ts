@@ -20,13 +20,13 @@ export const seoUrls = {
   // URLs par secteur
   sitesPME: '/creation-sites-web-pme-lyon',
   sitesStartup: '/creation-sites-web-startup',
-  sitesEcommerce: '/creation-sites-ecommerce-lyon',
+  sitesEcommerceSecteur: '/creation-sites-ecommerce-lyon',
   sitesVitrine: '/creation-sites-vitrine-professionnels',
   
   // URLs par technologie
   sitesNextjs: '/sites-web-nextjs-react',
   sitesWordpress: '/sites-web-wordpress-custom',
-  sitesEcommerce: '/sites-ecommerce-shopify-woocommerce',
+  sitesEcommerceTech: '/sites-ecommerce-shopify-woocommerce',
   
   // URLs par localisation
   agenceWebLyon: '/agence-web-lyon-creation-sites',
