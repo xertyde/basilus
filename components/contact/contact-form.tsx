@@ -339,7 +339,38 @@ export default function ContactForm() {
         
         {/* Champ CSRF caché */}
         <input type="hidden" name="csrfToken" value={csrfToken} />
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button 
+          type="submit" 
+          className="w-full" 
+          disabled={isSubmitting}
+          onClick={async (e) => {
+            console.log('🖱️ Bouton cliqué !');
+            e.preventDefault();
+            
+            // Validation manuelle
+            const formData = form.getValues();
+            console.log('📋 Données du formulaire:', formData);
+            
+            // Vérifier que tous les champs requis sont remplis
+            if (!formData.name || !formData.email || !formData.pack || !formData.message) {
+              console.log('❌ Champs manquants:', {
+                name: !!formData.name,
+                email: !!formData.email,
+                pack: !!formData.pack,
+                message: !!formData.message
+              });
+              toast({
+                title: "Erreur",
+                description: "Veuillez remplir tous les champs obligatoires",
+                variant: "destructive"
+              });
+              return;
+            }
+            
+            console.log('✅ Validation passée, envoi du formulaire...');
+            await onSubmit(formData);
+          }}
+        >
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
