@@ -119,7 +119,8 @@ export function measureFID() {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'first-input') {
-            const fid = entry.processingStart - entry.startTime
+            const eventEntry = entry as PerformanceEventTiming
+            const fid = eventEntry.processingStart - eventEntry.startTime
             reportWebVitals({
               name: 'FID',
               value: fid,
