@@ -1,14 +1,12 @@
-import { Metadata } from 'next'
-import Image from 'next/image'
+import { TeamImage } from '@/components/ui/optimized-image'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Brush, Code, Database, LineChart } from 'lucide-react'
+import { generateMetadata, seoConfigs, generateAltText } from '@/lib/seo'
+import Breadcrumbs, { breadcrumbConfigs } from '@/components/seo/breadcrumbs'
 
-export const metadata: Metadata = {
-  title: 'À propos | Basilus',
-  description: 'Découvrez Basilus, notre équipe et notre approche pour créer des sites web de qualité.',
-}
+export const metadata = generateMetadata(seoConfigs.about)
 
 const skills = [
   {
@@ -38,8 +36,9 @@ export default function AboutPage() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
+          <Breadcrumbs items={breadcrumbConfigs.about} />
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">À propos de Basilus</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">À Propos Basilus - Équipe Création Sites Web Lyon</h1>
             <p className="text-lg text-muted-foreground">
               Nous créons des sites web qui font briller votre entreprise et génèrent des résultats concrets.
             </p>
@@ -72,9 +71,9 @@ Plutôt qu’un long discours, nous mettons notre énergie dans des solutions co
               </div>
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl animate-from-right">
-              <Image
+              <TeamImage
                 src="/apropos.jpg"
-                alt="L'équipe Basilus"
+                alt="Équipe Basilus - Développeurs web professionnels diplômés CPE Lyon spécialisés création sites PME et startups"
                 fill
                 className="object-cover"
               />

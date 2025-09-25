@@ -1,10 +1,13 @@
-import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import { Check, Clock, AlertCircle, Smartphone, Database, HardDrive } from 'lucide-react'
 import Link from 'next/link'
 import PricingCard from '@/components/packs/pricing-card'
 import MultilingualOption from '@/components/packs/multilingual-option'
 import { FilePlus } from "lucide-react";
+import StructuredData from '@/components/seo/structured-data';
+import Breadcrumbs, { breadcrumbConfigs } from '@/components/seo/breadcrumbs';
+import { generateMetadata, seoConfigs } from '@/lib/seo'
+import { PackTracker } from '@/components/analytics/tracking'
 
 import {
   Accordion,
@@ -13,18 +16,57 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-export const metadata: Metadata = {
-  title: 'Nos Packs | Basilus',
-  description: 'Découvrez nos différentes offres de création de sites web, du pack Starter au pack Sur-mesure.',
-}
+export const metadata = generateMetadata(seoConfigs.packs)
 
 export default function PacksPage() {
+  const serviceData = {
+    offers: [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Pack Starter - Site vitrine",
+          "description": "Site vitrine professionnel jusqu'à 5 pages avec design responsive et optimisation SEO de base"
+        },
+        "price": "590",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Pack Pro - Site complet",
+          "description": "Site jusqu'à 10 pages avec fonctionnalités avancées, blog intégré et optimisation SEO avancée"
+        },
+        "price": "990",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Pack Sur-mesure",
+          "description": "Solution personnalisée avec fonctionnalités spécifiques, e-commerce possible et intégrations avancées"
+        },
+        "price": "1790",
+        "priceCurrency": "EUR"
+      }
+    ]
+  }
+
+  const breadcrumbData = {
+    items: breadcrumbConfigs.packs
+  }
+
   return (
     <>
+      <StructuredData type="service" data={serviceData} />
+      <StructuredData type="breadcrumb" data={breadcrumbData} />
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
+          <Breadcrumbs items={breadcrumbConfigs.packs} />
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Nos Packs</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Packs Création Site Web - Tarifs et Offres Basilus</h1>
             <p className="text-lg text-muted-foreground mb-8">
               Choisissez l'offre qui correspond le mieux à vos besoins. Tous nos packs incluent un design sur mesure, une expérience utilisateur optimisée et un site responsive.
             </p>

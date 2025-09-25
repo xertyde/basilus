@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { validateMimeType, validateFileSize, sanitizeFileName, ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from '@/lib/security';
 import { Upload, FileText, Image, Video, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -93,9 +94,19 @@ export default function UploadPage() {
 
         if (insertError) throw insertError;
       } else if (file) {
+        // Validation de sécurité du fichier
+        if (!validateMimeType(file.type, ALLOWED_MIME_TYPES)) {
+          throw new Error(`Type de fichier non autorisé: ${file.type}`);
+        }
+
+        if (!validateFileSize(file.size, MAX_FILE_SIZE)) {
+          throw new Error(`Fichier trop volumineux: ${file.size} bytes (max: ${MAX_FILE_SIZE})`);
+        }
+
         // Upload du fichier dans le bucket 'uploads'
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
+        const sanitizedName = sanitizeFileName(file.name);
+        const fileName = `${Math.random()}-${sanitizedName}`;
         const filePath = `${fileName}`;
 
         const { error: uploadError } = await supabase.storage

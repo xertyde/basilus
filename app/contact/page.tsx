@@ -1,21 +1,48 @@
-import { Metadata } from 'next'
 import ContactForm from '@/components/contact/contact-form'
 import { Mail, MapPin, Phone, Calendar } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import StructuredData from '@/components/seo/structured-data'
+import Breadcrumbs, { breadcrumbConfigs } from '@/components/seo/breadcrumbs'
+import { generateMetadata, seoConfigs } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Contact | Basilus',
-  description: 'Contactez Basilus pour discuter de votre projet web ou demander un devis personnalisé.',
-}
+export const metadata = generateMetadata(seoConfigs.contact)
 
 export default function ContactPage() {
+  const faqData = {
+    questions: [
+      {
+        question: "Quels sont les délais de réalisation ?",
+        answer: "Les délais varient en fonction de la complexité du projet. En général, comptez 1 à 2 semaines pour un site vitrine et un mois ou plus pour un projet plus complexe."
+      },
+      {
+        question: "Comment se déroule la collaboration ?",
+        answer: "Nous commençons par un appel pour comprendre vos besoins, puis nous vous envoyons un devis détaillé. Une fois validé, nous établissons un planning et commençons la conception."
+      },
+      {
+        question: "Proposez-vous des services de maintenance ?",
+        answer: "Oui, nous proposons des forfaits de maintenance mensuelle pour assurer le bon fonctionnement de votre site et effectuer les mises à jour nécessaires."
+      },
+      {
+        question: "Dois-je déjà avoir un hébergement et un nom de domaine ?",
+        answer: "Non, nous pouvons nous occuper de tout. Nous vous conseillons et mettons en place l'hébergement et le nom de domaine adaptés à votre projet."
+      }
+    ]
+  }
+
+  const breadcrumbData = {
+    items: breadcrumbConfigs.contact
+  }
+
   return (
     <>
+      <StructuredData type="faq" data={faqData} />
+      <StructuredData type="breadcrumb" data={breadcrumbData} />
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
+          <Breadcrumbs items={breadcrumbConfigs.contact} />
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contactez-nous</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Basilus - Devis Gratuit Création Site Web</h1>
             <p className="text-lg text-muted-foreground mb-8">
               Vous avez un projet en tête ? Remplissez le formulaire ci-dessous et recevez un devis gratuitement. Nous vous recontacteront dans les plus brefs délais.
             </p>

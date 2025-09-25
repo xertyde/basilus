@@ -5,31 +5,48 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, Zap, Award, Code } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
+import { LazySection } from '@/components/ui/lazy-load'
+import { CTATracker, useScrollTracking, useTimeOnPage } from '@/components/analytics/tracking'
 import dynamic from 'next/dynamic'
 import { useState, useEffect, useRef } from 'react'
 
-// Spline lazy loading simplifié
+// Spline lazy loading optimisé avec fallback
 const Spline = dynamic(() => 
   import('@splinetool/react-spline').then(mod => mod.default),
-  { ssr: false }
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 animate-pulse" />
+    )
+  }
 )
 
 export default function Home() {
   const [splineError, setSplineError] = useState(false)
   const heroRef = useRef<HTMLElement>(null)
   const [shouldLoadSpline, setShouldLoadSpline] = useState(false)
+  
+  // Tracking des interactions
+  useScrollTracking(0.5) // Track à 50% de scroll
+  useTimeOnPage() // Track le temps passé sur la page
 
-  // Intersection Observer simplifié
+  // Intersection Observer optimisé pour LCP
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
         if (entry.isIntersecting && !shouldLoadSpline) {
-          setShouldLoadSpline(true)
+          // Délai plus long pour améliorer le LCP
+          setTimeout(() => {
+            setShouldLoadSpline(true)
+          }, 500) // Délai augmenté pour laisser le temps au LCP de se stabiliser
           observer.disconnect()
         }
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.1,
+        rootMargin: '100px' // Charge plus tôt
+      }
     )
 
     if (heroRef.current) {
@@ -48,14 +65,14 @@ export default function Home() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center" id="hero">
         {/* Spline Background */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 w-full h-full min-h-screen">
           {shouldLoadSpline && !splineError ? (
             <Spline 
               scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
               onError={handleSplineError}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/10 via-primary/5 to-background">
               <div className="absolute inset-0 opacity-20">
                 <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
               </div>
@@ -134,9 +151,9 @@ export default function Home() {
       </section>
 
       {/* Features Section - Moved to 3rd position */}
-      <section className="py-16 md:py-24" id="pourquoi-basilus">
+      <LazySection className="py-16 md:py-24" id="pourquoi-basilus">
         <div className="container">
-          <div className="text-center mb-12 animate-on-scroll">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Pourquoi choisir Basilus ?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Une approche moderne qui combine proximité avec le client, design élégant et expertise technique pour des résultats concrets.
@@ -233,16 +250,26 @@ export default function Home() {
               Rejoignez nos clients satisfaits et donnez à votre entreprise la présence digitale qu'elle mérite. Démarrons votre projet dès aujourd'hui !
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg">
-                <Link href="/contact">
-                  Lancer mon projet
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/calendar">
-                  Planifier un appel
-                </Link>
-              </Button>
+              <CTATracker 
+                eventName="hero_cta_contact" 
+                parameters={{ cta_position: 'hero', cta_type: 'primary' }}
+              >
+                <Button asChild size="lg">
+                  <Link href="/contact">
+                    Lancer mon projet
+                  </Link>
+                </Button>
+              </CTATracker>
+              <CTATracker 
+                eventName="hero_cta_calendar" 
+                parameters={{ cta_position: 'hero', cta_type: 'secondary' }}
+              >
+                <Button asChild variant="outline" size="lg">
+                  <Link href="/calendar">
+                    Planifier un appel
+                  </Link>
+                </Button>
+              </CTATracker>
             </div>
           </div>
         </div>

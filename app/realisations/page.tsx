@@ -1,13 +1,11 @@
-import { Metadata } from 'next'
-import Image from 'next/image'
+import { PortfolioImage } from '@/components/ui/optimized-image'
 import PortfolioCard from '@/components/realisations/portfolio-card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { generateMetadata, seoConfigs, generateAltText } from '@/lib/seo'
+import Breadcrumbs, { breadcrumbConfigs } from '@/components/seo/breadcrumbs'
 
-export const metadata: Metadata = {
-  title: 'Nos Réalisations | Basilus',
-  description: 'Découvrez les sites web que nous avons créés pour nos clients.',
-}
+export const metadata = generateMetadata(seoConfigs.realisations)
 
 const portfolioItems = [
   {
@@ -65,8 +63,9 @@ export default function RealisationsPage() {
     <>
       <section className="pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="container">
+          <Breadcrumbs items={breadcrumbConfigs.realisations} />
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Nos Réalisations</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Portfolio Sites Web - Nos Réalisations Basilus</h1>
             <p className="text-lg text-muted-foreground mb-8">
               Découvrez une sélection de projets réalisés pour nos clients. Chaque site est conçu sur mesure pour répondre aux besoins spécifiques de chaque entreprise.
             </p>

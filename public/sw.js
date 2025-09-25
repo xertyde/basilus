@@ -1,117 +1,170 @@
-const CACHE_NAME = 'basilus-v1'
-const STATIC_CACHE_URLS = [
+// Service Worker pour la mise en cache et les performances
+const CACHE_NAME = 'basilus-v1.0.0'
+const STATIC_CACHE = 'basilus-static-v1.0.0'
+const DYNAMIC_CACHE = 'basilus-dynamic-v1.0.0'
+
+// Ressources à mettre en cache
+const STATIC_ASSETS = [
   '/',
-  '/calendar',
-  '/contact',
   '/packs',
+  '/contact',
   '/realisations',
   '/a-propos',
-  '/mentions-legales'
+  '/favicon.png',
+  '/apropos.jpg',
+  '/site1.png',
+  '/site2.png',
+  '/site3.png',
+  '/site4.png',
+  '/site5.png',
+  '/site6.png'
 ]
 
-// Installation du service worker
-self.addEventListener('install', event => {
+// Installation du Service Worker
+self.addEventListener('install', (event) => {
+  console.log('Service Worker: Installing...')
+  
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(STATIC_CACHE_URLS)
+    caches.open(STATIC_CACHE)
+      .then((cache) => {
+        console.log('Service Worker: Caching static assets')
+        return cache.addAll(STATIC_ASSETS)
       })
       .then(() => {
+        console.log('Service Worker: Installation complete')
         return self.skipWaiting()
       })
   )
 })
 
-// Activation du service worker
-self.addEventListener('activate', event => {
+// Activation du Service Worker
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker: Activating...')
+  
   event.waitUntil(
     caches.keys()
-      .then(cacheNames => {
+      .then((cacheNames) => {
         return Promise.all(
-          cacheNames.map(cacheName => {
-            if (cacheName !== CACHE_NAME) {
+          cacheNames.map((cacheName) => {
+            if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+              console.log('Service Worker: Deleting old cache:', cacheName)
               return caches.delete(cacheName)
             }
           })
         )
       })
       .then(() => {
+        console.log('Service Worker: Activation complete')
         return self.clients.claim()
       })
   )
 })
 
 // Interception des requêtes
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
 
-  // Ignorer les requêtes non-HTTP
-  if (!url.protocol.startsWith('http')) {
-    return
-  }
-
-  // Stratégie Cache First pour les ressources statiques
-  if (request.destination === 'script' || 
-      request.destination === 'style' || 
-      request.destination === 'image' ||
-      request.url.includes('/_next/static/')) {
+  // Stratégie de cache pour les images
+  if (request.destination === 'image') {
     event.respondWith(
       caches.match(request)
-        .then(response => {
-          if (response) {
-            return response
+        .then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse
           }
+          
           return fetch(request)
-            .then(fetchResponse => {
-              const responseClone = fetchResponse.clone()
-              caches.open(CACHE_NAME)
-                .then(cache => {
+            .then((response) => {
+              if (response.status === 200) {
+                const responseClone = response.clone()
+                caches.open(DYNAMIC_CACHE)
+                  .then((cache) => {
+                    cache.put(request, responseClone)
+                  })
+              }
+              return response
+            })
+        })
+    )
+    return
+  }
+
+  // Stratégie de cache pour les pages
+  if (request.method === 'GET' && request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      caches.match(request)
+        .then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse
+          }
+          
+          return fetch(request)
+            .then((response) => {
+              if (response.status === 200) {
+                const responseClone = response.clone()
+                caches.open(DYNAMIC_CACHE)
+                  .then((cache) => {
+                    cache.put(request, responseClone)
+                  })
+              }
+              return response
+            })
+            .catch(() => {
+              // Fallback pour les pages hors ligne
+              return caches.match('/')
+            })
+        })
+    )
+    return
+  }
+
+  // Stratégie de cache pour les autres ressources
+  event.respondWith(
+    caches.match(request)
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse
+        }
+        
+        return fetch(request)
+          .then((response) => {
+            if (response.status === 200) {
+              const responseClone = response.clone()
+              caches.open(DYNAMIC_CACHE)
+                .then((cache) => {
                   cache.put(request, responseClone)
                 })
-              return fetchResponse
-            })
-        })
-    )
-    return
-  }
-
-  // Stratégie Network First pour les pages
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          const responseClone = response.clone()
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(request, responseClone)
-            })
-          return response
-        })
-        .catch(() => {
-          return caches.match(request)
-            .then(response => {
-              return response || caches.match('/')
-            })
-        })
-    )
-    return
-  }
-
-  // Stratégie Network First pour les API
-  if (request.url.includes('/api/')) {
-    event.respondWith(
-      fetch(request)
-        .catch(() => {
-          return new Response(
-            JSON.stringify({ error: 'Network unavailable' }),
-            {
-              status: 503,
-              headers: { 'Content-Type': 'application/json' }
             }
-          )
-        })
-    )
-    return
+            return response
+          })
+      })
+  )
+})
+
+// Gestion des messages du client
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting()
   }
-}) 
+})
+
+// Nettoyage périodique du cache
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'cache-cleanup') {
+    event.waitUntil(cleanupCache())
+  }
+})
+
+async function cleanupCache() {
+  const cacheNames = await caches.keys()
+  const oldCaches = cacheNames.filter(name => 
+    name !== STATIC_CACHE && name !== DYNAMIC_CACHE
+  )
+  
+  await Promise.all(
+    oldCaches.map(name => caches.delete(name))
+  )
+  
+  console.log('Service Worker: Cache cleanup complete')
+}

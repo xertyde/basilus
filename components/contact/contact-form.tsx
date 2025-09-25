@@ -1,9 +1,11 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { generateCSRFToken, validateContactForm, checkRateLimit } from '@/lib/security'
+import { trackConversion } from '@/lib/analytics'
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -51,6 +53,11 @@ const formSchema = z.object({
   addons: z.array(z.string()).optional(),
   message: z.string().min(10, {
     message: "Le message doit contenir au moins 10 caractères.",
+  }).max(2000, {
+    message: "Le message ne peut pas dépasser 2000 caractères.",
+  }),
+  csrfToken: z.string().min(1, {
+    message: "Token de sécurité requis.",
   }),
 })
 
@@ -69,9 +76,16 @@ const addons = [
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [csrfToken, setCsrfToken] = useState('')
+  const [rateLimitInfo, setRateLimitInfo] = useState<{remaining: number, resetTime: number} | null>(null)
   const { toast } = useToast()
   const supabase = createClientComponentClient()
   const router = useRouter()
+
+  // Génération du token CSRF au chargement
+  useEffect(() => {
+    setCsrfToken(generateCSRFToken())
+  }, [])
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -96,18 +110,69 @@ export default function ContactForm() {
       return;
     }
 
+    // Vérification du rate limiting côté client
+    const rateLimit = checkRateLimit(values.email)
+    if (!rateLimit.allowed) {
+      toast({
+        title: "Trop de requêtes",
+        description: `Veuillez attendre ${Math.ceil((rateLimit.resetTime - Date.now()) / 60000)} minutes avant de réessayer.`,
+        variant: "destructive",
+      })
+      return
+    }
+    
+    setRateLimitInfo({
+      remaining: rateLimit.remaining,
+      resetTime: rateLimit.resetTime
+    })
+
+    // Validation côté client avec les fonctions de sécurité
+    const validation = validateContactForm({
+      name: values.name,
+      email: values.email,
+      phone: '', // Pas de téléphone dans ce formulaire
+      company: values.companyName,
+      message: values.message,
+      csrfToken: values.csrfToken
+    })
+
+    if (!validation.valid) {
+      toast({
+        title: "Erreur de validation",
+        description: validation.errors.join(', '),
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsSubmitting(true);
     
     try {
       const response = await fetch('https://scompnbumndmuohgqefp.functions.supabase.co/send-email', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': values.csrfToken
+        },
+        body: JSON.stringify({
+          ...values,
+          csrfToken: values.csrfToken
+        })
       });
 
       if (!response.ok) throw new Error("Erreur réseau");
 
       setIsSubmitted(true);
+      
+      // Tracking de la conversion
+      trackConversion('contact_form_submit', {
+        pack_selected: values.pack,
+        addons: values.addons || [],
+        company_name: values.companyName,
+        value: values.pack === 'starter' ? 590 : values.pack === 'pro' ? 990 : 1799,
+        currency: 'EUR'
+      });
+      
       toast({ 
         title: "Merci ! Votre demande a bien été envoyée.",
         description: "Vous recevrez votre devis par e-mail dans quelques instants. L'équipe Basilus vous contactera très prochainement"
@@ -283,6 +348,15 @@ export default function ContactForm() {
               </FormDescription>
               <FormMessage />
             </FormItem>
+          )}
+        />
+        
+        {/* Champ CSRF caché */}
+        <FormField
+          control={form.control}
+          name="csrfToken"
+          render={({ field }) => (
+            <input type="hidden" {...field} value={csrfToken} />
           )}
         />
         <Button type="submit" className="w-full" disabled={isSubmitting}>
