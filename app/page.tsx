@@ -10,37 +10,77 @@ import { CTATracker, useScrollTracking, useTimeOnPage } from '@/components/analy
 import dynamic from 'next/dynamic'
 import { useState, useEffect, useRef } from 'react'
 
-// Spline temporairement désactivé pour éviter les erreurs de chargement
-// const Spline = dynamic(() => 
-//   import('@splinetool/react-spline').then(mod => mod.default),
-//   { 
-//     ssr: false,
-//     loading: () => (
-//       <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 animate-pulse" />
-//     )
-//   }
-// )
+// Spline lazy loading optimisé avec fallback
+const Spline = dynamic(() => 
+  import('@splinetool/react-spline').then(mod => mod.default),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 bg-gradient-to-br from-pink-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 animate-pulse" />
+    )
+  }
+)
 
 export default function Home() {
+  const [splineError, setSplineError] = useState(false)
   const heroRef = useRef<HTMLElement>(null)
+  const [shouldLoadSpline, setShouldLoadSpline] = useState(false)
   
   // Tracking des interactions
   useScrollTracking(0.5) // Track à 50% de scroll
   useTimeOnPage() // Track le temps passé sur la page
 
+  // Intersection Observer optimisé pour LCP
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        if (entry.isIntersecting && !shouldLoadSpline) {
+          // Délai plus long pour améliorer le LCP
+          setTimeout(() => {
+            setShouldLoadSpline(true)
+          }, 500) // Délai augmenté pour laisser le temps au LCP de se stabiliser
+          observer.disconnect()
+        }
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '100px' // Charge plus tôt
+      }
+    )
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [shouldLoadSpline])
+
+  const handleSplineError = (error: any) => {
+    console.warn('Spline loading error:', error)
+    setSplineError(true)
+  }
+
   return (
     <>
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center" id="hero">
-                {/* Background simplifié - Spline temporairement désactivé */}
-                <div className="absolute inset-0 z-0 w-full h-full min-h-screen">
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/10 via-primary/5 to-background">
-                    <div className="absolute inset-0 opacity-20">
-                      <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
-                </div>
+        {/* Spline Background */}
+        <div className="absolute inset-0 z-0 w-full h-full min-h-screen">
+          {shouldLoadSpline && !splineError ? (
+            <Spline 
+              scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
+              onError={handleSplineError}
+            />
+          ) : (
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+              <div className="absolute inset-0 opacity-20">
+                <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.2)_100%)]" />
+              </div>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/90" />
+        </div>
 
         <div className="container relative z-10 pt-28 md:pt-36 lg:pt-44 pb-16 md:pb-20 lg:pb-28">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">

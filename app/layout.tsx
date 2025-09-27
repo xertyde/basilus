@@ -40,14 +40,20 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-         <link rel="dns-prefetch" href="https://images.pexels.com" />
-         
-         {/* Preload des ressources critiques - Spline temporairement désactivé */}
-         <link rel="preload" href="/favicon.png" as="image" type="image/png" />
-         <link rel="preload" href="/apropos.jpg" as="image" type="image/jpeg" />
-         <link rel="preload" href="/site1.png" as="image" type="image/png" />
-         <link rel="preload" href="/site2.png" as="image" type="image/png" />
-         <link rel="preload" href="/site3.png" as="image" type="image/png" />
+        <link rel="dns-prefetch" href="https://prod.spline.design" />
+        <link rel="dns-prefetch" href="https://images.pexels.com" />
+        <link rel="dns-prefetch" href="https://cdn.splinetool.com" />
+        
+        {/* Preload des ressources critiques */}
+        <link rel="preload" href="/favicon.png" as="image" type="image/png" />
+        <link rel="preload" href="/apropos.jpg" as="image" type="image/jpeg" />
+        <link rel="preload" href="/site1.png" as="image" type="image/png" />
+        <link rel="preload" href="/site2.png" as="image" type="image/png" />
+        <link rel="preload" href="/site3.png" as="image" type="image/png" />
+        
+        {/* Preload des scripts critiques */}
+        <link rel="preload" href="https://cdn.splinetool.com/runtime/runtime.js" as="script" />
+        <link rel="preload" href="https://cdn.splinetool.com/runtime/runtime.wasm" as="fetch" crossOrigin="anonymous" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#db2777" />
         <script
@@ -63,12 +69,11 @@ export default function RootLayout({
                 }
               })();
 
-                      // Service Worker temporairement désactivé pour éviter les conflits
-                      // if ('serviceWorker' in navigator) {
-                      //   window.addEventListener('load', () => {
-                      //     navigator.serviceWorker.register('/sw.js');
-                      //   });
-                      // }
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
             `,
           }}
         />
@@ -103,9 +108,25 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Initialisation du monitoring des Core Web Vitals
-              (function() {
-                if (typeof window !== 'undefined') {
+                // Initialisation du monitoring des Core Web Vitals
+                (function() {
+                  if (typeof window !== 'undefined') {
+                    // Gestion globale des erreurs pour éviter que les erreurs Spline cassent l'app
+                    window.addEventListener('error', function(e) {
+                      if (e.message && e.message.includes('Spline')) {
+                        console.warn('Spline error handled:', e.message);
+                        e.preventDefault();
+                        return false;
+                      }
+                    });
+                    
+                    window.addEventListener('unhandledrejection', function(e) {
+                      if (e.reason && e.reason.message && e.reason.message.includes('Spline')) {
+                        console.warn('Spline promise rejection handled:', e.reason.message);
+                        e.preventDefault();
+                        return false;
+                      }
+                    });
                   // Mesure du FID (First Input Delay)
                   if ('PerformanceObserver' in window) {
                     try {

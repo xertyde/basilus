@@ -1,10 +1,15 @@
-// Service Worker simplifié pour éviter les conflits
-const CACHE_NAME = 'basilus-v1.0.1'
-const STATIC_CACHE = 'basilus-static-v1.0.1'
+// Service Worker pour la mise en cache et les performances
+const CACHE_NAME = 'basilus-v1.0.0'
+const STATIC_CACHE = 'basilus-static-v1.0.0'
+const DYNAMIC_CACHE = 'basilus-dynamic-v1.0.0'
 
-// Ressources à mettre en cache (seulement les ressources locales)
+// Ressources à mettre en cache
 const STATIC_ASSETS = [
   '/',
+  '/packs',
+  '/contact',
+  '/realisations',
+  '/a-propos',
   '/favicon.png',
   '/apropos.jpg',
   '/site1.png',
@@ -13,14 +18,6 @@ const STATIC_ASSETS = [
   '/site4.png',
   '/site5.png',
   '/site6.png'
-]
-
-// Domains à ignorer pour éviter les problèmes
-const IGNORED_DOMAINS = [
-  'cdn.splinetool.com',
-  'prod.spline.design',
-  'fonts.googleapis.com',
-  'fonts.gstatic.com'
 ]
 
 // Installation du Service Worker
@@ -67,13 +64,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event
   const url = new URL(request.url)
-  
-  // Ignorer les domaines problématiques
-  const isIgnoredDomain = IGNORED_DOMAINS.some(domain => url.hostname.includes(domain))
-  if (isIgnoredDomain) {
-    console.log('Service Worker: Ignoring request to', url.hostname)
-    return // Laisser la requête passer normalement
-  }
 
   // Stratégie de cache pour les images
   if (request.destination === 'image') {
@@ -92,22 +82,9 @@ self.addEventListener('fetch', (event) => {
                   .then((cache) => {
                     cache.put(request, responseClone)
                   })
-                  .catch((error) => {
-                    console.log('Service Worker: Cache error (non-critical):', error)
-                  })
               }
               return response
             })
-            .catch((error) => {
-              console.log('Service Worker: Fetch error for image:', request.url, error)
-              throw error
-            })
-        })
-        .catch((error) => {
-          console.log('Service Worker: Cache match error for image:', error)
-          return fetch(request).catch(() => {
-            return new Response('', { status: 404 })
-          })
         })
     )
     return
@@ -130,14 +107,10 @@ self.addEventListener('fetch', (event) => {
                   .then((cache) => {
                     cache.put(request, responseClone)
                   })
-                  .catch((error) => {
-                    console.log('Service Worker: Cache error (non-critical):', error)
-                  })
               }
               return response
             })
-            .catch((error) => {
-              console.log('Service Worker: Fetch error for page:', request.url, error)
+            .catch(() => {
               // Fallback pour les pages hors ligne
               return caches.match('/')
             })
@@ -154,33 +127,41 @@ self.addEventListener('fetch', (event) => {
           return cachedResponse
         }
         
+        // Pour les ressources externes (comme Spline), ne pas les mettre en cache
+        const isExternalResource = request.url.includes('cdn.splinetool.com') || 
+                                 request.url.includes('prod.spline.design') ||
+                                 request.url.includes('fonts.googleapis.com') ||
+                                 request.url.includes('fonts.gstatic.com')
+        
         return fetch(request)
           .then((response) => {
-            if (response.status === 200) {
+            // Ne mettre en cache que les ressources locales
+            if (response.status === 200 && !isExternalResource) {
               const responseClone = response.clone()
               caches.open(DYNAMIC_CACHE)
                 .then((cache) => {
                   cache.put(request, responseClone)
                 })
-                .catch((error) => {
-                  console.log('Service Worker: Cache error (non-critical):', error)
-                })
             }
             return response
           })
           .catch((error) => {
-            console.log('Service Worker: Fetch error for:', request.url, error)
-            // Retourner une réponse d'erreur ou laisser passer
-            throw error
+            console.warn('Service Worker: Failed to fetch resource:', request.url, error)
+            
+            // Pour les ressources Spline, retourner une réponse vide au lieu d'une erreur
+            if (isExternalResource) {
+              return new Response('', {
+                status: 204,
+                statusText: 'No Content'
+              })
+            }
+            
+            // Pour les autres ressources, retourner une erreur 404
+            return new Response('Resource not available', {
+              status: 404,
+              statusText: 'Not Found'
+            })
           })
-      })
-      .catch((error) => {
-        console.log('Service Worker: Cache match error:', error)
-        // Laisser la requête passer normalement
-        return fetch(request).catch(() => {
-          // Si tout échoue, retourner une réponse vide
-          return new Response('', { status: 404 })
-        })
       })
   )
 })
