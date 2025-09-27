@@ -126,9 +126,7 @@ export default function ContactForm() {
       const response = await fetch('https://scompnbumndmuohgqefp.supabase.co/functions/v1/send-email', {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-          'X-CSRF-Token': csrfToken
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...values,
