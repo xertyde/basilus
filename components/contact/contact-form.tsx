@@ -190,6 +190,20 @@ export default function ContactForm() {
     <Form {...form}>
       <form onSubmit={(e) => {
         console.log('📝 Formulaire soumis !');
+        console.log('📝 Event type:', e.type);
+        console.log('📝 Form state:', form.formState);
+        console.log('📝 Form errors:', form.formState.errors);
+        console.log('📝 Form values:', form.getValues());
+        
+        // Vérifier si le formulaire est valide
+        const isValid = form.formState.isValid;
+        console.log('📝 Formulaire valide:', isValid);
+        
+        if (!isValid) {
+          console.log('❌ Formulaire invalide, erreurs:', form.formState.errors);
+          return;
+        }
+        
         form.handleSubmit(onSubmit)(e);
       }} className="space-y-6">
         <FormField
@@ -337,20 +351,59 @@ export default function ContactForm() {
         
         {/* Champ CSRF caché */}
         <input type="hidden" name="csrfToken" value={csrfToken} />
-        <Button 
-          type="submit" 
-          className="w-full" 
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Envoi en cours...
-            </>
-          ) : (
-            <>Obtenir mon devis gratuit</>
-          )}
-        </Button>
+        <div className="space-y-2">
+          <Button 
+            type="submit" 
+            className="w-full" 
+            disabled={isSubmitting}
+            onClick={(e) => {
+              console.log('🖱️ Bouton cliqué !');
+              console.log('🖱️ Event:', e);
+              console.log('🖱️ isSubmitting:', isSubmitting);
+              console.log('🖱️ Form values:', form.getValues());
+              console.log('🖱️ Form errors:', form.formState.errors);
+              // Ne pas empêcher la soumission, juste logger
+            }}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Envoi en cours...
+              </>
+            ) : (
+              <>Obtenir mon devis gratuit</>
+            )}
+          </Button>
+          
+          {/* Bouton de test temporaire pour Chrome */}
+          <Button 
+            type="button"
+            variant="outline"
+            className="w-full" 
+            disabled={isSubmitting}
+            onClick={async () => {
+              console.log('🧪 Test direct - clic sur bouton de test');
+              const values = form.getValues();
+              console.log('🧪 Valeurs du formulaire:', values);
+              
+              // Validation manuelle
+              if (!values.name || !values.email || !values.pack || !values.message) {
+                console.log('🧪 ❌ Champs manquants');
+                toast({
+                  title: "Erreur",
+                  description: "Veuillez remplir tous les champs obligatoires",
+                  variant: "destructive"
+                });
+                return;
+              }
+              
+              console.log('🧪 ✅ Validation OK, soumission directe');
+              await onSubmit(values);
+            }}
+          >
+            🧪 Test Direct (Chrome)
+          </Button>
+        </div>
       </form>
     </Form>
   )
