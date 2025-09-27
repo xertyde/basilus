@@ -69,11 +69,12 @@ export default function RootLayout({
                 }
               })();
 
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('/sw.js');
-                });
-              }
+                      // Service Worker temporairement désactivé pour éviter les conflits
+                      // if ('serviceWorker' in navigator) {
+                      //   window.addEventListener('load', () => {
+                      //     navigator.serviceWorker.register('/sw.js');
+                      //   });
+                      // }
             `,
           }}
         />
