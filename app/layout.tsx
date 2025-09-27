@@ -40,20 +40,14 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <link rel="dns-prefetch" href="https://prod.spline.design" />
-        <link rel="dns-prefetch" href="https://images.pexels.com" />
-        <link rel="dns-prefetch" href="https://cdn.splinetool.com" />
-        
-        {/* Preload des ressources critiques */}
-        <link rel="preload" href="/favicon.png" as="image" type="image/png" />
-        <link rel="preload" href="/apropos.jpg" as="image" type="image/jpeg" />
-        <link rel="preload" href="/site1.png" as="image" type="image/png" />
-        <link rel="preload" href="/site2.png" as="image" type="image/png" />
-        <link rel="preload" href="/site3.png" as="image" type="image/png" />
-        
-        {/* Preload des scripts critiques */}
-        <link rel="preload" href="https://cdn.splinetool.com/runtime/runtime.js" as="script" />
-        <link rel="preload" href="https://cdn.splinetool.com/runtime/runtime.wasm" as="fetch" crossOrigin="anonymous" />
+         <link rel="dns-prefetch" href="https://images.pexels.com" />
+         
+         {/* Preload des ressources critiques - Spline temporairement désactivé */}
+         <link rel="preload" href="/favicon.png" as="image" type="image/png" />
+         <link rel="preload" href="/apropos.jpg" as="image" type="image/jpeg" />
+         <link rel="preload" href="/site1.png" as="image" type="image/png" />
+         <link rel="preload" href="/site2.png" as="image" type="image/png" />
+         <link rel="preload" href="/site3.png" as="image" type="image/png" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#db2777" />
         <script
