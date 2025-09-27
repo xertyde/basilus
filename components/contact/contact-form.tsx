@@ -87,10 +87,19 @@ export default function ContactForm() {
     },
   })
 
+  // Test JavaScript - doit s'afficher dans la console
+  useEffect(() => {
+    console.log('🚀 ContactForm component loaded!')
+    console.log('🚀 React Hook Form initialized!')
+    console.log('🚀 All dependencies loaded successfully!')
+  }, [])
+
   // Génération du token CSRF au chargement
   useEffect(() => {
+    console.log('🔐 Generating CSRF token...')
     const token = generateCSRFToken()
     setCsrfToken(token)
+    console.log('🔐 CSRF token generated!')
   }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
