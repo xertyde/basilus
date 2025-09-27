@@ -36,12 +36,8 @@ const formSchema = z.object({
   name: z.string().min(2, {
     message: "Le nom doit contenir au moins 2 caractères.",
   }),
-  companyName: z.string().min(2, {
-    message: "La dénomination sociale doit contenir au moins 2 caractères.",
-  }),
-  companyAddress: z.string().min(5, {
-    message: "L'adresse doit contenir au moins 5 caractères.",
-  }),
+  companyName: z.string().optional().or(z.literal("")),
+  companyAddress: z.string().optional().or(z.literal("")),
   email: z.string().email({
     message: "Veuillez entrer une adresse e-mail valide.",
   }),
@@ -99,6 +95,7 @@ export default function ContactForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('🚀 Fonction onSubmit appelée avec les valeurs:', values);
+    console.log('🖱️ Bouton de soumission cliqué !');
     
     if (!values.pack) {
       console.log('❌ Aucun pack sélectionné');
@@ -191,7 +188,10 @@ export default function ContactForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={(e) => {
+        console.log('📝 Formulaire soumis !');
+        form.handleSubmit(onSubmit)(e);
+      }} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
@@ -341,33 +341,6 @@ export default function ContactForm() {
           type="submit" 
           className="w-full" 
           disabled={isSubmitting}
-          onClick={async (e) => {
-            console.log('🖱️ Bouton cliqué !');
-            e.preventDefault();
-            
-            // Validation manuelle
-            const formData = form.getValues();
-            console.log('📋 Données du formulaire:', formData);
-            
-            // Vérifier que tous les champs requis sont remplis
-            if (!formData.name || !formData.email || !formData.pack || !formData.message) {
-              console.log('❌ Champs manquants:', {
-                name: !!formData.name,
-                email: !!formData.email,
-                pack: !!formData.pack,
-                message: !!formData.message
-              });
-              toast({
-                title: "Erreur",
-                description: "Veuillez remplir tous les champs obligatoires",
-                variant: "destructive"
-              });
-              return;
-            }
-            
-            console.log('✅ Validation passée, envoi du formulaire...');
-            await onSubmit(formData);
-          }}
         >
           {isSubmitting ? (
             <>
