@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Maximize2 } from "lucide-react"
+import { Maximize2, ExternalLink } from "lucide-react"
 
 interface PortfolioCardProps {
   title: string
@@ -21,6 +21,7 @@ interface PortfolioCardProps {
   imageUrl: string
   category: string
   technologies: string[]
+  websiteUrl?: string
   delay?: number
 }
 
@@ -30,6 +31,7 @@ export default function PortfolioCard({
   imageUrl,
   category,
   technologies,
+  websiteUrl,
   delay = 0,
 }: PortfolioCardProps) {
   const [isHovered, setIsHovered] = useState(false)
@@ -110,6 +112,17 @@ export default function PortfolioCard({
       
       <CardContent className="p-6">
         <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">{title}</h3>
+        {websiteUrl && (
+          <a 
+            href={websiteUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors duration-300 mb-2"
+          >
+            <ExternalLink className="h-3 w-3" />
+            {new URL(websiteUrl).hostname}
+          </a>
+        )}
         <p className="text-muted-foreground mb-4">{description}</p>
         <div className="flex flex-wrap gap-2">
           {technologies.map((tech) => (

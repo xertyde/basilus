@@ -22,7 +22,8 @@ const portfolioItems = [
     description: "Plateforme innovante de vente d'équipements nautiques avec un design moderne et une interface intuitive. Focus sur l'expérience utilisateur et la mise en avant des produits.",
     imageUrl: "/site2.png",
     category: "E-commerce",
-    technologies: ["React", "Tailwind CSS", "Node.js", "Stripe"]
+    technologies: ["React", "Tailwind CSS", "Node.js", "Stripe"],
+    websiteUrl: "https://nauticare.site/"
   },
   {
     id: 3,
@@ -30,7 +31,8 @@ const portfolioItems = [
     description: "Plateforme de mise en relation entre agriculteurs et travailleurs agricoles. Interface intuitive avec système de matching avancé et gestion des missions en temps réel.",
     imageUrl: "/site3.png",
     category: "Application Web",
-    technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"]
+    technologies: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"],
+    websiteUrl: "https://antoineepifanic.github.io/AgriPulse/"
   },
   {
     id: 4,
@@ -55,6 +57,15 @@ const portfolioItems = [
     imageUrl: "/site4.png",
     category: "E-commerce",
     technologies: ["Next.js", "Three.js", "Tailwind CSS", "Stripe"]
+  },
+  {
+    id: 7,
+    title: "Éloïse Meziat - Ostéopathe",
+    description: "Site professionnel pour une ostéopathe avec intégration Doctolib pour faciliter la prise de rendez-vous. Design apaisant et informations pratiques pour les patients.",
+    imageUrl: "/site7.png",
+    category: "Site Professionnel",
+    technologies: ["Next.js", "Tailwind CSS", "Doctolib API", "Framer Motion"],
+    websiteUrl: "https://www.osteomeziat.fr/"
   }
 ]
 
@@ -84,6 +95,7 @@ export default function RealisationsPage() {
                 imageUrl={item.imageUrl}
                 category={item.category}
                 technologies={item.technologies}
+                websiteUrl={item.websiteUrl}
                 delay={index * 100}
               />
             ))}
