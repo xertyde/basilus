@@ -9,12 +9,13 @@ export const metadata = generateMetadata(seoConfigs.realisations)
 
 const portfolioItems = [
   {
-    id: 1,
-    title: "Ice Cream Store",
-    description: "Site e-commerce premium pour une glacerie artisanale avec une interface immersive mettant en valeur les produits. Design épuré avec animations fluides et expérience d'achat optimisée.",
-    imageUrl: "/site1.png",
-    category: "E-commerce",
-    technologies: ["Next.js", "Framer Motion", "GSAP", "Stripe"]
+    id: 7,
+    title: "Éloïse Meziat - Ostéopathe",
+    description: "Site professionnel pour une ostéopathe avec intégration Doctolib pour faciliter la prise de rendez-vous. Design apaisant et informations pratiques pour les patients.",
+    imageUrl: "/site7.png",
+    category: "Site Professionnel",
+    technologies: ["Next.js", "Tailwind CSS", "Doctolib API", "Framer Motion"],
+    websiteUrl: "https://www.osteomeziat.fr/"
   },
   {
     id: 2,
@@ -59,13 +60,12 @@ const portfolioItems = [
     technologies: ["Next.js", "Three.js", "Tailwind CSS", "Stripe"]
   },
   {
-    id: 7,
-    title: "Éloïse Meziat - Ostéopathe",
-    description: "Site professionnel pour une ostéopathe avec intégration Doctolib pour faciliter la prise de rendez-vous. Design apaisant et informations pratiques pour les patients.",
-    imageUrl: "/site7.png",
-    category: "Site Professionnel",
-    technologies: ["Next.js", "Tailwind CSS", "Doctolib API", "Framer Motion"],
-    websiteUrl: "https://www.osteomeziat.fr/"
+    id: 1,
+    title: "Ice Cream Store",
+    description: "Site e-commerce premium pour une glacerie artisanale avec une interface immersive mettant en valeur les produits. Design épuré avec animations fluides et expérience d'achat optimisée.",
+    imageUrl: "/site1.png",
+    category: "E-commerce",
+    technologies: ["Next.js", "Framer Motion", "GSAP", "Stripe"]
   }
 ]
 

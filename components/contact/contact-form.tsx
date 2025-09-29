@@ -94,11 +94,7 @@ export default function ContactForm() {
   }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('🚀 Fonction onSubmit appelée avec les valeurs:', values);
-    console.log('🖱️ Bouton de soumission cliqué !');
-    
     if (!values.pack) {
-      console.log('❌ Aucun pack sélectionné');
       toast({
         title: "Erreur",
         description: "Veuillez sélectionner un pack avant d'envoyer le formulaire",
@@ -107,18 +103,9 @@ export default function ContactForm() {
       return;
     }
 
-    console.log('✅ Pack sélectionné, démarrage de l\'envoi...');
     setIsSubmitting(true);
     
     try {
-      console.log('Envoi du formulaire avec les données:', {
-        name: values.name,
-        email: values.email,
-        pack: values.pack,
-        addons: values.addons,
-        csrfToken: csrfToken
-      });
-      
       // Utiliser la fonction Supabase Edge Function pour l'envoi d'email
       const response = await fetch('https://scompnbumndmuohgqefp.supabase.co/functions/v1/send-email', {
         method: 'POST',
@@ -130,17 +117,13 @@ export default function ContactForm() {
           csrfToken: csrfToken
         })
       });
-
-      console.log('Réponse reçue:', response.status, response.statusText);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Erreur Supabase:', errorData);
         throw new Error(errorData.error || "Erreur lors de l'envoi du formulaire");
       }
 
       const responseData = await response.json();
-      console.log('Données de réponse:', responseData);
       
       setIsSubmitted(true);
       
@@ -160,7 +143,6 @@ export default function ContactForm() {
       router.push('/form');
 
     } catch (error) {
-      console.error('Erreur lors de l\'envoi du formulaire:', error);
       toast({
         title: "Erreur",
         description: error instanceof Error ? error.message : "Échec de l'envoi du formulaire. Veuillez réessayer.",
@@ -188,24 +170,7 @@ export default function ContactForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={(e) => {
-        console.log('📝 Formulaire soumis !');
-        console.log('📝 Event type:', e.type);
-        console.log('📝 Form state:', form.formState);
-        console.log('📝 Form errors:', form.formState.errors);
-        console.log('📝 Form values:', form.getValues());
-        
-        // Vérifier si le formulaire est valide
-        const isValid = form.formState.isValid;
-        console.log('📝 Formulaire valide:', isValid);
-        
-        if (!isValid) {
-          console.log('❌ Formulaire invalide, erreurs:', form.formState.errors);
-          return;
-        }
-        
-        form.handleSubmit(onSubmit)(e);
-      }} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
@@ -356,14 +321,6 @@ export default function ContactForm() {
             type="submit" 
             className="w-full" 
             disabled={isSubmitting}
-            onClick={(e) => {
-              console.log('🖱️ Bouton cliqué !');
-              console.log('🖱️ Event:', e);
-              console.log('🖱️ isSubmitting:', isSubmitting);
-              console.log('🖱️ Form values:', form.getValues());
-              console.log('🖱️ Form errors:', form.formState.errors);
-              // Ne pas empêcher la soumission, juste logger
-            }}
           >
             {isSubmitting ? (
               <>
@@ -373,35 +330,6 @@ export default function ContactForm() {
             ) : (
               <>Obtenir mon devis gratuit</>
             )}
-          </Button>
-          
-          {/* Bouton de test temporaire pour Chrome */}
-          <Button 
-            type="button"
-            variant="outline"
-            className="w-full" 
-            disabled={isSubmitting}
-            onClick={async () => {
-              console.log('🧪 Test direct - clic sur bouton de test');
-              const values = form.getValues();
-              console.log('🧪 Valeurs du formulaire:', values);
-              
-              // Validation manuelle
-              if (!values.name || !values.email || !values.pack || !values.message) {
-                console.log('🧪 ❌ Champs manquants');
-                toast({
-                  title: "Erreur",
-                  description: "Veuillez remplir tous les champs obligatoires",
-                  variant: "destructive"
-                });
-                return;
-              }
-              
-              console.log('🧪 ✅ Validation OK, soumission directe');
-              await onSubmit(values);
-            }}
-          >
-            🧪 Test Direct (Chrome)
           </Button>
         </div>
       </form>
