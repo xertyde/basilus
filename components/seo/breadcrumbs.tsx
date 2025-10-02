@@ -106,5 +106,10 @@ export const breadcrumbConfigs = {
   realisationsVitrine: [
     { label: 'Portfolio Sites Web', href: '/portfolio-sites-web' },
     { label: 'Sites Vitrine', href: '/realisations-sites-vitrine', isCurrentPage: true }
+  ],
+  
+  blogErreursSites: [
+    { label: 'Blog', href: '/blog' },
+    { label: 'Les 5 erreurs fréquentes création site web', href: '/blog/erreurs-sites', isCurrentPage: true }
   ]
 }

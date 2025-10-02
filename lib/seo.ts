@@ -195,6 +195,24 @@ export const seoConfigs = {
     ],
     canonical: '/upload',
     noIndex: true // Page privée, pas d'indexation
+  },
+  
+  blogErreursSites: {
+    title: 'Les 5 erreurs fréquentes création site web | Guide Basilus',
+    description: 'Découvrez les 5 erreurs courantes lors de la création d\'un site web professionnel et comment les éviter : optimisation mobile, SEO, navigation, contenu et CTAs. Guide pratique pour PME et startups.',
+    keywords: [
+      'erreurs création site web',
+      'erreurs site internet',
+      'optimisation mobile site web',
+      'SEO site professionnel',
+      'navigation site web',
+      'appels à l\'action CTA',
+      'guide création site PME',
+      'conseils site internet startup',
+      'éviter erreurs site web',
+      'bonnes pratiques web design'
+    ],
+    canonical: '/blog/erreurs-sites'
   }
 }
 
