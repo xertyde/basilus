@@ -125,18 +125,21 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <TestimonialCard 
               quote="Grâce à Basilus, notre boutique en ligne est plus claire et professionnelle. Nos clients trouvent plus facilement nos équipements, et les ventes ont nettement augmenté."
-              author="Hugo Malaval"
+              author="Mathias Fonferrier"
               company="Responsable commercial, Nauticare"
+              image="/nauticare.png"
             />
             <TestimonialCard 
-              quote="Nous avions besoin d'un site simple et intuitif pour permettre la prise de rendez-vous en ligne. Basilus a su répondre parfaitement à nos attentes, avec sérieux et rapidité."
-              author="Dr. Claire Moreau"
-              company="Gérante, MedInCaen"
+              quote="L'équipe de Basilus m'a aidée à donner vie à mon univers ostéopathique grâce à un site à la fois accueillant, intuitif et fonctionnel."
+              author="Eloïse Meziat"
+              company="Ostéopathe"
+              image="/osteopathe.png"
             />
             <TestimonialCard 
               quote="Basilus a compris les enjeux de notre secteur. Le site est fluide et a permis d'accroître notre visibilité auprès des professionnels agricoles comme des candidats."
-              author="Pierre-Louis Gille"
+              author="Antoine Epifanic"
               company="Fondateur, Agripulse"
+              image="/agripulse.png"
             />
           </div>
 

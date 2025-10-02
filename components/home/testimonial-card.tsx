@@ -3,15 +3,17 @@
 import { useEffect, useRef } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Quote } from "lucide-react"
+import Image from "next/image"
 
 interface TestimonialCardProps {
   quote: string
   author: string
   company: string
+  image?: string
   delay?: number
 }
 
-export default function TestimonialCard({ quote, author, company, delay = 0 }: TestimonialCardProps) {
+export default function TestimonialCard({ quote, author, company, image, delay = 0 }: TestimonialCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -43,9 +45,22 @@ export default function TestimonialCard({ quote, author, company, delay = 0 }: T
       <CardContent className="p-6">
         <Quote className="h-6 w-6 text-primary/60 mb-4 group-hover:scale-110 group-hover:text-primary transition-all duration-300" />
         <p className="text-foreground mb-6 group-hover:text-primary/90 transition-colors duration-300">"{quote}"</p>
-        <div>
-          <p className="font-semibold group-hover:text-primary transition-colors duration-300">{author}</p>
-          <p className="text-sm text-muted-foreground">{company}</p>
+        <div className="flex items-center gap-3">
+          {image && (
+            <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+              <Image 
+                src={image} 
+                alt={author}
+                fill
+                className="object-cover"
+                sizes="48px"
+              />
+            </div>
+          )}
+          <div>
+            <p className="font-semibold group-hover:text-primary transition-colors duration-300">{author}</p>
+            <p className="text-sm text-muted-foreground">{company}</p>
+          </div>
         </div>
       </CardContent>
     </Card>
