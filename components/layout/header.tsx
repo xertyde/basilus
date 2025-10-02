@@ -11,6 +11,7 @@ const navigation = [
   { name: 'Accueil', href: '/' },
   { name: 'Nos Packs', href: '/packs' },
   { name: 'Réalisations', href: '/realisations' },
+  { name: 'Blog', href: '/blog/erreurs-sites' },
   { name: 'À propos', href: '/a-propos' },
   { name: 'Contact', href: '/contact' },
 ]
