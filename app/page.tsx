@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Zap, Award, Code } from 'lucide-react'
+import { ArrowRight, Zap, Award, Code, Clock, Shield, Users, CheckCircle, MessageCircle, Phone } from 'lucide-react'
 import FeatureCard from '@/components/home/feature-card'
 import TestimonialCard from '@/components/home/testimonial-card'
 import { LazySection } from '@/components/ui/lazy-load'
@@ -107,6 +107,26 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-8 animate-on-scroll">
+              <div className="flex items-center gap-2 px-4 py-2 bg-background/60 backdrop-blur-sm rounded-full border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                <Clock className="h-5 w-5 text-primary" />
+                <span className="text-sm font-medium">Devis en 24h</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-background/60 backdrop-blur-sm rounded-full border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                <Shield className="h-5 w-5 text-primary" />
+                <span className="text-sm font-medium">Sans engagement</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-background/60 backdrop-blur-sm rounded-full border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                <MessageCircle className="h-5 w-5 text-primary" />
+                <span className="text-sm font-medium">Conseil personnalisé</span>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-background/60 backdrop-blur-sm rounded-full border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
+                <Users className="h-5 w-5 text-primary" />
+                <span className="text-sm font-medium">Accompagnement complet</span>
+              </div>
             </div>
           </div>
         </div>
@@ -246,9 +266,18 @@ export default function Home() {
                     <p className="text-4xl md:text-5xl font-bold mb-4 text-primary">590€</p>
                     <p className="text-sm text-muted-foreground mb-4">Site vitrine professionnel</p>
                     <div className="space-y-2 text-xs text-muted-foreground">
-                      <div>✓ Design responsive</div>
-                      <div>✓ Optimisation référencement</div>
-                      <div>✓ Support inclus</div>
+                      <div className="flex items-center justify-center gap-2">
+                        <CheckCircle className="h-3 w-3 text-primary" />
+                        <span>Design responsive</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <CheckCircle className="h-3 w-3 text-primary" />
+                        <span>Optimisation référencement</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <CheckCircle className="h-3 w-3 text-primary" />
+                        <span>Support inclus</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -287,6 +316,26 @@ export default function Home() {
                   </Link>
                 </Button>
               </CTATracker>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 group">
+                <CheckCircle className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                <span className="group-hover:text-foreground transition-colors">Devis en 24h</span>
+              </div>
+              <div className="flex items-center gap-2 group">
+                <CheckCircle className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                <span className="group-hover:text-foreground transition-colors">Sans engagement</span>
+              </div>
+              <div className="flex items-center gap-2 group">
+                <CheckCircle className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                <span className="group-hover:text-foreground transition-colors">Conseil personnalisé</span>
+              </div>
+              <div className="flex items-center gap-2 group">
+                <Phone className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                <span className="group-hover:text-foreground transition-colors">Support réactif</span>
+              </div>
             </div>
           </div>
         </div>
