@@ -45,23 +45,23 @@ export default function Header() {
           : "bg-transparent"
       )}>
         <nav className="container py-4">
-          {/* Layout responsive : flex sur mobile, grille sur desktop */}
-          <div className="flex justify-between items-center md:grid md:grid-cols-3">
+          {/* Layout responsive : flex sur toutes les tailles pour éviter les conflits */}
+          <div className="flex justify-between items-center">
             {/* Logo à gauche */}
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-start flex-shrink-0">
               <Link href="/" className="flex items-center gap-x-2">
                 <span className="text-2xl font-bold text-primary">Basilus</span>
               </Link>
             </div>
 
              {/* Navigation au centre (desktop seulement) */}
-             <div className="hidden md:flex justify-center">
-               <div className="flex gap-x-6">
+             <div className="hidden md:flex justify-center flex-1">
+               <div className="flex gap-x-4">
                  {navigation.map((item) => (
                    <Link
                      key={item.name}
                      href={item.href}
-                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap px-1 py-1"
+                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap px-2 py-1"
                    >
                      {item.name}
                    </Link>
@@ -70,7 +70,7 @@ export default function Header() {
              </div>
 
             {/* Boutons à droite*/}
-            <div className="flex items-center justify-end gap-x-4">
+            <div className="flex items-center justify-end gap-x-4 flex-shrink-0">
               <SimpleThemeToggle />
 
               <Button asChild size="sm" className="hidden md:inline-flex">
