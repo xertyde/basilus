@@ -1,4 +1,4 @@
-import OptimizedImage from '@/components/ui/optimized-image'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
@@ -38,7 +38,7 @@ export default function AboutPage() {
         <div className="container">
           <Breadcrumbs items={breadcrumbConfigs.about} />
           <div className="max-w-3xl mx-auto text-center animate-on-scroll">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">À Propos de Basilus - Équipe de Création de Sites Web à Paris</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">À Propos de Basilus - Équipe de Création de Sites Web à Lyon</h1>
             <p className="text-lg text-muted-foreground">
               Nous créons des sites web qui font briller votre entreprise et génèrent des résultats concrets.
             </p>
@@ -71,14 +71,13 @@ Plutôt qu’un long discours, nous mettons notre énergie dans des solutions co
               </div>
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl animate-from-right">
-              <OptimizedImage
+              <Image
                 src="/apropos.jpg"
                 alt="Équipe Basilus - Développeurs web professionnels diplômés CPE Lyon spécialisés création sites PME et startups"
                 fill
                 className="object-cover"
                 quality={95}
                 priority={true}
-                context="team"
               />
             </div>
           </div>

@@ -150,9 +150,10 @@ self.addEventListener('fetch', (event) => {
             
             // Pour les ressources Spline, retourner une réponse vide au lieu d'une erreur
             if (isExternalResource) {
-              return new Response('', {
+              return new Response(null, {
                 status: 204,
-                statusText: 'No Content'
+                statusText: 'No Content',
+                headers: { 'Content-Type': 'text/plain' }
               })
             }
             
