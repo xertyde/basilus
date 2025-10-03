@@ -39,7 +39,7 @@ export default function Header() {
   return (
     <>
       <header className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "fixed inset-x-0 top-0 z-[9999] transition-all duration-300",
         mobileMenuOpen || isScrolled 
           ? "bg-background shadow-sm" 
           : "bg-transparent"
@@ -55,13 +55,13 @@ export default function Header() {
             </div>
 
              {/* Navigation au centre (desktop seulement) */}
-             <div className="hidden md:flex justify-center flex-1">
-               <div className="flex gap-x-4">
+             <div className="hidden md:flex justify-center flex-1 relative z-[10000]">
+               <div className="flex gap-x-4 relative z-[10000]">
                  {navigation.map((item) => (
                    <Link
                      key={item.name}
                      href={item.href}
-                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap px-2 py-1"
+                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap px-2 py-1 relative z-[10000] block"
                    >
                      {item.name}
                    </Link>
@@ -70,10 +70,10 @@ export default function Header() {
              </div>
 
             {/* Boutons à droite*/}
-            <div className="flex items-center justify-end gap-x-4 flex-shrink-0">
+            <div className="flex items-center justify-end gap-x-4 flex-shrink-0 relative z-[9999]">
               <SimpleThemeToggle />
 
-              <Button asChild size="sm" className="hidden md:inline-flex">
+              <Button asChild size="sm" className="hidden md:inline-flex relative z-[9999]">
                 <Link href="/contact">Demander un devis</Link>
               </Button>
 

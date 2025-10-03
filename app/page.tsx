@@ -66,7 +66,7 @@ export default function Home() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center" id="hero">
         {/* Spline Background */}
-        <div className="absolute inset-0 z-0 w-full h-full min-h-screen">
+        <div className="absolute inset-0 z-0 w-full h-full min-h-screen pointer-events-none">
           {shouldLoadSpline && !splineError ? (
             <Spline 
               scene="https://prod.spline.design/JPTsWntNgEBdHdeC/scene.splinecode"
