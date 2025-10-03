@@ -388,6 +388,23 @@ async function createCalendarEvent(calendarId: string, eventData: {
 
 export async function POST(request: NextRequest) {
   try {
+    // Vérifier les variables d'environnement requises
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.GOOGLE_REFRESH_TOKEN) {
+      console.error('Variables d\'environnement Google manquantes');
+      return NextResponse.json(
+        { error: 'Configuration Google Calendar manquante' },
+        { status: 500 }
+      );
+    }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Clé API Resend manquante');
+      return NextResponse.json(
+        { error: 'Configuration email manquante' },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { slotId, meetingType, email, phoneNumber } = body;
 
@@ -470,6 +487,7 @@ export async function POST(request: NextRequest) {
         await sendPhoneEmail(email, phoneNumber, date, `${formatTime(startTime)} - ${formatTime(endTime)}`);
       }
     } catch (emailError) {
+      console.error('Erreur lors de l\'envoi de l\'email:', emailError);
       // On ne fait pas échouer la réservation si l'email échoue
     }
     return NextResponse.json({
@@ -484,6 +502,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
+    console.error('Erreur lors de la réservation:', error);
     return NextResponse.json(
       { 
         error: 'Erreur lors de la réservation du créneau',

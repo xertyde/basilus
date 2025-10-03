@@ -73,7 +73,7 @@ async function getCalendarEvents(calendarId: string, date: Date) {
 
     return response.data.items || [];
   } catch (error) {
-    
+    console.error('Erreur lors de la récupération des événements du calendrier:', error);
     return [];
   }
 }
@@ -271,6 +271,15 @@ function debugDateInfo(date: Date, label: string): void {
 
 export async function GET() {
   try {
+    // Vérifier les variables d'environnement requises
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.GOOGLE_REFRESH_TOKEN) {
+      console.error('Variables d\'environnement Google manquantes');
+      return NextResponse.json(
+        { error: 'Configuration Google Calendar manquante' },
+        { status: 500 }
+      );
+    }
+
     // Obtenir l'heure actuelle pour le débogage
     const currentTime = getCurrentDateTimeInParis();
     debugDateInfo(currentTime, 'Heure actuelle en France');
