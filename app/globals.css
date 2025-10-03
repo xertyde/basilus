@@ -100,6 +100,8 @@
   }
   html {
     scroll-behavior: smooth;
+    /* Fix Safari scroll background */
+    background-color: hsl(var(--background));
   }
   body {
     @apply bg-background text-foreground;
@@ -108,6 +110,9 @@
       radial-gradient(circle at top left, hsl(var(--primary) / 0.03), transparent 40%),
       radial-gradient(circle at bottom right, hsl(var(--primary) / 0.03), transparent 40%);
     background-attachment: fixed;
+    /* Fix Safari scroll background */
+    background-color: hsl(var(--background));
+    min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins;
