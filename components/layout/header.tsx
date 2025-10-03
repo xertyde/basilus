@@ -69,7 +69,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Boutons à droite */}
+            {/* Boutons à droite*/}
             <div className="flex items-center justify-end gap-x-4">
               <SimpleThemeToggle />
 
