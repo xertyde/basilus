@@ -38,52 +38,93 @@ export default function Header() {
 
   return (
     <>
-      <header className={cn(
-        "fixed inset-x-0 top-0 z-[9999] transition-all duration-300",
-        mobileMenuOpen || isScrolled 
-          ? "bg-background shadow-sm" 
-          : "bg-transparent"
-      )}>
-        <nav className="container py-4">
-          {/* Layout responsive : flex sur toutes les tailles pour éviter les conflits */}
-          <div className="flex justify-between items-center">
-            {/* Logo à gauche */}
-            <div className="flex items-center justify-start flex-shrink-0">
-              <Link href="/" className="flex items-center gap-x-2">
+      <header 
+        className={cn(
+          "fixed top-0 left-0 right-0 z-[10000] transition-all duration-300",
+          mobileMenuOpen || isScrolled 
+            ? "bg-background shadow-sm" 
+            : "bg-transparent"
+        )}
+        style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10000 }}
+      >
+        <nav className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between w-full">
+            
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link 
+                href="/" 
+                className="flex items-center gap-x-2"
+                style={{ display: 'block', position: 'relative', zIndex: 10001 }}
+              >
                 <span className="text-2xl font-bold text-primary">Basilus</span>
               </Link>
             </div>
 
-             {/* Navigation au centre (desktop seulement) */}
-             <div className="hidden md:flex justify-center flex-1 relative z-[10000]">
-               <div className="flex gap-x-4 relative z-[10000]">
-                 {navigation.map((item) => (
-                   <Link
-                     key={item.name}
-                     href={item.href}
-                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap px-2 py-1 relative z-[10000] block"
-                   >
-                     {item.name}
-                   </Link>
-                 ))}
-               </div>
-             </div>
+            {/* Navigation Desktop */}
+            <div 
+              className="hidden md:flex items-center justify-center flex-1"
+              style={{ position: 'relative', zIndex: 10001 }}
+            >
+              <div className="flex items-center space-x-8">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap py-2 px-1"
+                    style={{ 
+                      display: 'block', 
+                      position: 'relative', 
+                      zIndex: 10002,
+                      cursor: 'pointer'
+                    }}
+                    onClick={(e) => {
+                      console.log(`Clicked: ${item.name}`);
+                    }}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-            {/* Boutons à droite*/}
-            <div className="flex items-center justify-end gap-x-4 flex-shrink-0 relative z-[9999]">
+            {/* Actions à droite */}
+            <div 
+              className="flex items-center gap-x-4 flex-shrink-0"
+              style={{ position: 'relative', zIndex: 10001 }}
+            >
               <SimpleThemeToggle />
 
-              <Button asChild size="sm" className="hidden md:inline-flex relative z-[9999]">
-                <Link href="/contact">Demander un devis</Link>
+              <Button 
+                asChild 
+                size="sm" 
+                className="hidden md:inline-flex"
+                style={{ position: 'relative', zIndex: 10002 }}
+              >
+                <Link 
+                  href="/contact"
+                  style={{ 
+                    display: 'block', 
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 10003
+                  }}
+                  onClick={(e) => {
+                    console.log('Contact button clicked!');
+                  }}
+                >
+                  Demander un devis
+                </Link>
               </Button>
 
-              {/* Bouton menu mobile */}
+              {/* Menu Mobile */}
               <Button
                 variant="ghost"
                 size="icon"
                 className="md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                style={{ position: 'relative', zIndex: 10002 }}
               >
                 {mobileMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -96,9 +137,20 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Menu mobile */}
+      {/* Menu Mobile Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-background mt-16 md:hidden">
+        <div 
+          className="fixed inset-0 bg-background z-[9999] md:hidden"
+          style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0, 
+            zIndex: 9999,
+            marginTop: '4rem'
+          }}
+        >
           <div className="h-[calc(100vh-4rem)] overflow-y-auto py-6 px-6">
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-foreground">Menu</h2>
@@ -111,6 +163,12 @@ export default function Header() {
                   href={item.href}
                   className="text-lg font-medium text-foreground hover:text-primary py-3 border-b border-border/50 last:border-b-0"
                   onClick={() => setMobileMenuOpen(false)}
+                  style={{ 
+                    display: 'block', 
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 10000
+                  }}
                 >
                   {item.name}
                 </Link>
@@ -119,7 +177,16 @@ export default function Header() {
             
             <div className="mt-8">
               <Button asChild className="w-full">
-                <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href="/contact" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{ 
+                    display: 'block', 
+                    cursor: 'pointer',
+                    position: 'relative',
+                    zIndex: 10000
+                  }}
+                >
                   Demander un devis
                 </Link>
               </Button>
