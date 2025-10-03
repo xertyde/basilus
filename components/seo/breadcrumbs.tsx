@@ -109,7 +109,6 @@ export const breadcrumbConfigs = {
   ],
   
   blogErreursSites: [
-    { label: 'Blog', href: '/blog' },
     { label: 'Les 5 erreurs fréquentes création site web', href: '/blog/erreurs-sites', isCurrentPage: true }
   ]
 }

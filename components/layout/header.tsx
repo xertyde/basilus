@@ -66,12 +66,12 @@ export default function Header() {
               className="hidden md:flex items-center justify-center flex-1"
               style={{ position: 'relative', zIndex: 10001 }}
             >
-              <div className="flex items-center space-x-8">
+              <div className="flex items-center justify-center space-x-6">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap py-2 px-1"
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap py-2 px-2"
                     style={{ 
                       display: 'block', 
                       position: 'relative', 
@@ -98,16 +98,19 @@ export default function Header() {
               <Button 
                 asChild 
                 size="sm" 
-                className="hidden md:inline-flex"
+                className="hidden md:inline-flex justify-center items-center"
                 style={{ position: 'relative', zIndex: 10002 }}
               >
                 <Link 
                   href="/contact"
+                  className="flex items-center justify-center w-full h-full"
                   style={{ 
-                    display: 'block', 
+                    display: 'flex', 
                     cursor: 'pointer',
                     position: 'relative',
-                    zIndex: 10003
+                    zIndex: 10003,
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                   onClick={(e) => {
                     console.log('Contact button clicked!');

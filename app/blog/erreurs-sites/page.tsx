@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { generateMetadata, seoConfigs } from '@/lib/seo'
 import Breadcrumbs, { breadcrumbConfigs } from '@/components/seo/breadcrumbs'
 import StructuredData from '@/components/seo/structured-data'
-import { AlertCircle, Smartphone, Search, Navigation, MessageSquare, MousePointerClick, CheckCircle, ArrowRight } from 'lucide-react'
+import { AlertCircle, Smartphone, Search, Navigation, MessageSquare, MousePointerClick, CheckCircle, ArrowRight, Calendar, Clock, PenTool, Lightbulb, DollarSign, Palette, Users } from 'lucide-react'
 
 export const metadata = generateMetadata(seoConfigs.blogErreursSites)
 
@@ -128,11 +128,11 @@ export default function BlogErreursSitesPage() {
 
             {/* Meta informations */}
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground border-t border-b py-4">
-              <span>📅 Publié le 2 octobre 2025</span>
+              <span className="flex items-center gap-1"><Calendar className="h-4 w-4 text-red-600 dark:text-pink-500" /> Publié le 2 octobre 2025</span>
               <span className="hidden sm:inline">•</span>
-              <span>⏱️ Lecture : 5 min</span>
+              <span className="flex items-center gap-1"><Clock className="h-4 w-4 text-red-600 dark:text-pink-500" /> Lecture : 5 min</span>
               <span className="hidden sm:inline">•</span>
-              <span>✍️ Par l'équipe Basilus</span>
+              <span className="flex items-center gap-1"><PenTool className="h-4 w-4 text-red-600 dark:text-pink-500" /> Par l'équipe Basilus</span>
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@ export default function BlogErreursSitesPage() {
             {/* Introduction highlight */}
             <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-6 md:p-8 mb-12 animate-on-scroll border-l-4 border-primary">
               <p className="text-lg leading-relaxed">
-                <strong className="text-primary">💡 Le saviez-vous ?</strong> Selon une étude récente, plus de 70% des sites web de PME présentent au moins une de ces erreurs critiques. 
+                <strong className="text-primary flex items-center gap-2"><Lightbulb className="h-5 w-5 text-red-600 dark:text-pink-500" /> Le saviez-vous ?</strong> Selon une étude récente, plus de 70% des sites web de PME présentent au moins une de ces erreurs critiques. 
                 En les évitant, vous maximiserez l'impact de votre site, attirerez plus de clients et convertirez davantage de visiteurs.
               </p>
             </div>
@@ -195,8 +195,8 @@ export default function BlogErreursSitesPage() {
                     </div>
 
                     {/* Solution */}
-                    <div className="bg-green-50 dark:bg-green-950/20 rounded-xl p-4 border border-green-200 dark:border-green-900">
-                      <h3 className="font-semibold text-lg flex items-center gap-2 mb-2 text-green-700 dark:text-green-400">
+                    <div className="bg-cyan-50 dark:bg-cyan-950/20 rounded-xl p-4 border border-cyan-200 dark:border-cyan-900">
+                      <h3 className="font-semibold text-lg flex items-center gap-2 mb-2 text-cyan-700 dark:text-cyan-400">
                         <CheckCircle className="h-5 w-5" />
                         La solution :
                       </h3>
@@ -227,7 +227,7 @@ export default function BlogErreursSitesPage() {
 
             {/* Points clés à retenir */}
             <div className="mt-12 animate-on-scroll">
-              <h2 className="text-2xl font-bold mb-6">📌 Points clés à retenir</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><CheckCircle className="h-6 w-6 text-red-600 dark:text-pink-500" /> Points clés à retenir</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3 p-4 bg-card rounded-lg border">
                   <Smartphone className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
@@ -319,7 +319,7 @@ export default function BlogErreursSitesPage() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <CardContent className="p-6">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                      💰
+                      <DollarSign className="h-6 w-6 text-red-600 dark:text-pink-500" />
                     </div>
                     <h3 className="font-bold mb-2 group-hover:text-primary transition-colors">Nos tarifs</h3>
                     <p className="text-sm text-muted-foreground">Découvrez nos packs adaptés à votre budget</p>
@@ -331,7 +331,7 @@ export default function BlogErreursSitesPage() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <CardContent className="p-6">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                      🎨
+                      <Palette className="h-6 w-6 text-red-600 dark:text-pink-500" />
                     </div>
                     <h3 className="font-bold mb-2 group-hover:text-primary transition-colors">Portfolio</h3>
                     <p className="text-sm text-muted-foreground">Exemples de sites réussis pour nos clients</p>
@@ -343,7 +343,7 @@ export default function BlogErreursSitesPage() {
                 <Card className="h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <CardContent className="p-6">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                      👥
+                      <Users className="h-6 w-6 text-red-600 dark:text-pink-500" />
                     </div>
                     <h3 className="font-bold mb-2 group-hover:text-primary transition-colors">Notre équipe</h3>
                     <p className="text-sm text-muted-foreground">Découvrez qui se cache derrière Basilus</p>

@@ -120,10 +120,6 @@ export default function Home() {
                 <span className="text-sm font-medium">Sans engagement</span>
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-background/60 backdrop-blur-sm rounded-full border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
-                <MessageCircle className="h-5 w-5 text-primary" />
-                <span className="text-sm font-medium">Conseil personnalisé</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-background/60 backdrop-blur-sm rounded-full border border-primary/20 shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300">
                 <Users className="h-5 w-5 text-primary" />
                 <span className="text-sm font-medium">Accompagnement complet</span>
               </div>
