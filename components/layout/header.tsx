@@ -61,17 +61,17 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Navigation Desktop */}
+            {/* Navigation Desktop - Centrée */}
             <div 
               className="hidden md:flex items-center justify-center flex-1"
               style={{ position: 'relative', zIndex: 10001 }}
             >
-              <div className="flex items-center justify-center space-x-6">
+              <div className="flex items-center justify-center space-x-8">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap py-2 px-2"
+                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap py-2 px-3"
                     style={{ 
                       display: 'block', 
                       position: 'relative', 
@@ -97,8 +97,8 @@ export default function Header() {
 
               <Button 
                 asChild 
-                size="sm" 
-                className="hidden md:inline-flex justify-center items-center"
+                size="lg" 
+                className="hidden md:inline-flex justify-center items-center px-6 py-3 text-sm font-semibold"
                 style={{ position: 'relative', zIndex: 10002 }}
               >
                 <Link 
