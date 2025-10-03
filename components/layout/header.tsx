@@ -11,6 +11,7 @@ const navigation = [
   { name: 'Accueil', href: '/' },
   { name: 'Nos Packs', href: '/packs' },
   { name: 'Réalisations', href: '/realisations' },
+  { name: 'Blog', href: '/blog/erreurs-sites' },
   { name: 'À propos', href: '/a-propos' },
   { name: 'Contact', href: '/contact' },
 ]
@@ -53,20 +54,20 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Navigation au centre (desktop seulement) */}
-            <div className="hidden md:flex justify-center">
-              <div className="flex gap-x-8">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
+             {/* Navigation au centre (desktop seulement) */}
+             <div className="hidden md:flex justify-center">
+               <div className="flex gap-x-6">
+                 {navigation.map((item) => (
+                   <Link
+                     key={item.name}
+                     href={item.href}
+                     className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors whitespace-nowrap px-1 py-1"
+                   >
+                     {item.name}
+                   </Link>
+                 ))}
+               </div>
+             </div>
 
             {/* Boutons à droite*/}
             <div className="flex items-center justify-end gap-x-4">
