@@ -97,7 +97,7 @@ export default function Header() {
 
               <Button 
                 asChild 
-                size="lg" 
+                size="sm" 
                 className="hidden md:inline-flex justify-center items-center px-6 py-3 text-sm font-semibold"
                 style={{ position: 'relative', zIndex: 10002 }}
               >
