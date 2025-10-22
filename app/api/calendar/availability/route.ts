@@ -184,27 +184,34 @@ function calculateFreeSlots(events: TimeSlot[], date: Date): Availability[] {
 
 // Fonction pour obtenir la date/heure actuelle en France de manière fiable
 function getCurrentDateTimeInParis(): Date {
-  // Utiliser Intl.DateTimeFormat pour une gestion correcte du fuseau horaire
+  // Utiliser une méthode plus simple et fiable
   const now = new Date();
-  const parisTime = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Europe/Paris',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  }).formatToParts(now);
   
-  const year = parseInt(parisTime.find(part => part.type === 'year')!.value);
-  const month = parseInt(parisTime.find(part => part.type === 'month')!.value) - 1; // Les mois commencent à 0
-  const day = parseInt(parisTime.find(part => part.type === 'day')!.value);
-  const hour = parseInt(parisTime.find(part => part.type === 'hour')!.value);
-  const minute = parseInt(parisTime.find(part => part.type === 'minute')!.value);
-  const second = parseInt(parisTime.find(part => part.type === 'second')!.value);
+  // Convertir en fuseau horaire de Paris en utilisant toLocaleString
+  const parisTimeString = now.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
   
-  return new Date(year, month, day, hour, minute, second);
+  // Parser la date au format ISO (YYYY-MM-DD HH:mm:ss)
+  const [datePart, timePart] = parisTimeString.split(' ');
+  const [year, month, day] = datePart.split('-').map(Number);
+  const [hour, minute, second] = timePart.split(':').map(Number);
+  
+  // Créer une nouvelle date avec les composants parsés
+  // IMPORTANT: Utiliser le constructeur Date avec les composants locaux
+  // pour éviter les problèmes de fuseau horaire
+  const localDate = new Date(year, month - 1, day, hour, minute, second);
+  
+  // Vérifier que la date créée correspond bien à la date de Paris
+  // Si ce n'est pas le cas, ajuster en fonction du décalage horaire
+  const expectedParisTime = now.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
+  const actualParisTime = localDate.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
+  
+  if (expectedParisTime !== actualParisTime) {
+    // Ajuster pour le fuseau horaire
+    const offset = now.getTimezoneOffset() - (new Date().getTimezoneOffset());
+    return new Date(localDate.getTime() + offset * 60000);
+  }
+  
+  return localDate;
 }
 
 // Fonction pour filtrer les créneaux passés de manière fiable
@@ -226,22 +233,53 @@ function filterPastSlots(slots: Availability[], date: Date): Availability[] {
 
 function getNextBusinessDays(count: number = 5): Date[] {
   const businessDays: Date[] = [];
+  
   // Obtenir la date actuelle en France de manière cohérente
   const currentDateTime = getCurrentDateTimeInParis();
-  const parisNow = new Date(currentDateTime);
-  parisNow.setHours(0, 0, 0, 0);
-
-  let checkDate = new Date(parisNow);
+  
+  // Commencer à partir d'aujourd'hui - utiliser une approche plus simple
+  const today = new Date();
+  const parisTimeString = today.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
+  const [datePart] = parisTimeString.split(' ');
+  const [year, month, day] = datePart.split('-').map(Number);
+  let checkDate = new Date(year, month - 1, day, 12, 0, 0);
+  
+  // Si nous sommes un week-end (samedi=6 ou dimanche=0), commencer à partir du lundi suivant
+  const currentDayOfWeek = checkDate.getDay();
+  if (currentDayOfWeek === 0) { // Dimanche
+    checkDate.setDate(checkDate.getDate() + 1); // Passer au lundi
+  } else if (currentDayOfWeek === 6) { // Samedi
+    checkDate.setDate(checkDate.getDate() + 2); // Passer au lundi
+  } else {
+    // Si nous sommes un jour ouvré, vérifier si nous sommes encore dans les heures de travail
+    const currentHour = currentDateTime.getHours();
+    if (currentHour >= WORK_HOURS.end) {
+      // Si nous avons dépassé les heures de travail, commencer à partir de demain
+      checkDate.setDate(checkDate.getDate() + 1);
+    }
+  }
+  
   let daysAdded = 0;
+  let attempts = 0;
+  const maxAttempts = 14; // Éviter les boucles infinies
 
-  while (daysAdded < count) {
+  while (daysAdded < count && attempts < maxAttempts) {
     const dayOfWeek = checkDate.getDay();
+    
     // Inclure seulement les jours ouvrés (lundi=1 à vendredi=5)
     if (dayOfWeek >= 1 && dayOfWeek <= 5) {
       businessDays.push(new Date(checkDate));
       daysAdded++;
     }
+    
+    // Passer au jour suivant
     checkDate.setDate(checkDate.getDate() + 1);
+    attempts++;
+  }
+
+  // Log pour le débogage
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Jours ouvrés calculés:', businessDays.map(d => d.toISOString().split('T')[0]));
   }
 
   return businessDays;
