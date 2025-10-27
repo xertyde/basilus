@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { validateMimeType, validateFileSize, sanitizeFileName, ALLOWED_MIME_TYPES, MAX_FILE_SIZE } from '@/lib/security';
-import { Upload, FileText, Image, Video, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Upload, FileText, Image, Video, X, CheckCircle, AlertCircle, File, Archive } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -50,20 +50,25 @@ export default function UploadPage() {
     setIsDragOver(false);
     
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile && (droppedFile.type.startsWith('image/') || droppedFile.type.startsWith('video/'))) {
-      setFile(droppedFile);
-      // Mettre à jour l'input file pour la soumission
-      if (fileInputRef.current) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(droppedFile);
-        fileInputRef.current.files = dataTransfer.files;
+    if (droppedFile) {
+      // Vérifier si le type de fichier est autorisé
+      const isValidType = validateMimeType(droppedFile.type, ALLOWED_MIME_TYPES);
+      
+      if (isValidType) {
+        setFile(droppedFile);
+        // Mettre à jour l'input file pour la soumission
+        if (fileInputRef.current) {
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(droppedFile);
+          fileInputRef.current.files = dataTransfer.files;
+        }
+      } else {
+        toast({
+          title: "Type de fichier non supporté",
+          description: "Format de fichier non autorisé. Veuillez consulter la liste des formats acceptés.",
+          variant: "destructive"
+        });
       }
-    } else {
-      toast({
-        title: "Type de fichier non supporté",
-        description: "Veuillez sélectionner une image ou une vidéo.",
-        variant: "destructive"
-      });
     }
   };
 
@@ -287,7 +292,7 @@ export default function UploadPage() {
                           ref={fileInputRef}
                           id="file"
                           type="file"
-                          accept="image/*,video/*"
+                          accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.heic,.heif,.json,.csv,.xml"
                           onChange={handleFileChange}
                           required
                           disabled={isLoading}
@@ -298,11 +303,21 @@ export default function UploadPage() {
                           <div className="mt-4 p-4 bg-muted rounded-lg">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                {file.type.startsWith('image/') ? (
-                                  <Image className="h-5 w-5 text-blue-500" />
-                                ) : (
-                                  <Video className="h-5 w-5 text-purple-500" />
-                                )}
+                                {(() => {
+                                  if (file.type.startsWith('image/')) {
+                                    return <Image className="h-5 w-5 text-blue-500" />;
+                                  } else if (file.type.startsWith('video/')) {
+                                    return <Video className="h-5 w-5 text-purple-500" />;
+                                  } else if (file.type.includes('pdf') || file.type.includes('document') || file.type.includes('word') || file.type.includes('excel') || file.type.includes('powerpoint')) {
+                                    return <File className="h-5 w-5 text-red-500" />;
+                                  } else if (file.type.includes('zip') || file.type.includes('rar') || file.type.includes('tar') || file.type.includes('gzip')) {
+                                    return <Archive className="h-5 w-5 text-green-500" />;
+                                  } else if (file.type.includes('text') || file.type.includes('json') || file.type.includes('xml') || file.type.includes('csv')) {
+                                    return <FileText className="h-5 w-5 text-orange-500" />;
+                                  } else {
+                                    return <File className="h-5 w-5 text-gray-500" />;
+                                  }
+                                })()}
                                 <div>
                                   <p className="text-sm font-medium">{file.name}</p>
                                   <p className="text-xs text-muted-foreground">
@@ -325,7 +340,7 @@ export default function UploadPage() {
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        Formats acceptés : JPG, PNG, GIF, MP4, MOV, AVI (max 10MB)
+                        Formats acceptés : Images (JPG, PNG, GIF, WEBP, HEIC, HEIF, SVG, BMP, TIFF), Vidéos (MP4, MOV, AVI, WEBM, OGG), Documents (PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX), Archives (ZIP, RAR, TAR, GZ), Autres (TXT, CSV, JSON, XML) - max 10MB
                       </p>
                     </div>
                   ) : (
@@ -386,7 +401,7 @@ export default function UploadPage() {
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Images & Vidéos</h3>
                   <p className="text-sm text-muted-foreground">
-                    Support des formats courants : JPG, PNG, GIF, MP4, MOV, AVI. 
+                    Support des formats : JPG, PNG, GIF, WEBP, HEIC, HEIF, SVG, BMP, TIFF, MP4, MOV, AVI, WEBM, OGG. 
                     Taille maximale : 10MB par fichier.
                   </p>
                 </CardContent>
@@ -397,10 +412,10 @@ export default function UploadPage() {
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                     <FileText className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold mb-2">Contenu textuel</h3>
+                  <h3 className="text-lg font-semibold mb-2">Documents & Archives</h3>
                   <p className="text-sm text-muted-foreground">
-                    Partagez vos textes, notes, ou documents. 
-                    Formatage automatique et organisation claire.
+                    Partagez vos PDF, documents Word/Excel/PowerPoint, archives ZIP/RAR, 
+                    et fichiers texte (TXT, CSV, JSON, XML).
                   </p>
                 </CardContent>
               </Card>

@@ -194,14 +194,47 @@ export function validateContactForm(data: {
 
 // Types MIME autorisés pour les uploads
 export const ALLOWED_MIME_TYPES = [
+  // Images
   'image/jpeg',
+  'image/jpg',
   'image/png',
   'image/webp',
   'image/gif',
+  'image/bmp',
+  'image/tiff',
+  'image/heic',
+  'image/heif',
+  'image/svg+xml',
+  
+  // Vidéos
   'video/mp4',
   'video/webm',
+  'video/quicktime',
+  'video/x-msvideo',
+  'video/ogg',
+  'video/x-matroska',
+  
+  // Documents
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  
+  // Archives
+  'application/zip',
+  'application/x-rar-compressed',
+  'application/x-tar',
+  'application/gzip',
+  
+  // Autres
   'text/plain',
-  'application/pdf'
+  'text/csv',
+  'application/json',
+  'application/xml',
+  'text/xml'
 ]
 
 // Taille maximale des fichiers (10MB)
