@@ -67,8 +67,19 @@ export default function CalendarPage() {
         setIsLoading(true);
         setError(null); // Reset any previous errors
         
-        console.log('Chargement des disponibilités...');
-        const response = await fetch('/api/calendar/availability');
+        const timestamp = new Date().toISOString();
+        console.log('[CALENDAR CLIENT] ===== CHARGEMENT DES DISPONIBILITÉS =====');
+        console.log('[CALENDAR CLIENT] Timestamp client:', timestamp);
+        console.log('[CALENDAR CLIENT] Date locale:', new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }));
+        
+        // Désactiver le cache pour cette requête
+        const response = await fetch('/api/calendar/availability', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+          }
+        });
         
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
@@ -82,11 +93,16 @@ export default function CalendarPage() {
           throw new Error('Format de données invalide reçu du serveur');
         }
         
-        console.log('Disponibilités chargées:', data.dailyAvailabilities.length, 'jours');
+        console.log('[CALENDAR CLIENT] Disponibilités chargées:', data.dailyAvailabilities.length, 'jours');
+        data.dailyAvailabilities.forEach((day: DailyAvailability, index: number) => {
+          console.log(`[CALENDAR CLIENT]   Jour ${index + 1}: ${day.date} - ${day.freeSlots.length} créneaux disponibles`);
+        });
+        console.log('[CALENDAR CLIENT] ===== FIN DU CHARGEMENT =====');
+        
         setDailyAvailabilities(data.dailyAvailabilities);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue lors du chargement des disponibilités';
-        console.error('Erreur lors du chargement des disponibilités:', err);
+        console.error('[CALENDAR CLIENT] Erreur lors du chargement des disponibilités:', err);
         setError(errorMessage);
       } finally {
         setIsLoading(false);
@@ -94,6 +110,18 @@ export default function CalendarPage() {
     }
 
     loadAvailabilities();
+    
+    // Revalidation périodique : recharger les disponibilités toutes les 5 minutes
+    // Cela garantit que les données restent à jour même si l'utilisateur garde la page ouverte
+    const intervalId = setInterval(() => {
+      console.log('[CALENDAR CLIENT] Revalidation périodique des disponibilités...');
+      loadAvailabilities();
+    }, 5 * 60 * 1000); // 5 minutes
+    
+    // Nettoyer l'intervalle lors du démontage du composant
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const handleSlotSelect = (slotId: string) => {

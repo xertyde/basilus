@@ -57,23 +57,39 @@ async function getCalendarEvents(calendarId: string, date: Date) {
     const auth = await getOAuthClient();
     const calendar = google.calendar({ version: 'v3', auth });
 
-    const startOfDay = new Date(date);
-    startOfDay.setHours(WORK_HOURS.start, 0, 0, 0);
+    // Créer les dates de début et fin de journée en Europe/Paris
+    // On utilise les composants de la date pour créer des dates cohérentes
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    
+    const startOfDay = new Date(year, month, day, WORK_HOURS.start, 0, 0);
+    const endOfDay = new Date(year, month, day, WORK_HOURS.end, 0, 0);
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(WORK_HOURS.end, 0, 0, 0);
+    // Convertir en ISO string pour l'API Google Calendar
+    // L'API Google Calendar attend des dates en UTC avec le fuseau horaire spécifié
+    const timeMin = startOfDay.toISOString();
+    const timeMax = endOfDay.toISOString();
+
+    console.log(`[CALENDAR API] Requête Google Calendar pour ${date.toISOString().split('T')[0]}:`);
+    console.log(`[CALENDAR API]   timeMin: ${timeMin}`);
+    console.log(`[CALENDAR API]   timeMax: ${timeMax}`);
 
     const response = await calendar.events.list({
       calendarId,
-      timeMin: startOfDay.toISOString(),
-      timeMax: endOfDay.toISOString(),
+      timeMin,
+      timeMax,
       singleEvents: true,
       orderBy: 'startTime',
+      timeZone: 'Europe/Paris', // Spécifier explicitement le fuseau horaire
     });
 
-    return response.data.items || [];
+    const events = response.data.items || [];
+    console.log(`[CALENDAR API]   ${events.length} événements récupérés`);
+    
+    return events;
   } catch (error) {
-    console.error('Erreur lors de la récupération des événements du calendrier:', error);
+    console.error('[CALENDAR API] Erreur lors de la récupération des événements du calendrier:', error);
     return [];
   }
 }
@@ -184,34 +200,40 @@ function calculateFreeSlots(events: TimeSlot[], date: Date): Availability[] {
 
 // Fonction pour obtenir la date/heure actuelle en France de manière fiable
 function getCurrentDateTimeInParis(): Date {
-  // Utiliser une méthode plus simple et fiable
+  // Obtenir la date/heure actuelle
   const now = new Date();
   
-  // Convertir en fuseau horaire de Paris en utilisant toLocaleString
-  const parisTimeString = now.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
+  // Utiliser Intl.DateTimeFormat pour obtenir les composants de date/heure en Europe/Paris
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
   
-  // Parser la date au format ISO (YYYY-MM-DD HH:mm:ss)
-  const [datePart, timePart] = parisTimeString.split(' ');
-  const [year, month, day] = datePart.split('-').map(Number);
-  const [hour, minute, second] = timePart.split(':').map(Number);
+  const parts = formatter.formatToParts(now);
+  const year = parseInt(parts.find(p => p.type === 'year')!.value);
+  const month = parseInt(parts.find(p => p.type === 'month')!.value) - 1; // Les mois sont 0-indexés
+  const day = parseInt(parts.find(p => p.type === 'day')!.value);
+  const hour = parseInt(parts.find(p => p.type === 'hour')!.value);
+  const minute = parseInt(parts.find(p => p.type === 'minute')!.value);
+  const second = parseInt(parts.find(p => p.type === 'second')!.value);
   
-  // Créer une nouvelle date avec les composants parsés
-  // IMPORTANT: Utiliser le constructeur Date avec les composants locaux
-  // pour éviter les problèmes de fuseau horaire
-  const localDate = new Date(year, month - 1, day, hour, minute, second);
+  // Pour les comparaisons de dates, on a besoin d'une date qui représente correctement
+  // la date/heure en Europe/Paris. La meilleure approche est de créer une date locale
+  // avec ces composants, car on va comparer avec d'autres dates créées de la même manière.
+  // On crée une date en utilisant les composants directement (cela créera une date locale)
+  const parisDate = new Date(year, month, day, hour, minute, second);
   
-  // Vérifier que la date créée correspond bien à la date de Paris
-  // Si ce n'est pas le cas, ajuster en fonction du décalage horaire
-  const expectedParisTime = now.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
-  const actualParisTime = localDate.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
+  // Log pour le débogage
+  console.log('[CALENDAR API] Date actuelle UTC:', now.toISOString());
+  console.log('[CALENDAR API] Date actuelle en Europe/Paris:', parisDate.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }));
   
-  if (expectedParisTime !== actualParisTime) {
-    // Ajuster pour le fuseau horaire
-    const offset = now.getTimezoneOffset() - (new Date().getTimezoneOffset());
-    return new Date(localDate.getTime() + offset * 60000);
-  }
-  
-  return localDate;
+  return parisDate;
 }
 
 // Fonction pour filtrer les créneaux passés de manière fiable
@@ -234,18 +256,31 @@ function filterPastSlots(slots: Availability[], date: Date): Availability[] {
 function getNextBusinessDays(count: number = 5): Date[] {
   const businessDays: Date[] = [];
   
-  // Obtenir la date actuelle en France de manière cohérente
+  // Obtenir la date/heure actuelle en France de manière cohérente
   const currentDateTime = getCurrentDateTimeInParis();
   
-  // Commencer à partir d'aujourd'hui - utiliser une approche plus simple
-  const today = new Date();
-  const parisTimeString = today.toLocaleString('sv-SE', { timeZone: 'Europe/Paris' });
-  const [datePart] = parisTimeString.split(' ');
-  const [year, month, day] = datePart.split('-').map(Number);
-  let checkDate = new Date(year, month - 1, day, 12, 0, 0);
+  // Extraire la date (sans l'heure) en Europe/Paris
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  
+  const now = new Date();
+  const dateParts = formatter.formatToParts(now);
+  const year = parseInt(dateParts.find(p => p.type === 'year')!.value);
+  const month = parseInt(dateParts.find(p => p.type === 'month')!.value) - 1;
+  const day = parseInt(dateParts.find(p => p.type === 'day')!.value);
+  
+  // Créer une date de référence à midi (12h) pour éviter les problèmes de fuseau horaire
+  // On utilise les composants directement pour créer une date locale
+  let checkDate = new Date(year, month, day, 12, 0, 0);
+  
+  // Obtenir le jour de la semaine
+  const currentDayOfWeek = checkDate.getDay();
   
   // Si nous sommes un week-end (samedi=6 ou dimanche=0), commencer à partir du lundi suivant
-  const currentDayOfWeek = checkDate.getDay();
   if (currentDayOfWeek === 0) { // Dimanche
     checkDate.setDate(checkDate.getDate() + 1); // Passer au lundi
   } else if (currentDayOfWeek === 6) { // Samedi
@@ -264,10 +299,12 @@ function getNextBusinessDays(count: number = 5): Date[] {
   const maxAttempts = 14; // Éviter les boucles infinies
 
   while (daysAdded < count && attempts < maxAttempts) {
+    // Obtenir le jour de la semaine
     const dayOfWeek = checkDate.getDay();
     
     // Inclure seulement les jours ouvrés (lundi=1 à vendredi=5)
     if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+      // Créer une copie de la date pour éviter les références partagées
       businessDays.push(new Date(checkDate));
       daysAdded++;
     }
@@ -277,10 +314,16 @@ function getNextBusinessDays(count: number = 5): Date[] {
     attempts++;
   }
 
-  // Log pour le débogage
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Jours ouvrés calculés:', businessDays.map(d => d.toISOString().split('T')[0]));
-  }
+  // Log pour le débogage (toujours actif pour le suivi)
+  const businessDaysFormatted = businessDays.map(d => {
+    // Formater la date en YYYY-MM-DD
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  });
+  console.log('[CALENDAR API] Date actuelle en Europe/Paris:', currentDateTime.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }));
+  console.log('[CALENDAR API] Jours ouvrés calculés:', businessDaysFormatted);
 
   return businessDays;
 }
@@ -311,7 +354,7 @@ export async function GET() {
   try {
     // Vérifier les variables d'environnement requises
     if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || !process.env.GOOGLE_REFRESH_TOKEN) {
-      console.error('Variables d\'environnement Google manquantes');
+      console.error('[CALENDAR API] Variables d\'environnement Google manquantes');
       return NextResponse.json(
         { error: 'Configuration Google Calendar manquante' },
         { status: 500 }
@@ -320,6 +363,8 @@ export async function GET() {
 
     // Obtenir l'heure actuelle pour le débogage
     const currentTime = getCurrentDateTimeInParis();
+    console.log('[CALENDAR API] ===== DÉBUT DE LA REQUÊTE =====');
+    console.log('[CALENDAR API] Timestamp serveur:', new Date().toISOString());
     debugDateInfo(currentTime, 'Heure actuelle en France');
     
     // Récupérer les 5 prochains jours ouvrés
@@ -333,6 +378,7 @@ export async function GET() {
         
         // Récupérer les événements du calendrier pour cette date
         const events = await getCalendarEvents(CALENDAR_IDS.THOMAS, date);
+        console.log(`[CALENDAR API] Jour ${date.toISOString().split('T')[0]}: ${events.length} événements trouvés`);
 
         // Calculer les créneaux libres
         const freeSlots = calculateFreeSlots(events.map(event => {
@@ -356,10 +402,8 @@ export async function GET() {
         // Filtrer les créneaux passés de manière fiable
         const filteredSlots = filterPastSlots(freeSlots, date);
         
-        // Log pour le débogage
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`Jour ${date.toISOString().split('T')[0]}: ${freeSlots.length} créneaux avant filtrage, ${filteredSlots.length} après filtrage`);
-        }
+        // Log pour le débogage (toujours actif)
+        console.log(`[CALENDAR API] Jour ${date.toISOString().split('T')[0]}: ${freeSlots.length} créneaux avant filtrage, ${filteredSlots.length} après filtrage`);
         
         return {
           date: date.toISOString(),
@@ -368,12 +412,32 @@ export async function GET() {
       })
     );
 
-    return NextResponse.json({ dailyAvailabilities });
+    console.log('[CALENDAR API] ===== FIN DE LA REQUÊTE =====');
+    console.log(`[CALENDAR API] Total: ${dailyAvailabilities.length} jours avec disponibilités`);
+
+    // Désactiver le cache pour cette route
+    // IMPORTANT: Ces headers empêchent Vercel et les CDN de mettre en cache la réponse
+    return NextResponse.json(
+      { dailyAvailabilities },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'X-Content-Type-Options': 'nosniff',
+        }
+      }
+    );
   } catch (error) {
-    console.error('Erreur dans l\'API availability:', error);
+    console.error('[CALENDAR API] Erreur dans l\'API availability:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des disponibilités' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        }
+      }
     );
   }
 } 

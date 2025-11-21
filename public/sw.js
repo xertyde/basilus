@@ -91,7 +91,14 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Stratégie de cache pour les pages
+  // EXCLURE /calendar et /api/calendar/* du cache
   if (request.method === 'GET' && request.headers.get('accept')?.includes('text/html')) {
+    // Ne pas mettre en cache la page Calendar
+    if (url.pathname === '/calendar' || url.pathname.startsWith('/calendar/')) {
+      event.respondWith(fetch(request))
+      return
+    }
+    
     event.respondWith(
       caches.match(request)
         .then((cachedResponse) => {
@@ -120,6 +127,13 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Stratégie de cache pour les autres ressources
+  // EXCLURE /api/calendar/* du cache
+  if (url.pathname.startsWith('/api/calendar/')) {
+    // Ne jamais mettre en cache les routes API Calendar
+    event.respondWith(fetch(request))
+    return
+  }
+  
   event.respondWith(
     caches.match(request)
       .then((cachedResponse) => {
