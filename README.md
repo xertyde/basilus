@@ -1,211 +1,211 @@
-# 🚀 Basilus - Agence Web Moderne
+# 🚀 Basilus - Modern Web Agency
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-Site web professionnel d'une agence de création de sites web basée à Lyon. Une plateforme moderne et performante présentant des services de développement web avec système de réservation intégré, formulaires de contact intelligents et optimisation SEO avancée.
+Professional website for a web development agency based in Lyon, France. A modern and high-performance platform showcasing web development services with an integrated booking system, smart contact forms, and advanced SEO optimization.
 
-🌐 **[Voir le site en ligne](https://basilus.fr)**
+🌐 **[View Live Site](https://basilus.fr)**
 
 ---
 
-## 📋 Table des matières
+## 📋 Table of Contents
 
-- [À propos](#-à-propos)
-- [Fonctionnalités principales](#-fonctionnalités-principales)
-- [Technologies utilisées](#-technologies-utilisées)
+- [About](#-about)
+- [Key Features](#-key-features)
+- [Technologies](#-technologies)
 - [Architecture](#-architecture)
 - [Installation](#-installation)
 - [Configuration](#-configuration)
-- [Scripts disponibles](#-scripts-disponibles)
-- [Structure du projet](#-structure-du-projet)
-- [Optimisations](#-optimisations)
+- [Available Scripts](#-available-scripts)
+- [Project Structure](#-project-structure)
+- [Optimizations](#-optimizations)
 - [SEO & Analytics](#-seo--analytics)
 - [API Routes](#-api-routes)
-- [Déploiement](#-déploiement)
-- [Licence](#-licence)
+- [Deployment](#-deployment)
+- [License](#-license)
 
 ---
 
-## 🎯 À propos
+## 🎯 About
 
-**Basilus** est une agence web spécialisée dans la création de sites internet professionnels pour PME et startups. Ce projet représente le site vitrine de l'agence, développé avec les technologies web les plus modernes pour démontrer notre expertise technique.
+**Basilus** is a web agency specializing in creating professional websites for SMEs and startups. This project represents the agency's showcase website, built with the most modern web technologies to demonstrate our technical expertise.
 
-### Objectifs du projet
+### Project Goals
 
-- ✅ Présenter les services de l'agence de manière professionnelle
-- ✅ Faciliter la prise de contact avec un système de réservation automatisé
-- ✅ Optimiser la conversion avec des CTA stratégiques
-- ✅ Démontrer les compétences techniques de l'équipe
-- ✅ Obtenir un excellent score de performance (Lighthouse 95+)
-- ✅ Assurer une expérience utilisateur fluide et moderne
+- ✅ Present agency services professionally
+- ✅ Facilitate contact with an automated booking system
+- ✅ Optimize conversion with strategic CTAs
+- ✅ Demonstrate the team's technical skills
+- ✅ Achieve excellent performance scores (Lighthouse 95+)
+- ✅ Ensure a smooth and modern user experience
 
 ---
 
-## ✨ Fonctionnalités principales
+## ✨ Key Features
 
 ### 🎨 Interface & Design
 
-- **Design moderne et épuré** avec animations fluides (Framer Motion)
-- **Thème clair/sombre** avec persistance des préférences utilisateur
-- **Responsive design** optimisé pour tous les appareils
-- **3D interactif** avec intégration Spline sur la page d'accueil
-- **Composants UI** modernes basés sur Radix UI et shadcn/ui
+- **Modern and clean design** with smooth animations (Framer Motion)
+- **Light/dark theme** with user preference persistence
+- **Responsive design** optimized for all devices
+- **Interactive 3D** with Spline integration on homepage
+- **Modern UI components** based on Radix UI and shadcn/ui
 
-### 📅 Système de réservation
+### 📅 Booking System
 
-- **Calendrier interactif** avec disponibilités en temps réel
-- **Intégration Google Calendar** pour la gestion des rendez-vous
-- **Deux types de rendez-vous** : visioconférence (Jitsi Meet) ou téléphonique
-- **Emails automatiques** de confirmation avec Resend
-- **Liens de visioconférence** générés automatiquement
-- **Gestion des plages horaires** avec exclusion des jours fériés français
+- **Interactive calendar** with real-time availability
+- **Google Calendar integration** for appointment management
+- **Two meeting types**: video conference (Jitsi Meet) or phone call
+- **Automated confirmation emails** with Resend
+- **Auto-generated video conference links**
+- **Time slot management** with French holiday exclusion
 
-### 📝 Formulaires intelligents
+### 📝 Smart Forms
 
-- **Formulaire de contact** avec validation Zod
-- **Système de packs** (Starter, Pro, Sur-mesure)
-- **Options personnalisables** (backend, multilingue, pages supplémentaires)
-- **Protection CSRF** et sécurité renforcée
-- **Envoi d'emails** via Supabase Edge Functions
+- **Contact form** with Zod validation
+- **Package system** (Starter, Pro, Custom)
+- **Customizable options** (backend, multilingual, additional pages)
+- **CSRF protection** and enhanced security
+- **Email sending** via Supabase Edge Functions
 
 ### 📊 Analytics & Tracking
 
-- **Google Analytics 4** avec événements personnalisés
-- **Suivi des conversions** (formulaires, CTAs, temps passé)
-- **Core Web Vitals** automatiquement mesurés (LCP, FID, CLS)
-- **Tracking du scroll** et des interactions utilisateur
-- **Suivi e-commerce** pour les packs de services
+- **Google Analytics 4** with custom events
+- **Conversion tracking** (forms, CTAs, time spent)
+- **Core Web Vitals** automatically measured (LCP, FID, CLS)
+- **Scroll tracking** and user interactions
+- **E-commerce tracking** for service packages
 
-### 🔍 SEO Avancé
+### 🔍 Advanced SEO
 
-- **Métadonnées optimisées** pour chaque page
-- **Données structurées** (Schema.org) pour l'organisation, les services, les produits
-- **Sitemap XML** généré automatiquement
-- **Robots.txt** configuré pour l'indexation
-- **Open Graph & Twitter Cards** pour le partage social
-- **Breadcrumbs** pour améliorer la navigation et le SEO
-- **Alt text optimisés** pour toutes les images
+- **Optimized metadata** for each page
+- **Structured data** (Schema.org) for organization, services, products
+- **Auto-generated XML sitemap**
+- **Configured robots.txt** for indexing
+- **Open Graph & Twitter Cards** for social sharing
+- **Breadcrumbs** to improve navigation and SEO
+- **Optimized alt text** for all images
 
 ### 🚀 Performance
 
-- **Code splitting** intelligent avec optimisation des chunks
-- **Lazy loading** des composants lourds (Spline, images)
-- **Optimisation des images** (WebP, AVIF) avec Next.js Image
-- **Caching stratégique** (static assets, API responses)
-- **Compression** activée (Gzip/Brotli)
-- **Preload des ressources critiques**
+- **Intelligent code splitting** with chunk optimization
+- **Lazy loading** of heavy components (Spline, images)
+- **Image optimization** (WebP, AVIF) with Next.js Image
+- **Strategic caching** (static assets, API responses)
+- **Compression enabled** (Gzip/Brotli)
+- **Critical resource preloading**
 
 ---
 
-## 🛠 Technologies utilisées
+## 🛠 Technologies
 
 ### Framework & Core
 
-- **[Next.js 14.2](https://nextjs.org/)** - Framework React avec App Router
-- **[React 18.3](https://react.dev/)** - Bibliothèque UI avec Server Components
-- **[TypeScript 5.2](https://www.typescriptlang.org/)** - Typage statique
+- **[Next.js 14.2](https://nextjs.org/)** - React framework with App Router
+- **[React 18.3](https://react.dev/)** - UI library with Server Components
+- **[TypeScript 5.2](https://www.typescriptlang.org/)** - Static typing
 
 ### Styling & UI
 
-- **[Tailwind CSS 3.3](https://tailwindcss.com/)** - Framework CSS utility-first
-- **[Radix UI](https://www.radix-ui.com/)** - Composants accessibles headless
-- **[shadcn/ui](https://ui.shadcn.com/)** - Collection de composants réutilisables
-- **[Framer Motion](https://www.framer.com/motion/)** - Animations fluides
-- **[Lucide React](https://lucide.dev/)** - Icônes modernes
-- **[Spline](https://spline.design/)** - Animations 3D interactives
+- **[Tailwind CSS 3.3](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[Radix UI](https://www.radix-ui.com/)** - Accessible headless components
+- **[shadcn/ui](https://ui.shadcn.com/)** - Reusable component collection
+- **[Framer Motion](https://www.framer.com/motion/)** - Smooth animations
+- **[Lucide React](https://lucide.dev/)** - Modern icons
+- **[Spline](https://spline.design/)** - Interactive 3D animations
 
-### Formulaires & Validation
+### Forms & Validation
 
-- **[React Hook Form](https://react-hook-form.com/)** - Gestion des formulaires
-- **[Zod](https://zod.dev/)** - Validation de schémas TypeScript-first
-- **[@hookform/resolvers](https://github.com/react-hook-form/resolvers)** - Intégration Zod avec React Hook Form
+- **[React Hook Form](https://react-hook-form.com/)** - Form management
+- **[Zod](https://zod.dev/)** - TypeScript-first schema validation
+- **[@hookform/resolvers](https://github.com/react-hook-form/resolvers)** - Zod integration with React Hook Form
 
 ### Backend & Services
 
 - **[Supabase](https://supabase.com/)** - Backend as a Service (auth, database)
-- **[Google Calendar API](https://developers.google.com/calendar)** - Gestion des rendez-vous
-- **[Resend](https://resend.com/)** - Service d'envoi d'emails transactionnels
-- **[Google Analytics 4](https://developers.google.com/analytics)** - Analytics avancées
+- **[Google Calendar API](https://developers.google.com/calendar)** - Appointment management
+- **[Resend](https://resend.com/)** - Transactional email service
+- **[Google Analytics 4](https://developers.google.com/analytics)** - Advanced analytics
 
-### Utilitaires
+### Utilities
 
-- **[date-fns](https://date-fns.org/)** - Manipulation des dates
-- **[clsx](https://github.com/lukeed/clsx)** - Gestion conditionnelle des classes CSS
-- **[tailwind-merge](https://github.com/dcastil/tailwind-merge)** - Fusion intelligente de classes Tailwind
+- **[date-fns](https://date-fns.org/)** - Date manipulation
+- **[clsx](https://github.com/lukeed/clsx)** - Conditional CSS class management
+- **[tailwind-merge](https://github.com/dcastil/tailwind-merge)** - Smart Tailwind class merging
 
 ### Dev Tools
 
-- **[ESLint](https://eslint.org/)** - Linting JavaScript/TypeScript
-- **[PostCSS](https://postcss.org/)** - Transformation CSS
+- **[ESLint](https://eslint.org/)** - JavaScript/TypeScript linting
+- **[PostCSS](https://postcss.org/)** - CSS transformation
 
 ---
 
 ## 🏗 Architecture
 
-### Structure Next.js
+### Next.js Structure
 
-Le projet utilise l'**App Router** de Next.js 14 avec une architecture moderne :
+The project uses Next.js 14's **App Router** with a modern architecture:
 
 ```
 app/
-├── (pages)/               # Pages du site
-│   ├── page.tsx          # Page d'accueil
-│   ├── layout.tsx        # Layout racine
-│   ├── packs/            # Page des tarifs
-│   ├── contact/          # Page de contact
+├── (pages)/               # Site pages
+│   ├── page.tsx          # Homepage
+│   ├── layout.tsx        # Root layout
+│   ├── packs/            # Pricing page
+│   ├── contact/          # Contact page
 │   ├── realisations/     # Portfolio
-│   └── calendar/         # Système de réservation
+│   └── calendar/         # Booking system
 ├── api/                  # API Routes
-│   ├── calendar/         # Endpoints calendrier
-│   │   ├── availability/ # Disponibilités
-│   │   └── book/        # Réservations
+│   ├── calendar/         # Calendar endpoints
+│   │   ├── availability/ # Availability
+│   │   └── book/        # Bookings
 │   └── analytics/        # Tracking events
-└── components/           # Composants React
+└── components/           # React components
 ```
 
-### Patterns utilisés
+### Design Patterns
 
-- **Server Components** pour le rendu côté serveur par défaut
-- **Client Components** (`"use client"`) uniquement quand nécessaire
-- **API Routes** pour les opérations backend
-- **Lazy Loading** avec `next/dynamic`
-- **Separation of Concerns** (composants, lib, hooks, types)
+- **Server Components** for server-side rendering by default
+- **Client Components** (`"use client"`) only when necessary
+- **API Routes** for backend operations
+- **Lazy Loading** with `next/dynamic`
+- **Separation of Concerns** (components, lib, hooks, types)
 
 ---
 
 ## 📦 Installation
 
-### Prérequis
+### Prerequisites
 
-- Node.js 20.x ou supérieur
-- npm ou yarn
-- Compte Google Cloud (pour Calendar API)
-- Compte Supabase
-- Compte Resend (emails)
+- Node.js 20.x or higher
+- npm or yarn
+- Google Cloud account (for Calendar API)
+- Supabase account
+- Resend account (emails)
 
-### Étapes d'installation
+### Installation Steps
 
-1. **Cloner le repository**
+1. **Clone the repository**
 
 ```bash
-git clone https://github.com/votre-username/basilus.git
+git clone https://github.com/your-username/basilus.git
 cd basilus
 ```
 
-2. **Installer les dépendances**
+2. **Install dependencies**
 
 ```bash
 npm install
-# ou
+# or
 yarn install
 ```
 
-3. **Configurer les variables d'environnement**
+3. **Configure environment variables**
 
-Créer un fichier `.env.local` à la racine du projet :
+Create a `.env.local` file at the project root:
 
 ```env
 # Supabase
@@ -225,15 +225,15 @@ RESEND_API_KEY=your_resend_api_key
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-4. **Lancer le serveur de développement**
+4. **Start the development server**
 
 ```bash
 npm run dev
-# ou
+# or
 yarn dev
 ```
 
-Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
+The site will be accessible at [http://localhost:3000](http://localhost:3000)
 
 ---
 
@@ -241,163 +241,163 @@ Le site sera accessible sur [http://localhost:3000](http://localhost:3000)
 
 ### Google Calendar API
 
-1. Créer un projet sur [Google Cloud Console](https://console.cloud.google.com/)
-2. Activer l'API Google Calendar
-3. Créer des credentials OAuth 2.0
-4. Obtenir un refresh token avec les scopes nécessaires
-5. Ajouter les credentials dans `.env.local`
+1. Create a project on [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable the Google Calendar API
+3. Create OAuth 2.0 credentials
+4. Obtain a refresh token with necessary scopes
+5. Add credentials to `.env.local`
 
 ### Supabase
 
-1. Créer un projet sur [Supabase](https://supabase.com/)
-2. Récupérer l'URL et la clé anonyme
-3. Déployer les Edge Functions (dossier `supabase/`)
-4. Configurer les variables d'environnement
+1. Create a project on [Supabase](https://supabase.com/)
+2. Get the URL and anonymous key
+3. Deploy Edge Functions (`supabase/` folder)
+4. Configure environment variables
 
 ### Resend
 
-1. Créer un compte sur [Resend](https://resend.com/)
-2. Vérifier votre domaine d'envoi
-3. Générer une API key
-4. Ajouter la clé dans `.env.local`
+1. Create an account on [Resend](https://resend.com/)
+2. Verify your sending domain
+3. Generate an API key
+4. Add the key to `.env.local`
 
 ---
 
-## 📜 Scripts disponibles
+## 📜 Available Scripts
 
 ```bash
-# Développement
-npm run dev          # Lancer le serveur de développement
+# Development
+npm run dev          # Start development server
 
 # Production
-npm run build        # Créer un build de production
-npm run start        # Lancer le serveur de production
+npm run build        # Create production build
+npm run start        # Start production server
 
-# Qualité du code
-npm run lint         # Lancer ESLint
+# Code Quality
+npm run lint         # Run ESLint
 
 # Maintenance
-npm run clean        # Nettoyer node_modules et .next, puis réinstaller
+npm run clean        # Clean node_modules and .next, then reinstall
 ```
 
 ---
 
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 basilus/
-├── app/                          # App Router Next.js
+├── app/                          # Next.js App Router
 │   ├── api/                      # API Routes
 │   │   ├── analytics/           # Tracking events
-│   │   └── calendar/            # Gestion calendrier
-│   ├── components/              # Composants spécifiques aux pages
-│   ├── (pages)/                 # Pages du site
-│   ├── globals.css              # Styles globaux
-│   ├── layout.tsx               # Layout racine
-│   └── page.tsx                 # Page d'accueil
-├── components/                   # Composants réutilisables
-│   ├── analytics/               # Composants de tracking
-│   ├── contact/                 # Formulaire de contact
-│   ├── home/                    # Composants page d'accueil
+│   │   └── calendar/            # Calendar management
+│   ├── components/              # Page-specific components
+│   ├── (pages)/                 # Site pages
+│   ├── globals.css              # Global styles
+│   ├── layout.tsx               # Root layout
+│   └── page.tsx                 # Homepage
+├── components/                   # Reusable components
+│   ├── analytics/               # Tracking components
+│   ├── contact/                 # Contact form
+│   ├── home/                    # Homepage components
 │   ├── layout/                  # Header, Footer, Navigation
-│   ├── packs/                   # Cartes de pricing
+│   ├── packs/                   # Pricing cards
 │   ├── realisations/            # Portfolio
-│   ├── seo/                     # Composants SEO
-│   └── ui/                      # Composants UI (shadcn/ui)
+│   ├── seo/                     # SEO components
+│   └── ui/                      # UI components (shadcn/ui)
 ├── hooks/                        # Custom React Hooks
-├── lib/                          # Utilitaires et helpers
-│   ├── analytics.ts             # Fonctions de tracking
-│   ├── content.ts               # Contenu du site
-│   ├── security.ts              # Utilitaires de sécurité
-│   ├── seo.ts                   # Configuration SEO
-│   ├── supabase/                # Client Supabase
-│   ├── urls.ts                  # Gestion des URLs
-│   └── utils.ts                 # Utilitaires généraux
-├── public/                       # Assets statiques
-├── types/                        # Types TypeScript
-├── next.config.js               # Configuration Next.js
-├── tailwind.config.ts           # Configuration Tailwind
-├── tsconfig.json                # Configuration TypeScript
-└── package.json                 # Dépendances et scripts
+├── lib/                          # Utilities and helpers
+│   ├── analytics.ts             # Tracking functions
+│   ├── content.ts               # Site content
+│   ├── security.ts              # Security utilities
+│   ├── seo.ts                   # SEO configuration
+│   ├── supabase/                # Supabase client
+│   ├── urls.ts                  # URL management
+│   └── utils.ts                 # General utilities
+├── public/                       # Static assets
+├── types/                        # TypeScript types
+├── next.config.js               # Next.js configuration
+├── tailwind.config.ts           # Tailwind configuration
+├── tsconfig.json                # TypeScript configuration
+└── package.json                 # Dependencies and scripts
 ```
 
 ---
 
-## ⚡ Optimisations
+## ⚡ Optimizations
 
 ### Performance
 
 1. **Code Splitting**
-   - Séparation des vendors (React, Next.js, UI components)
-   - Chunks optimisés (min: 20KB, max: 244KB)
-   - Lazy loading de Spline pour améliorer le LCP
+   - Vendor separation (React, Next.js, UI components)
+   - Optimized chunks (min: 20KB, max: 244KB)
+   - Spline lazy loading to improve LCP
 
 2. **Images**
-   - Formats modernes (WebP, AVIF)
-   - Tailles responsive adaptées
-   - Lazy loading natif
-   - Cache longue durée (1 an)
+   - Modern formats (WebP, AVIF)
+   - Responsive sizes
+   - Native lazy loading
+   - Long-term caching (1 year)
 
 3. **Caching**
-   - Static assets : cache immutable 1 an
-   - API responses : cache 24h avec revalidation
-   - Webpack cache en développement
+   - Static assets: immutable cache for 1 year
+   - API responses: 24h cache with revalidation
+   - Webpack cache in development
 
 4. **Bundle Optimization**
-   - SWC Minification activée
-   - Compression Gzip/Brotli
-   - Tree shaking automatique
-   - Package imports optimisés
+   - SWC Minification enabled
+   - Gzip/Brotli compression
+   - Automatic tree shaking
+   - Optimized package imports
 
-### Sécurité
+### Security
 
-- **CSRF Protection** avec tokens pour les formulaires
-- **Headers de sécurité** (X-Frame-Options, DNS-Prefetch-Control)
-- **Validation côté serveur** avec Zod
-- **Rate limiting** potentiel sur les API routes
-- **Sanitization** des inputs utilisateur
+- **CSRF Protection** with tokens for forms
+- **Security headers** (X-Frame-Options, DNS-Prefetch-Control)
+- **Server-side validation** with Zod
+- **Rate limiting** potential on API routes
+- **User input sanitization**
 
 ### SEO
 
-- **SSR/SSG** pour un excellent référencement
-- **Métadonnées dynamiques** par page
-- **Sitemap XML** auto-généré
-- **Robots.txt** configuré
-- **Données structurées** Schema.org
-- **Core Web Vitals** optimisés
+- **SSR/SSG** for excellent SEO
+- **Dynamic metadata** per page
+- **Auto-generated XML sitemap**
+- **Configured robots.txt**
+- **Schema.org structured data**
+- **Optimized Core Web Vitals**
 
 ---
 
 ## 📈 SEO & Analytics
 
-### Métadonnées
+### Metadata
 
-Chaque page possède des métadonnées optimisées :
-- Titre unique et descriptif
-- Description attrayante
-- Keywords pertinents
-- URL canonique
+Each page has optimized metadata:
+- Unique and descriptive title
+- Compelling description
+- Relevant keywords
+- Canonical URL
 - Open Graph tags
 - Twitter Cards
 
-### Données structurées
+### Structured Data
 
-Implémentation de Schema.org pour :
-- **Organization** - Informations sur l'entreprise
-- **LocalBusiness** - Données de l'entreprise locale
-- **WebSite** - Structure du site
-- **Service** - Offres de services
-- **Offer** - Packs et tarifs
+Schema.org implementation for:
+- **Organization** - Company information
+- **LocalBusiness** - Local business data
+- **WebSite** - Site structure
+- **Service** - Service offerings
+- **Offer** - Packages and pricing
 - **BreadcrumbList** - Navigation
 
 ### Google Analytics 4
 
-Tracking complet avec :
-- **Page views** automatiques
-- **Events personnalisés** (CTA clicks, form submissions)
-- **Conversions** (devis demandé, rendez-vous pris)
+Complete tracking with:
+- **Automatic page views**
+- **Custom events** (CTA clicks, form submissions)
+- **Conversions** (quote requested, appointment booked)
 - **Core Web Vitals** (LCP, FID, CLS)
-- **E-commerce tracking** pour les packs
+- **E-commerce tracking** for service packages
 
 ---
 
@@ -405,7 +405,7 @@ Tracking complet avec :
 
 ### `/api/calendar/availability`
 
-**GET** - Récupère les créneaux disponibles pour un mois donné
+**GET** - Retrieves available time slots for a given month
 
 ```typescript
 Query params:
@@ -427,7 +427,7 @@ Response:
 
 ### `/api/calendar/book`
 
-**POST** - Réserve un créneau
+**POST** - Books a time slot
 
 ```typescript
 Body:
@@ -452,7 +452,7 @@ Response:
 
 ### `/api/analytics`
 
-**POST** - Enregistre un événement d'analytics
+**POST** - Records an analytics event
 
 ```typescript
 Body:
@@ -464,64 +464,64 @@ Body:
 
 ---
 
-## 🚀 Déploiement
+## 🚀 Deployment
 
-### Vercel (recommandé)
+### Vercel (Recommended)
 
-Le projet est optimisé pour Vercel :
+The project is optimized for Vercel:
 
-1. **Connecter le repository GitHub**
-2. **Configurer les variables d'environnement** dans les settings Vercel
-3. **Déployer** - Le build se lance automatiquement
+1. **Connect GitHub repository**
+2. **Configure environment variables** in Vercel settings
+3. **Deploy** - Build starts automatically
 
 ```bash
-# Ou via CLI
+# Or via CLI
 npm i -g vercel
 vercel
 ```
 
-### Configuration Vercel
+### Vercel Configuration
 
-Le fichier `vercel.json` contient :
-- Routes et redirections
-- Headers de sécurité
-- Configuration du build
+The `vercel.json` file contains:
+- Routes and redirects
+- Security headers
+- Build configuration
 
-### Autres plateformes
+### Alternative Platforms
 
-Le projet peut aussi être déployé sur :
-- **Netlify** (avec adaptateur)
+The project can also be deployed on:
+- **Netlify** (with adapter)
 - **AWS Amplify**
-- **Docker** (créer un Dockerfile)
-- **VPS** avec Node.js
+- **Docker** (create a Dockerfile)
+- **VPS** with Node.js
 
 ---
 
-## 🎨 Personnalisation
+## 🎨 Customization
 
-### Couleurs et thème
+### Colors and Theme
 
-Modifier le fichier `tailwind.config.ts` :
+Modify the `tailwind.config.ts` file:
 
 ```typescript
 colors: {
   primary: {
     DEFAULT: "hsl(335, 88%, 55%)", // #f63c7a
-    // ... autres nuances
+    // ... other shades
   }
 }
 ```
 
-### Contenu
+### Content
 
-Le contenu principal est dans :
-- `lib/content.ts` - Textes réutilisables
-- `lib/seo.ts` - Configurations SEO par page
-- Pages individuelles dans `app/`
+Main content is in:
+- `lib/content.ts` - Reusable texts
+- `lib/seo.ts` - SEO configurations per page
+- Individual pages in `app/`
 
-### Composants UI
+### UI Components
 
-Les composants sont dans `components/ui/` et peuvent être personnalisés via Tailwind classes.
+Components are in `components/ui/` and can be customized via Tailwind classes.
 
 ---
 
@@ -529,52 +529,52 @@ Les composants sont dans `components/ui/` et peuvent être personnalisés via Ta
 
 ### Logs
 
-Les logs sont activés pour :
-- Erreurs Spline (gérées gracieusement)
-- Erreurs API (avec détails)
-- Erreurs de formulaire
+Logging is enabled for:
+- Spline errors (handled gracefully)
+- API errors (with details)
+- Form errors
 
-### Mode développement
+### Development Mode
 
 ```bash
-# Activer les logs détaillés
+# Enable detailed logs
 DEBUG=* npm run dev
 ```
 
-### Analyse du bundle
+### Bundle Analysis
 
 ```bash
-# Analyser la taille du bundle
+# Analyze bundle size
 npm run build
-# Puis inspecter .next/analyze
+# Then inspect .next/analyze
 ```
 
 ---
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est sous licence privée. Tous droits réservés © 2024 Basilus.
+This project is under private license. All rights reserved © 2024 Basilus.
 
 ---
 
-## 👥 Auteur
+## 👥 Author
 
 **Thomas Fonferrier**  
-Développeur Full-Stack & Fondateur de Basilus
+Full-Stack Developer & Founder of Basilus
 
-- Site web : [basilus.fr](https://basilus.fr)
-- Email : contact@basilus.fr
-- LinkedIn : [Votre LinkedIn]
-- GitHub : [@votre-username]
+- Website: [basilus.fr](https://basilus.fr)
+- Email: contact@basilus.fr
+- LinkedIn: [Your LinkedIn]
+- GitHub: [@your-username]
 
 ---
 
-## 🙏 Remerciements
+## 🙏 Acknowledgments
 
-- **Next.js Team** pour l'excellent framework
-- **Vercel** pour l'hébergement et les optimisations
-- **shadcn** pour les composants UI
-- **La communauté open-source** pour tous les packages utilisés
+- **Next.js Team** for the excellent framework
+- **Vercel** for hosting and optimizations
+- **shadcn** for UI components
+- **The open-source community** for all packages used
 
 ---
 
@@ -582,20 +582,20 @@ Développeur Full-Stack & Fondateur de Basilus
 
 ### Version
 
-- **Version actuelle** : 0.1.0
-- **Next.js** : 14.2.18
-- **React** : 18.3.1
-- **Node.js requis** : ≥ 20.6.2
+- **Current version**: 0.1.0
+- **Next.js**: 14.2.18
+- **React**: 18.3.1
+- **Node.js required**: ≥ 20.6.2
 
 ### Roadmap
 
-- [ ] Système de blog complet avec CMS
-- [ ] Espace client avec dashboard
-- [ ] Paiement en ligne intégré
-- [ ] Multilingue (EN, ES)
+- [ ] Complete blog system with CMS
+- [ ] Client dashboard area
+- [ ] Integrated online payment
+- [ ] Multilingual support (EN, ES)
 - [ ] Progressive Web App (PWA)
-- [ ] Tests automatisés (Jest, Playwright)
+- [ ] Automated testing (Jest, Playwright)
 
 ---
 
-**⭐ Si ce projet vous a été utile, n'hésitez pas à lui donner une étoile !**
+**⭐ If this project was useful to you, feel free to give it a star!**
